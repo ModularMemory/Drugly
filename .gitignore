@@ -1,0 +1,14 @@
+# Standard Stuff
+.vs/
+.vscode/
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+*.user
+
+# Non-standard Stuff
+TestResults/
+*.zip
