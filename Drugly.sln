@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Non-Solution Items", "Non-Solution Items", "{1A0810BF-A6D8-4500-A470-39FB536A3A75}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Non-Solution Items", "Non-S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.AvaloniaApp", "Drugly.AvaloniaApp\Drugly.AvaloniaApp.csproj", "{293CEE34-2406-4791-8671-A995E6D1D91E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.DTO", "Drugly.DTO\Drugly.DTO.csproj", "{7209737A-AB4C-4747-A71D-DF56048D582C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.Server", "Drugly.Server\Drugly.Server.csproj", "{EF1E5818-4951-43C3-B26E-C1A6E9A98614}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +25,13 @@ Global
 		{293CEE34-2406-4791-8671-A995E6D1D91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{293CEE34-2406-4791-8671-A995E6D1D91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{293CEE34-2406-4791-8671-A995E6D1D91E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7209737A-AB4C-4747-A71D-DF56048D582C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7209737A-AB4C-4747-A71D-DF56048D582C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7209737A-AB4C-4747-A71D-DF56048D582C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7209737A-AB4C-4747-A71D-DF56048D582C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF1E5818-4951-43C3-B26E-C1A6E9A98614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF1E5818-4951-43C3-B26E-C1A6E9A98614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF1E5818-4951-43C3-B26E-C1A6E9A98614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF1E5818-4951-43C3-B26E-C1A6E9A98614}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
