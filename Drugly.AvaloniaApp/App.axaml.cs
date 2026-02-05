@@ -1,18 +1,20 @@
+using System.Diagnostics;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Drugly.AvaloniaApp.Extensions;
+using Drugly.AvaloniaApp.Models;
+using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using SukiUI.Controls;
 using SukiUI.Dialogs;
 
@@ -38,47 +40,69 @@ public partial class App : Application
             .ConfigureViews()
             .BuildServiceProvider();
 
+#if DEBUG
+        Trace.Listeners.Add(new TextWriterTraceListener(_serviceProvider.GetRequiredKeyedService<LoggerTextWriter>(LogEventLevel.Verbose)));
+#endif
+        DataTemplates.Add(_serviceProvider.GetRequiredService<ViewLocator>());
         _logger = _serviceProvider.GetRequiredService<ILogger>();
 
-        DataTemplates.Add(_serviceProvider.GetRequiredService<ViewLocator>());
-
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
-            desktop.MainWindow = _serviceProvider.GetRequiredView<MainWindow>();
-        }
-        else
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            _logger.Fatal("Unsupported application lifetime: {Lifetime}", ApplicationLifetime);
+            var startupWindow = _serviceProvider.GetRequiredView<StartupWindow>();
+            desktop.MainWindow = startupWindow;
+
+            var loginService = _serviceProvider.GetRequiredService<ILoginService>();
+            loginService.SuccessfulLogin += (s, e) =>
+            {
+                var mainWindow = _serviceProvider.GetRequiredView<MainWindow>();
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    desktop.MainWindow = mainWindow;
+                    mainWindow.Show();
+                    startupWindow.Close();
+                });
+            };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void UIThread_OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) {
+    private void UIThread_OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
         _logger.Error(e.Exception, "Unhandled exception");
 
         var applicationLifetime = _serviceProvider?.GetService<IApplicationLifetime>();
         var dialogManager = _serviceProvider?.GetService<ISukiDialogManager>();
         if (applicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop
-            || dialogManager is null) {
+            || dialogManager is null)
+        {
             return;
         }
 
         dialogManager.CreateDialog()
             .OfType(NotificationType.Error)
             .WithTitle("Fatal Error")
-            .WithContent(new GroupBox {
-                Header = new TextBlock {
+            .WithContent(new GroupBox
+            {
+                Header = new TextBlock
+                {
                     Text = $"An uncaught exception occurred. {nameof(Drugly)} can resume but may be unstable."
                 },
-                Content = new TextBlock {
-                    Text = e.Exception.ToString(),
-                    FontSize = 12,
-                    Foreground = Brushes.Red
+                Content = new ScrollViewer
+                {
+                    Content = new TextBlock
+                    {
+                        Text = e.Exception.ToString(),
+                        FontSize = 12,
+                        Foreground = Brushes.Red
+                    }
                 }
             })
             .WithColoredYesNoResult("Resume", "Exit")
-            .OnClosed(res => {
-                if (!res) {
+            .OnClosed(res =>
+            {
+                if (!res)
+                {
                     desktop.Shutdown(e.Exception.HResult);
                 }
             })

@@ -8,6 +8,9 @@ public static partial class DesignData
     private static Exception ExampleException { get; }
     private static partial IServiceProvider ServiceProvider { get; }
 
+    public static StartupWindowViewModel StartupWindowViewModel
+        => field ??= ServiceProvider.GetRequiredService<StartupWindowViewModel>();
+
     public static MainWindowViewModel MainWindowViewModel
         => field ??= ServiceProvider.GetRequiredService<MainWindowViewModel>();
 

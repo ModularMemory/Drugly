@@ -6,17 +6,22 @@ namespace Drugly.AvaloniaApp.Design;
 
 public static partial class DesignData
 {
-    static DesignData() {
-        try {
+    static DesignData()
+    {
+        try
+        {
             throw new Exception("Example exception");
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             ExampleException = ex;
         }
     }
 
-    private class DesignApplication : Application {
-        public DesignApplication() {
+    private class DesignApplication : Application
+    {
+        public DesignApplication()
+        {
             ApplicationLifetime = new ClassicDesktopStyleApplicationLifetime();
         }
     }

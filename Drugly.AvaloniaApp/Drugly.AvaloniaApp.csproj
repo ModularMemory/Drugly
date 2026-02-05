@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
@@ -34,6 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
+        <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
     </ItemGroup>
 </Project>
