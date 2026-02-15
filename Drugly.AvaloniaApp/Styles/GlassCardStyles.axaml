@@ -1,0 +1,26 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:suki="https://github.com/kikipoulet/SukiUI">
+    <Design.PreviewWith>
+        <Border Padding="20"
+                Background="DarkOliveGreen">
+            <StackPanel Spacing="20">
+                <suki:GlassCard>
+                    <TextBlock Text="Card 1" />
+                </suki:GlassCard>
+
+                <suki:GlassCard>
+                    <StackPanel>
+                        <TextBlock Text="Title"
+                                   FontWeight="Bold" />
+                        <TextBlock Text="Card 2 Details" />
+                    </StackPanel>
+                </suki:GlassCard>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="suki|GlassCard">
+        <Setter Property="IsAnimated" Value="False" />
+    </Style>
+</Styles>

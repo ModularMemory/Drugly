@@ -10,5 +10,8 @@
         <FluentTheme />
         <suki:SukiTheme ThemeColor="Blue" />
         <icons:MaterialIconStyles />
+
+        <!-- Custom styles -->
+        <StyleInclude Source="avares://Drugly.AvaloniaApp/Styles/GlassCardStyles.axaml" />
     </Application.Styles>
 </Application>
