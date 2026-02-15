@@ -15,23 +15,29 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="{Binding Title}">
     <suki:SukiMainHost Name="MainHost"
+                       BackgroundAnimationEnabled="False"
                        PointerPressed="SukiMainHost_OnPointerPressed">
-        <StackPanel Margin="10"
-                    Spacing="10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+        <suki:BusyArea IsBusy="{Binding LoggingIn}">
+            <StackPanel Margin="10"
+                        Spacing="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
 
-            <TextBlock Text="Welcome to Avalonia!" />
+                <TextBlock Text="Enter login info:"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
 
-            <TextBox Watermark="Key..."
-                     Text="{Binding KeyText}"
-                     Width="250"
-                     suki:TextBoxExtensions.AddDeleteButton="True" />
+                <TextBox Watermark="Key..."
+                         Text="{Binding KeyText, Mode=TwoWay}"
+                         Width="250"
+                         suki:TextBoxExtensions.AddDeleteButton="True" />
 
-            <Button Classes="Flat"
-                    Content="Login"
-                    Width="100"
-                    Command="{Binding ButtonClickCommand}" />
-        </StackPanel>
+                <Button Classes="Flat"
+                        Content="Login"
+                        Width="100"
+                        Command="{Binding ButtonClickCommand}" />
+            </StackPanel>
+        </suki:BusyArea>
     </suki:SukiMainHost>
 </Window>

@@ -45,7 +45,7 @@ public static class Startup
                 // UI
                 .AddSingleton<ISukiToastManager, SukiToastManager>()
                 .AddSingleton<ISukiDialogManager, SukiDialogManager>()
-                .AddSingleton<SukiDialogHost>(provider => new SukiDialogHost
+                .AddTransient<SukiDialogHost>(provider => new SukiDialogHost
                 {
                     Manager = provider.GetRequiredService<ISukiDialogManager>()
                 });

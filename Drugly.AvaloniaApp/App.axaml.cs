@@ -52,7 +52,7 @@ public partial class App : Application
             desktop.MainWindow = startupWindow;
 
             var loginService = _serviceProvider.GetRequiredService<ILoginService>();
-            loginService.SuccessfulLogin += (s, e) =>
+            loginService.LoginSuccessful += (s, e) =>
             {
                 var mainWindow = _serviceProvider.GetRequiredView<MainWindow>();
                 Dispatcher.UIThread.Invoke(() =>
@@ -82,22 +82,17 @@ public partial class App : Application
         dialogManager.CreateDialog()
             .OfType(NotificationType.Error)
             .WithTitle("Fatal Error")
-            .WithContent(new GroupBox
-            {
-                Header = new TextBlock
+            .WithGroupedContent(
+                new TextBlock
                 {
                     Text = $"An uncaught exception occurred. {nameof(Drugly)} can resume but may be unstable."
                 },
-                Content = new ScrollViewer
+                new TextBlock
                 {
-                    Content = new TextBlock
-                    {
-                        Text = e.Exception.ToString(),
-                        FontSize = 12,
-                        Foreground = Brushes.Red
-                    }
-                }
-            })
+                    Text = e.Exception.ToString(),
+                    FontSize = 12,
+                    Foreground = Brushes.Red
+                })
             .WithColoredYesNoResult("Resume", "Exit")
             .OnClosed(res =>
             {

@@ -9,7 +9,7 @@
              x:Class="Drugly.AvaloniaApp.Views.MainView"
              x:DataType="vm:MainViewModel"
              d:DataContext="{x:Static design:DesignData.MainViewModel}">
-    <suki:SukiMainHost Name="SukiMainHost"
+    <suki:SukiMainHost Name="MainHost"
                        BackgroundAnimationEnabled="False">
         Welcome to Avalonia!
     </suki:SukiMainHost>
