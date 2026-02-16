@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using JetBrains.Annotations;
 using SukiUI.Controls;
 
-namespace Drugly.AvaloniaApp.Views;
+namespace Drugly.AvaloniaApp.Views.Pages;
 
 public partial class MainView : UserControl
 {

@@ -7,7 +7,7 @@ using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.Validation;
 using SukiUI.Dialogs;
 
-namespace Drugly.AvaloniaApp.ViewModels;
+namespace Drugly.AvaloniaApp.ViewModels.Windows;
 
 public partial class StartupWindowViewModel : ViewModelBase
 {

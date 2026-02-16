@@ -10,12 +10,11 @@ using Avalonia.Threading;
 using Drugly.AvaloniaApp.Extensions;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
-using Drugly.AvaloniaApp.Views;
+using Drugly.AvaloniaApp.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using SukiUI.Controls;
 using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp;
@@ -48,20 +47,22 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var startupWindow = _serviceProvider.GetRequiredView<StartupWindow>();
-            desktop.MainWindow = startupWindow;
+            // Show the startup window first
+            desktop.MainWindow = _serviceProvider.GetRequiredView<StartupWindow>();
 
             var loginService = _serviceProvider.GetRequiredService<ILoginService>();
-            loginService.LoginSuccessful += (s, e) =>
+            loginService.LoginSuccessful += (s, e) => Dispatcher.UIThread.Invoke(() =>
             {
+                // Swap the old main window with a new instance of MainWindow
+                // Replaces the startup window at login, or relaunches the MainWindow on re-login
+                var oldWindow = desktop.MainWindow;
+
                 var mainWindow = _serviceProvider.GetRequiredView<MainWindow>();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    desktop.MainWindow = mainWindow;
-                    mainWindow.Show();
-                    startupWindow.Close();
-                });
-            };
+                desktop.MainWindow = mainWindow;
+
+                mainWindow.Show();
+                oldWindow.Close();
+            });
         }
 
         base.OnFrameworkInitializationCompleted();

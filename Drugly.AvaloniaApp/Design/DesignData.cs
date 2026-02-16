@@ -1,31 +1,36 @@
-using Drugly.AvaloniaApp.ViewModels;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Design;
 
 public static partial class DesignData
 {
-    private static Exception ExampleException { get; }
-    private static partial IServiceProvider ServiceProvider { get; }
-
-    public static StartupWindowViewModel StartupWindowViewModel
-        => field ??= ServiceProvider.GetRequiredService<StartupWindowViewModel>();
-
-    public static MainWindowViewModel MainWindowViewModel
-        => field ??= ServiceProvider.GetRequiredService<MainWindowViewModel>();
-
-    public static MainViewModel MainViewModel
+    private class DesignApplication : Application
     {
-        get
+        public DesignApplication()
         {
-            if (field != null)
-            {
-                return field;
-            }
-
-            field = ServiceProvider.GetRequiredService<MainViewModel>();
-
-            return field;
+            ApplicationLifetime = new ClassicDesktopStyleApplicationLifetime();
         }
     }
+
+    static DesignData()
+    {
+        try
+        {
+            throw new Exception("Example exception");
+        }
+        catch (Exception ex)
+        {
+            ExampleException = ex;
+        }
+    }
+
+    private static Exception ExampleException { get; }
+
+    private static IServiceProvider ServiceProvider
+        => field ??= new ServiceCollection()
+            .ConfigureServices(new DesignApplication())
+            .ConfigureViews()
+            .BuildServiceProvider();
 }

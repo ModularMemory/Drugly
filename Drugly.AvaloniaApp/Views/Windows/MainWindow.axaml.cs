@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Drugly.AvaloniaApp.Views;
+namespace Drugly.AvaloniaApp.Views.Windows;
 
 public partial class MainWindow : Window
 {

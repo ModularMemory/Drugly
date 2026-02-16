@@ -3,7 +3,7 @@ using Avalonia.Input;
 using JetBrains.Annotations;
 using SukiUI.Controls;
 
-namespace Drugly.AvaloniaApp.Views;
+namespace Drugly.AvaloniaApp.Views.Windows;
 
 public partial class StartupWindow : Window
 {

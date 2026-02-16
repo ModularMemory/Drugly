@@ -2,15 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
-             xmlns:vm="clr-namespace:Drugly.AvaloniaApp.ViewModels"
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:pages="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
-             x:Class="Drugly.AvaloniaApp.Views.MainView"
-             x:DataType="vm:MainViewModel"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.MainView"
+             x:DataType="pages:MainViewModel"
              d:DataContext="{x:Static design:DesignData.MainViewModel}">
     <suki:SukiMainHost Name="MainHost"
                        BackgroundAnimationEnabled="False">
-        Welcome to Avalonia!
+
+        <ContentControl Content="{Binding ContentViewModel}" />
+
     </suki:SukiMainHost>
 </UserControl>

@@ -3,8 +3,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
-using Drugly.AvaloniaApp.ViewModels;
-using Drugly.AvaloniaApp.Views;
+using Drugly.AvaloniaApp.ViewModels.Pages;
+using Drugly.AvaloniaApp.ViewModels.Windows;
+using Drugly.AvaloniaApp.Views.Pages;
+using Drugly.AvaloniaApp.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
@@ -56,6 +58,9 @@ public static class Startup
         {
             var builder = new ViewMapBuilder(serviceCollection)
                 .AddView<StartupWindow, StartupWindowViewModel>()
+                .AddView<PatientMainView, PatientMainViewModel>()
+                .AddView<DoctorMainView, DoctorMainViewModel>()
+                .AddView<PharmacistMainView, PharmacistMainViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();
 
