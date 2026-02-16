@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Media;
@@ -29,6 +30,8 @@ public sealed class ViewLocator : IDataTemplate
     {
         if (param is null)
         {
+            var stack = new StackTrace();
+            _logger.Warning("Tried to locate view for null. Stack trace: {Stack}", stack);
             return null;
         }
 
