@@ -42,6 +42,7 @@ public static class Startup
                         .CreateLogger())
                 // Misc
                 .AddSingleton<ILoginService, LoginService>()
+                .AddSingleton<IAccountSessionService, AccountSessionService>()
                 // UI
                 .AddSingleton<ISukiToastManager, SukiToastManager>()
                 .AddSingleton<ISukiDialogManager, SukiDialogManager>()

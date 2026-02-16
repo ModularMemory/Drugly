@@ -1,3 +1,4 @@
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Drugly.Validation;
@@ -7,14 +8,17 @@ namespace Drugly.AvaloniaApp.Services;
 
 public sealed class LoginService : ILoginService
 {
+    private readonly IAccountSessionService _accountSessionService;
     private readonly ILogger _logger;
     public event EventHandler<AccountType>? LoginSuccessful;
     public event EventHandler<string>? LoginError;
 
     public LoginService(
+        IAccountSessionService accountSessionService,
         ILogger logger
     )
     {
+        _accountSessionService = accountSessionService;
         _logger = logger;
     }
 
@@ -30,17 +34,26 @@ public sealed class LoginService : ILoginService
         LoginError?.Invoke(this, e);
     }
 
-    public async Task TryLoginAsync(string? authToken)
+    public async Task TryLoginAsync(string? authKey)
     {
         // Locally ensure it's valid before trying an API request
-        if (!ValidatorCache<LoginKeyAttribute>.IsValid(authToken, out var message))
+        if (!ValidatorCache<LoginKeyAttribute>.IsValid(authKey, out var message))
         {
             await FakeDelay();
             OnLoginError($"Bad or invalid login information: {message}");
             return;
         }
 
-        OnLoginSuccessful((AccountType)Random.Shared.Next(0, 3));
+        // TODO: API request here
+        // var accountTypeDto = AccountTypeDto.Patient;
+        var accountTypeDto = Random.Shared.GetItems([AccountTypeDto.Patient, AccountTypeDto.Doctor, AccountTypeDto.Pharmacist], 1)[0];
+        var sessionToken = authKey!;
+        var accountType = accountTypeDto.ToAccountType();
+        var expiration = DateTimeOffset.Now.AddDays(1);
+
+        var session = new AccountSession(sessionToken, accountType, expiration);
+        _accountSessionService.StoreSession(session);
+        OnLoginSuccessful(accountType);
     }
 
     /// <summary>

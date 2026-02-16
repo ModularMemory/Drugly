@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Drugly.DTO;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum AccountType
+public enum AccountTypeDto
 {
     Patient,
     Doctor,
