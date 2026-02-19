@@ -26,6 +26,9 @@
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Material.Icons.Avalonia"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+        <PackageReference Include="Polly" />
         <PackageReference Include="Serilog"/>
         <PackageReference Include="Serilog.Sinks.Console"/>
         <PackageReference Include="Serilog.Sinks.File"/>
@@ -35,5 +38,9 @@
     <ItemGroup>
         <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
         <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\Controls\" />
     </ItemGroup>
 </Project>

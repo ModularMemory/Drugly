@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
@@ -9,16 +10,19 @@ namespace Drugly.AvaloniaApp.Services;
 public sealed class LoginService : ILoginService
 {
     private readonly IAccountSessionService _accountSessionService;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger _logger;
     public event EventHandler<AccountType>? LoginSuccessful;
     public event EventHandler<string>? LoginError;
 
     public LoginService(
         IAccountSessionService accountSessionService,
+        IHttpClientFactory httpClientFactory,
         ILogger logger
     )
     {
         _accountSessionService = accountSessionService;
+        _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
 
@@ -44,6 +48,22 @@ public sealed class LoginService : ILoginService
             return;
         }
 
+        Debug.Assert(authKey != null);
+        var session = GetAccountSession(authKey);
+        if (session is null)
+        {
+            OnLoginError("Failed to fetch account data");
+            return;
+        }
+
+        _accountSessionService.StoreSession(session);
+        OnLoginSuccessful(session.AccountType);
+    }
+
+    private AccountSession? GetAccountSession(string authKey)
+    {
+        using var client = _httpClientFactory.CreateClient(nameof(ILoginService));
+
         // TODO: API request here
         // var accountTypeDto = AccountTypeDto.Patient;
         var accountTypeDto = Random.Shared.GetItems([AccountTypeDto.Patient, AccountTypeDto.Doctor, AccountTypeDto.Pharmacist], 1)[0];
@@ -51,9 +71,7 @@ public sealed class LoginService : ILoginService
         var accountType = accountTypeDto.ToAccountType();
         var expiration = DateTimeOffset.Now.AddDays(1);
 
-        var session = new AccountSession(sessionToken, accountType, expiration);
-        _accountSessionService.StoreSession(session);
-        OnLoginSuccessful(accountType);
+        return new AccountSession(sessionToken, accountType, expiration);
     }
 
     /// <summary>

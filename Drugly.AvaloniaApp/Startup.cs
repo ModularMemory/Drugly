@@ -1,5 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Drugly.AvaloniaApp.Extensions;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
@@ -8,6 +12,8 @@ using Drugly.AvaloniaApp.ViewModels.Windows;
 using Drugly.AvaloniaApp.Views.Pages;
 using Drugly.AvaloniaApp.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -29,10 +35,24 @@ public static class Startup
                 serviceCollection.AddSingleton<IApplicationLifetime>(lifetime);
             }
 
-            return serviceCollection
+            serviceCollection
+                // HTTP
+                .ConfigureHttpClientDefaults(builder =>
+                {
+                    builder
+                        .ConfigureHttpClient(ConfigureHttpClient)
+                        .ConfigurePrimaryHttpMessageHandler(ConfigureHttpMessageHandler)
+                        .AddResilienceHandler("Retry", ConfigureHttpRetryPolicy);
+                })
+                .AddHttpClient(nameof(ILoginService), client =>
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+                });
+
+            serviceCollection
                 // Logging
                 .AddKeyedTransient<LoggerTextWriter>(LogEventLevel.Verbose)
-                .AddSingleton<ILogger, Logger>(provider =>
+                .AddSingleton<ILogger, Logger>(_ =>
                     new LoggerConfiguration()
 #if DEBUG
                         .MinimumLevel.Verbose()
@@ -52,6 +72,8 @@ public static class Startup
                 {
                     Manager = provider.GetRequiredService<ISukiDialogManager>()
                 });
+
+            return serviceCollection;
         }
 
         public IServiceCollection ConfigureViews()
@@ -67,6 +89,39 @@ public static class Startup
             return serviceCollection
                 .AddSingleton<ViewLocator>()
                 .AddSingleton<IViewMap, ViewMap>(provider => builder.Build(provider));
+        }
+
+        private static void ConfigureHttpClient(HttpClient client)
+        {
+            var assemblyVersion = typeof(App).Assembly.Version;
+
+            client.DefaultRequestHeaders.UserAgent.Clear();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd($"{nameof(Drugly)}/{assemblyVersion} ({Environment.OSVersion.Platform}; {Environment.OSVersion.Version})");
+        }
+
+        [SuppressMessage("Performance", "CA1859")]
+        private static HttpMessageHandler ConfigureHttpMessageHandler()
+        {
+#if DEBUG
+            return new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+#else
+            return new HttpClientHandler();
+#endif
+        }
+
+        private static void ConfigureHttpRetryPolicy(ResiliencePipelineBuilder<HttpResponseMessage> builder)
+        {
+            builder
+                .AddRetry(new HttpRetryStrategyOptions
+                {
+                    BackoffType = DelayBackoffType.Exponential,
+                    UseJitter = true,
+                    MaxRetryAttempts = 6
+                })
+                .AddTimeout(TimeSpan.FromSeconds(15));
         }
     }
 }

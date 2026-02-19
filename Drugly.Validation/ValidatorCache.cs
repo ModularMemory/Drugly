@@ -16,7 +16,7 @@ public static class ValidatorCache<TValidator> where TValidator : ValidationAttr
     /// <param name="message">An error message associated with the failed validation.</param>
     /// <returns><see langword="true"/> if the value is valid, otherwise <see langword="false"/>.</returns>
     [MethodImpl(MethodImplOptions.Synchronized)]
-    public static bool IsValid(object? value, [NotNullWhen(true)] out string? message)
+    public static bool IsValid(object? value, [NotNullWhen(false)] out string? message)
     {
         var res = Validator.IsValid(value);
 
