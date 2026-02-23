@@ -62,7 +62,7 @@ public sealed class LoginService : ILoginService
 
     private AccountSession? GetAccountSession(string authKey)
     {
-        using var client = _httpClientFactory.CreateClient(nameof(ILoginService));
+        var client = _httpClientFactory.CreateClient(nameof(ILoginService));
 
         // TODO: API request here
         // var accountTypeDto = AccountTypeDto.Patient;

@@ -2,7 +2,7 @@ using Avalonia.Controls;
 
 namespace Drugly.AvaloniaApp.Views.Pages;
 
-public partial class PharmacistMainView : Window
+public partial class PharmacistMainView : UserControl
 {
     public PharmacistMainView()
     {
