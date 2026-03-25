@@ -8,5 +8,23 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.DoctorMainView"
              x:DataType="pages:DoctorMainViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMainViewModel}">
-    Welcome to Avalonia, Doctor!
+    <Grid Margin="8"
+          RowSpacing="10"
+          RowDefinitions="Auto,*">
+
+        <!-- Upper content -->
+        <Grid Grid.Row="0">
+            <StackPanel Spacing="2">
+                <TextBlock Classes="H1"
+                           Text="Hello, Doctor!" />
+                <Separator />
+            </StackPanel>
+        </Grid>
+
+        <!-- Lower content -->
+        <Grid Grid.Row="1"
+              ColumnSpacing="2">
+            <TextBlock Classes="H1" Text="Lower!" />
+        </Grid>
+    </Grid>
 </UserControl>

@@ -13,5 +13,6 @@
 
         <!-- Custom styles -->
         <StyleInclude Source="avares://Drugly.AvaloniaApp/Styles/GlassCardStyles.axaml" />
+        <StyleInclude Source="avares://Drugly.AvaloniaApp/Styles/TextBlockStyles.axaml" />
     </Application.Styles>
 </Application>

@@ -1,0 +1,87 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="16">
+
+                <StackPanel Orientation="Vertical"
+                            Spacing="8">
+                    <TextBlock Classes="H1"
+                               Text="H1 text!" />
+
+                    <TextBlock Classes="H2"
+                               Text="H2 text!" />
+
+                    <TextBlock Classes="H3"
+                               Text="H3 text!" />
+
+                    <TextBlock Classes="H4"
+                               Text="H4 text!" />
+
+                    <TextBlock Classes="H5"
+                               Text="H5 text!" />
+
+                    <TextBlock Classes="H6"
+                               Text="H6 text!" />
+
+                    <TextBlock Classes="Body"
+                               Text="Body text!" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical"
+                            Spacing="8">
+                    <TextBlock Classes="Danger"
+                               Text="Danger text!" />
+                    <TextBlock Classes="Warning"
+                               Text="Warning text!" />
+
+                    <SelectableTextBlock Classes="Danger"
+                                         Text="Selectable danger text!" />
+                    <SelectableTextBlock Classes="Warning"
+                                         Text="Selectable warning text!" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+    
+    <Style Selector="TextBlock">
+
+        <Style Selector="^.Body">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style Selector="^.H1">
+            <Setter Property="FontSize" Value="32" />
+        </Style>
+
+        <Style Selector="^.H2">
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+
+        <Style Selector="^.H3">
+            <Setter Property="FontSize" Value="18.7" />
+        </Style>
+
+        <Style Selector="^.H4">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style Selector="^.H5">
+            <Setter Property="FontSize" Value="13.3" />
+        </Style>
+
+        <Style Selector="^.H6">
+            <Setter Property="FontSize" Value="10.7" />
+        </Style>
+
+        <Style Selector="^.Danger">
+            <Setter Property="Foreground" Value="{DynamicResource SukiDangerColor}" />
+        </Style>
+
+        <Style Selector="^.Warning">
+            <Setter Property="Foreground" Value="{DynamicResource SukiWarningColor}" />
+        </Style>
+    </Style>
+
+</Styles>
