@@ -35,7 +35,7 @@ public partial class StartupWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task ButtonClick()
+    private async Task Login()
     {
         LoggingIn = true;
 

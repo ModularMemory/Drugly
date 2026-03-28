@@ -24,7 +24,7 @@
         <!-- Lower content -->
         <Grid Grid.Row="1"
               ColumnSpacing="2">
-            <TextBlock Classes="H1" Text="Lower!" />
+            <ContentPresenter Content="{Binding ContentViewModel}" />
         </Grid>
     </Grid>
 </UserControl>

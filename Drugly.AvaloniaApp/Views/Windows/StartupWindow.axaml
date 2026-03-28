@@ -36,7 +36,7 @@
                 <Button Classes="Flat"
                         Content="Login"
                         Width="100"
-                        Command="{Binding ButtonClickCommand}" />
+                        Command="{Binding LoginCommand}" />
             </StackPanel>
         </suki:BusyArea>
     </suki:SukiMainHost>
