@@ -45,14 +45,19 @@ public static partial class DesignData
         }
     }
 
-
     public static DoctorPrescribeModalViewModel DoctorPrescribeModalViewModel
     {
         get
         {
             if (field == null)
             {
-                field = ServiceProvider.GetRequiredService<DoctorPrescribeModalViewModel>();
+                field = new DoctorPrescribeModalViewModel(null!, ExamplePrescription)
+                {
+                    PatientFirstName = "Jane",
+                    PatientLastName = "Doe",
+                    PatientEmail = "jdoe@example.com",
+                    PrescriptionNotes = "Take five billion pills every 30 minutes",
+                };
             }
 
             return field;

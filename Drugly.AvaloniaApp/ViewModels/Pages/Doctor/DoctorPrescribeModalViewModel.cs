@@ -1,12 +1,16 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
 public partial class DoctorPrescribeModalViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    public partial PrescriptionViewModel? Prescription { get; set; }
+    private readonly ISukiDialog _dialog;
+
+    public PrescriptionViewModel Prescription { get; }
+
+    public bool PrescriptionConfirmed { get; private set; }
 
     [ObservableProperty]
     public partial string PatientFirstName { get; set; } = "";
@@ -29,11 +33,25 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
     [ObservableProperty]
     public partial string PrescriptionNotes { get; set; } = "";
 
-    public DoctorPrescribeModalViewModel() { }
+    public DoctorPrescribeModalViewModel(
+        ISukiDialog dialog,
+        PrescriptionViewModel prescription
+    )
+    {
+        Prescription = prescription;
+        _dialog = dialog;
+    }
 
     [RelayCommand]
-    public void Cancel() { }
+    private void Cancel()
+    {
+        _dialog.Dismiss();
+    }
 
     [RelayCommand]
-    public async Task CreatePrescription() { }
+    private void CreatePrescription()
+    {
+        PrescriptionConfirmed = true;
+        _dialog.Dismiss();
+    }
 }
