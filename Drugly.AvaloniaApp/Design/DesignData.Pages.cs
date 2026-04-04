@@ -45,6 +45,20 @@ public static partial class DesignData
         }
     }
 
+
+    public static DoctorPrescribeModalViewModel DoctorPrescribeModalViewModel
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = ServiceProvider.GetRequiredService<DoctorPrescribeModalViewModel>();
+            }
+
+            return field;
+        }
+    }
+
     public static PharmacistMainViewModel PharmacistMainViewModel
     {
         get

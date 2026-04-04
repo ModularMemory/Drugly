@@ -1,0 +1,102 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPrescribeModalView"
+             x:DataType="doctor:DoctorPrescribeModalViewModel"
+             d:DataContext="{x:Static design:DesignData.DoctorPrescribeModalViewModel}">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+          RowSpacing="12">
+        <!-- Heading -->
+        <TextBlock Grid.Row="0"
+                   Classes="H1"
+                   Text="{Binding Prescription.Name, StringFormat=Prescribing {0}, FallbackValue=Unknown Medication}" />
+
+        <Separator Grid.Row="1" />
+
+        <!-- First/last name -->
+        <Grid Row="2"
+              IsSharedSizeScope="True"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="12">
+
+            <!-- First name -->
+            <StackPanel Grid.Column="0"
+                        Spacing="2">
+                <TextBlock Text="First Name"
+                           Classes="H3" />
+                <TextBox Text="{Binding PatientFirstName}"
+                         Watermark="John" />
+            </StackPanel>
+
+            <!-- Last name -->
+            <StackPanel Grid.Column="1"
+                        Spacing="2">
+                <TextBlock Text="Last Name"
+                           Classes="H3" />
+                <TextBox Text="{Binding PatientLastName}"
+                         Watermark="Doe" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Email -->
+        <StackPanel Grid.Row="3"
+                    Spacing="2">
+            <TextBlock Text="Email"
+                       Classes="H3" />
+            <TextBox Text="{Binding PatientEmail}"
+                     Watermark="jdoe@example.com" />
+        </StackPanel>
+
+        <!-- Dosage -->
+        <StackPanel Grid.Row="4"
+                    Spacing="2">
+            <TextBlock Text="Dosage"
+                       Classes="H3" />
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+                <TextBlock Text="Take"
+                           VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding DosagePerDay}"
+                               VerticalAlignment="Center" />
+                <TextBlock Text="every"
+                           VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding DaysBetweenDosage}"
+                               VerticalAlignment="Center" />
+                <TextBlock Text="for"
+                           VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding DaysPrescribed}"
+                               VerticalAlignment="Center" />
+                <TextBlock Text="days."
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Notes -->
+        <StackPanel Grid.Row="5"
+                    Spacing="2">
+            <TextBlock Text="Additional notes"
+                       Classes="H3" />
+            <TextBox Text="{Binding PrescriptionNotes}"
+                     Watermark="Additional usage notes" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="6"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="16">
+            <Button Content="Cancel"
+                    Classes="Danger"
+                    Command="{Binding CancelCommand}" />
+
+            <Button Content="Create Prescription"
+                    Classes="Flat"
+                    Command="{Binding CreatePrescriptionCommand}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

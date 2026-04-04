@@ -84,6 +84,7 @@ public static class Startup
                 .AddView<StartupWindow, StartupWindowViewModel>()
                 .AddView<PatientMainView, PatientMainViewModel>()
                 .AddView<DoctorMainView, DoctorMainViewModel>()
+                .AddView<DoctorPrescribeModalView, DoctorPrescribeModalViewModel>()
                 .AddView<PharmacistMainView, PharmacistMainViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();
