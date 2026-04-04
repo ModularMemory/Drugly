@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Drugly.AvaloniaApp.Views.Pages;
+namespace Drugly.AvaloniaApp.Views.Pages.Doctor;
 
 public partial class DoctorMainView : UserControl
 {

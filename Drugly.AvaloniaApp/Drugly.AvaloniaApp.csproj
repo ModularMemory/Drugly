@@ -39,8 +39,4 @@
         <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
         <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Views\Controls\" />
-    </ItemGroup>
 </Project>

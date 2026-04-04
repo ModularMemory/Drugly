@@ -3,10 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
-             xmlns:pages="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages"
+             xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
-             x:Class="Drugly.AvaloniaApp.Views.Pages.DoctorMainView"
-             x:DataType="pages:DoctorMainViewModel"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMainView"
+             x:DataType="doctor:DoctorMainViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMainViewModel}">
     <Grid Margin="8"
           RowSpacing="10"

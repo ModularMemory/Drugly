@@ -1,4 +1,5 @@
 using Drugly.AvaloniaApp.ViewModels.Pages;
+using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Design;
