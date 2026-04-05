@@ -7,7 +7,7 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
-public partial class DoctorMedicationPageViewModel : ViewModelBase
+public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
 {
     private readonly ISukiDialogManager _dialogManager;
     private readonly ILogger _logger;
@@ -15,7 +15,7 @@ public partial class DoctorMedicationPageViewModel : ViewModelBase
     [ObservableProperty]
     public partial PrescriptionViewModel? Prescription { get; set; }
 
-    public DoctorMedicationPageViewModel(
+    public DoctorMedicationDetailsPageViewModel(
         ISukiDialogManager dialogManager,
         ILogger logger
     )

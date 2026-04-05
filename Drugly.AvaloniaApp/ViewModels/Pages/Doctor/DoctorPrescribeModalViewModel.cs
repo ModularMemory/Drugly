@@ -22,13 +22,13 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
     public partial string PatientEmail { get; set; } = "";
 
     [ObservableProperty]
-    public partial double DosagePerDay { get; set; } = 0;
+    public partial string DosagePerDay { get; set; } = "";
 
     [ObservableProperty]
-    public partial double DaysBetweenDosage { get; set; } = 0;
+    public partial decimal DaysBetweenDosage { get; set; } = 0;
 
     [ObservableProperty]
-    public partial double DaysPrescribed { get; set; } = 0;
+    public partial decimal DaysPrescribed { get; set; } = 1;
 
     [ObservableProperty]
     public partial string PrescriptionNotes { get; set; } = "";

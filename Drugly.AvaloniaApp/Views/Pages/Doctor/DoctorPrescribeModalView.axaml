@@ -9,7 +9,7 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPrescribeModalView"
              x:DataType="doctor:DoctorPrescribeModalViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorPrescribeModalViewModel}">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto"
           RowSpacing="12">
         <!-- Heading -->
         <TextBlock Grid.Row="0"
@@ -58,33 +58,44 @@
             <TextBlock Text="Dosage"
                        Classes="H3" />
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="4">
+            <WrapPanel Orientation="Horizontal"
+                        ItemSpacing="6"
+                        LineSpacing="4">
                 <TextBlock Text="Take"
                            VerticalAlignment="Center" />
-                <NumericUpDown Value="{Binding DosagePerDay}"
-                               VerticalAlignment="Center" />
+                <TextBox Text="{Binding DosagePerDay}"
+                         Watermark="0mg"
+                         VerticalAlignment="Center" />
                 <TextBlock Text="every"
                            VerticalAlignment="Center" />
                 <NumericUpDown Value="{Binding DaysBetweenDosage}"
+                               Minimum="0"
+                               FormatString="N0"
                                VerticalAlignment="Center" />
-                <TextBlock Text="for"
+                <TextBlock Text="days for"
                            VerticalAlignment="Center" />
                 <NumericUpDown Value="{Binding DaysPrescribed}"
+                               Minimum="1"
+                               FormatString="N0"
                                VerticalAlignment="Center" />
                 <TextBlock Text="days."
                            VerticalAlignment="Center" />
-            </StackPanel>
+            </WrapPanel>
         </StackPanel>
 
         <!-- Notes -->
-        <StackPanel Grid.Row="5"
-                    Spacing="2">
-            <TextBlock Text="Additional notes"
+        <Grid Row="5"
+              RowDefinitions="Auto,*"
+              RowSpacing="2"
+              IsSharedSizeScope="True">
+            <TextBlock Grid.Row="0"
+                       Text="Additional notes"
                        Classes="H3" />
-            <TextBox Text="{Binding PrescriptionNotes}"
+            <TextBox Grid.Row="1"
+                     Text="{Binding PrescriptionNotes}"
+                     AcceptsReturn="True"
                      Watermark="Additional usage notes" />
-        </StackPanel>
+        </Grid>
 
         <StackPanel Grid.Row="6"
                     Orientation="Horizontal"

@@ -56,7 +56,10 @@ public static partial class DesignData
                     PatientFirstName = "Jane",
                     PatientLastName = "Doe",
                     PatientEmail = "jdoe@example.com",
-                    PrescriptionNotes = "Take five billion pills every 30 minutes",
+                    PrescriptionNotes = "Consume while meowing for best results",
+                    DosagePerDay = "5,000,000,000mg",
+                    DaysBetweenDosage = 0,
+                    DaysPrescribed = ulong.MaxValue
                 };
             }
 
