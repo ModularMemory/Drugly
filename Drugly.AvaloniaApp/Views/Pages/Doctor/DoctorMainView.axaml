@@ -9,7 +9,7 @@
              x:DataType="doctor:DoctorMainViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMainViewModel}">
     <Grid Margin="8"
-          RowSpacing="10"
+          RowSpacing="20"
           RowDefinitions="Auto,*">
 
         <!-- Upper content -->
@@ -24,7 +24,17 @@
         <!-- Lower content -->
         <Grid Grid.Row="1"
               ColumnSpacing="2">
-            <ContentPresenter Content="{Binding ContentViewModel}" />
+            <StackPanel Spacing="8">
+                <Button Classes="Discrete"
+                        Content="Debug show dialog"
+                        Command="{Binding DialogClickCommand}" />
+                <Button Classes="Flat"
+                        Content="View Patients"
+                        Command="{Binding ViewPatientsCommand}" />
+                <Button Classes="Flat"
+                        Content="Prescribe Medications"
+                        Command="{Binding PrescribeMedicationsCommand}" />
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

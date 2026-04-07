@@ -68,6 +68,7 @@ public static class Startup
                 .AddSingleton<ILoginService, LoginService>()
                 .AddSingleton<IAccountSessionService, AccountSessionService>()
                 // UI
+                .AddSingleton<IPageRouter, PageRouter>()
                 .AddSingleton<ISukiToastManager, SukiToastManager>()
                 .AddSingleton<ISukiDialogManager, SukiDialogManager>()
                 .AddTransient<SukiDialogHost>(provider => new SukiDialogHost
@@ -85,6 +86,8 @@ public static class Startup
                 .AddView<PatientMainView, PatientMainViewModel>()
                 .AddView<DoctorMainView, DoctorMainViewModel>()
                 .AddView<DoctorPrescribeModalView, DoctorPrescribeModalViewModel>()
+                .AddView<DoctorMedicationListView, DoctorMedicationListViewModel>()
+                // .AddView<DoctorMedicationDetailsPageView, DoctorMedicationDetailsPageViewModel>()
                 .AddView<PharmacistMainView, PharmacistMainViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();

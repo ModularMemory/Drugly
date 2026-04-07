@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMedicationListView"
+             x:DataType="doctor:DoctorMedicationListViewModel"
+             d:DataContext="{x:Static design:DesignData.DoctorMedicationListViewModel}">
+    <Grid Margin="8"
+          RowSpacing="20"
+          RowDefinitions="Auto,*">
+
+        <!-- Upper content -->
+        <Grid Grid.Row="0">
+            <Grid RowDefinitions="Auto,Auto"
+                  RowSpacing="2"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="4">
+
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Classes="Flat"
+                        Content="&lt;"
+                        Command="{Binding NavigateBackCommand}"/>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Classes="H1"
+                           Text="Choose a Medication to Prescribe" />
+
+                <Separator Grid.Row="1"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2" />
+            </Grid>
+        </Grid>
+
+        <!-- Lower content -->
+        <Grid Grid.Row="1"
+              ColumnSpacing="2">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          IsScrollInertiaEnabled="True">
+
+                <ItemsControl HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch"
+                              ItemsSource="{Binding Medications}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="8" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

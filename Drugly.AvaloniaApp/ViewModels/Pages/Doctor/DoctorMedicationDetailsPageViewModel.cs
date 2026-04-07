@@ -49,7 +49,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
             .WithoutResult()
             .TryShowAsync();
 
-        if (vm is { PrescriptionConfirmed: true })
+        if (vm is not { PrescriptionConfirmed: true })
         {
             _logger.Debug("Canceled new prescription");
             return;

@@ -3,26 +3,56 @@ using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages;
 
 public partial class MainViewModel : ViewModelBase
 {
+    private readonly IPageRouter _pageRouter;
+    private readonly ILogger _logger;
+
     [ObservableProperty]
-    public partial ViewModelBase ContentViewModel { get; set; }
+    public partial ViewModelBase? ContentViewModel { get; set; }
 
     public MainViewModel(
         IServiceProvider serviceProvider,
-        IAccountSessionService accountSessionService
+        IPageRouter pageRouter,
+        IAccountSessionService accountSessionService,
+        ILogger logger
     )
     {
-        var accountType = accountSessionService.AccountType;
-        ContentViewModel = accountType switch
+        _pageRouter = pageRouter;
+        _logger = logger;
+
+        _pageRouter.ResetPageHistory();
+        _pageRouter.PageNavigate += PageRouter_OnPageNavigate;
+
+        // var accountType = accountSessionService.AccountType;
+        var accountType = AccountType.Doctor;
+        ViewModelBase? vm = accountType switch
         {
             AccountType.Patient => serviceProvider.GetRequiredService<PatientMainViewModel>(),
             AccountType.Doctor => serviceProvider.GetRequiredService<DoctorMainViewModel>(),
             AccountType.Pharmacist => serviceProvider.GetRequiredService<PharmacistMainViewModel>(),
-            _ => null!
+            _ => null
         };
+
+        if (vm is null)
+        {
+            _logger.Error("Failed to find valid content ViewModel. Account type was {AccountType}", accountType);
+        }
+
+        _pageRouter.RootPage = vm;
+    }
+
+    private void PageRouter_OnPageNavigate(object? sender, ViewModelBase? e)
+    {
+        ContentViewModel = e;
+    }
+
+    ~MainViewModel()
+    {
+        _pageRouter.PageNavigate -= PageRouter_OnPageNavigate;
     }
 }

@@ -67,6 +67,20 @@ public static partial class DesignData
         }
     }
 
+    public static DoctorMedicationListViewModel DoctorMedicationListViewModel
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = ServiceProvider.GetRequiredService<DoctorMedicationListViewModel>();
+                field.Medications.AddRange(ExamplePrescriptions);
+            }
+
+            return field;
+        }
+    }
+
     public static PharmacistMainViewModel PharmacistMainViewModel
     {
         get
