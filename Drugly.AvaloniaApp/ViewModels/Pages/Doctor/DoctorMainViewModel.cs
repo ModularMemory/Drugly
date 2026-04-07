@@ -45,6 +45,7 @@ public partial class DoctorMainViewModel : ViewModelBase
         await _dialogManager.CreateDialog()
             .WithViewModel(dialog => new DoctorPrescribeModalViewModel(dialog, DesignData.ExamplePrescription))
             .WithoutResult()
+            .Dismiss().ByClickingBackground()
             .TryShowAsync();
     }
 }

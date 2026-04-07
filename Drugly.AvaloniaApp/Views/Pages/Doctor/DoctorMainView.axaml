@@ -9,16 +9,19 @@
              x:DataType="doctor:DoctorMainViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMainViewModel}">
     <Grid Margin="8"
-          RowSpacing="20"
+          RowSpacing="16"
           RowDefinitions="Auto,*">
 
         <!-- Upper content -->
-        <Grid Grid.Row="0">
-            <StackPanel Spacing="2">
-                <TextBlock Classes="H1"
-                           Text="Hello, Doctor!" />
-                <Separator />
-            </StackPanel>
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto,Auto"
+              RowSpacing="{Binding $parent[Grid].RowSpacing}">
+
+            <TextBlock Grid.Row="0"
+                       Classes="H1"
+                       Text="Hello, Doctor!" />
+
+            <Separator Grid.Row="1" />
         </Grid>
 
         <!-- Lower content -->

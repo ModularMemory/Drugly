@@ -59,6 +59,7 @@ public partial class StartupWindowViewModel : ViewModelBase
                 Text = e
             })
             .WithOkResult("Ok")
+            .Dismiss().ByClickingBackground()
             .TryShow();
     }
 }

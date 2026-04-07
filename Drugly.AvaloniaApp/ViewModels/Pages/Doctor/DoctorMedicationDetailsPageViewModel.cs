@@ -2,6 +2,7 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Extensions;
+using Drugly.AvaloniaApp.Services.Interfaces;
 using Serilog;
 using SukiUI.Dialogs;
 
@@ -10,6 +11,7 @@ namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
 {
     private readonly ISukiDialogManager _dialogManager;
+    private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
 
     [ObservableProperty]
@@ -17,11 +19,19 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
 
     public DoctorMedicationDetailsPageViewModel(
         ISukiDialogManager dialogManager,
+        IPageRouter pageRouter,
         ILogger logger
     )
     {
         _dialogManager = dialogManager;
+        _pageRouter = pageRouter;
         _logger = logger;
+    }
+
+    [RelayCommand]
+    private void NavigateBack()
+    {
+        _pageRouter.PopPage();
     }
 
     [RelayCommand]
@@ -36,6 +46,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
                 .WithTitle("Internal Error")
                 .WithContent("Tried to prescribe an unknown prescription")
                 .WithOkResult("Ok")
+                .Dismiss().ByClickingBackground()
                 .TryShowAsync();
 
             return;
@@ -47,6 +58,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
         await _dialogManager.CreateDialog()
             .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Prescription))
             .WithoutResult()
+            .Dismiss().ByClickingBackground()
             .TryShowAsync();
 
         if (vm is not { PrescriptionConfirmed: true })
