@@ -18,6 +18,10 @@ public static class NumberConverters {
     public static readonly IValueConverter LessThan = new ConverterImpl<bool>((a, b) => a < b);
     public static readonly IValueConverter LessThanOrEqual = new ConverterImpl<bool>((a, b) => a <= b);
 
+    // Min/max
+    public static readonly IValueConverter Min = new ConverterImpl<double>(Math.Min);
+    public static readonly IValueConverter Max = new ConverterImpl<double>(Math.Max);
+
     private class ConverterImpl<TResult>(
         Func<double, double, TResult> convert,
         Func<double, double, TResult>? convertBack = null

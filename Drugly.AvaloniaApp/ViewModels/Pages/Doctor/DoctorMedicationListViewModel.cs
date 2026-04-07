@@ -19,6 +19,8 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
     {
         _pageRouter = pageRouter;
         _serviceProvider = serviceProvider;
+
+        Medications.AddRange(Drugly.AvaloniaApp.Design.DesignData.ExamplePrescriptions);
     }
 
     [RelayCommand]
@@ -28,7 +30,7 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void PrescribeMedications(object? dataContext)
+    private void PrescribeMedication(object? dataContext)
     {
         var vm = _serviceProvider.GetRequiredService<DoctorMedicationDetailsPageViewModel>();
         vm.Prescription = dataContext as PrescriptionViewModel;
