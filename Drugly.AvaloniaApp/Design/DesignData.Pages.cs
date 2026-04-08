@@ -32,6 +32,20 @@ public static partial class DesignData
         }
     }
 
+    public static PatientDetailsPageViewModel PatientDetailsPageViewModel
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = ServiceProvider.GetRequiredService<PatientDetailsPageViewModel>();
+                field.Patient = ExamplePatient;
+            }
+
+            return field;
+        }
+    }
+
     public static DoctorMainViewModel DoctorMainViewModel
     {
         get
@@ -61,6 +75,20 @@ public static partial class DesignData
                     DaysBetweenDosage = 0,
                     DaysPrescribed = ulong.MaxValue
                 };
+            }
+
+            return field;
+        }
+    }
+
+    public static DoctorPatientListViewModel DoctorPatientListViewModel
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = ServiceProvider.GetRequiredService<DoctorPatientListViewModel>();
+                field.Patients.AddRange(ExamplePatients);
             }
 
             return field;

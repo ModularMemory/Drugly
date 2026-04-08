@@ -1,4 +1,4 @@
-namespace Drugly.AvaloniaApp.ViewModels.Pages;
+namespace Drugly.AvaloniaApp.ViewModels;
 
 public class PrescriptionViewModel : ViewModelBase
 {

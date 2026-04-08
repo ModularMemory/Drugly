@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPatientListView"
+             x:DataType="doctor:DoctorPatientListViewModel"
+             d:DataContext="{x:Static design:DesignData.DoctorPatientListViewModel}">
+    <Grid Margin="8"
+          RowSpacing="16"
+          RowDefinitions="Auto,*">
+
+        <!-- Upper content -->
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto,Auto"
+              RowSpacing="{Binding $parent[Grid].RowSpacing}"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="8">
+
+            <Button Grid.Row="0"
+                    Grid.Column="0"
+                    Classes="Flat"
+                    Content="&lt;"
+                    Command="{Binding NavigateBackCommand}" />
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Classes="H1"
+                       Text="Choose a Patient to View" />
+
+            <Separator Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2" />
+        </Grid>
+
+        <!-- Lower content -->
+        <Grid Grid.Row="1"
+              ColumnSpacing="2">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          IsScrollInertiaEnabled="True">
+
+                <ItemsControl HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch"
+                              ItemsSource="{Binding Patients}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="8" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Discrete Large"
+                                    Command="{Binding $parent[ItemsControl].((doctor:DoctorPatientListViewModel)DataContext).ViewPatientCommand}"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Left"
+                                    HorizontalContentAlignment="Left"
+                                    Width="{Binding $parent[ScrollViewer].Bounds.Width}">
+                                <Grid ColumnDefinitions="Auto,*"
+                                      ColumnSpacing="16">
+
+                                    <!-- Icon -->
+                                    <Viewbox Grid.Column="0"
+                                             Height="{Binding $parent[Grid].Bounds.Height,
+                                                Converter={x:Static converters:NumberConverters.Max},
+                                                ConverterParameter=96}"
+                                             Width="{Binding $self.Height}">
+                                        <icons:MaterialIcon Kind="Person" />
+                                    </Viewbox>
+
+                                    <!-- Name + email -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Classes="H3">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="FirstName" />
+                                                    <Binding Path="LastName" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+
+                                        <TextBlock Classes="H3"
+                                                   Text="{Binding Email}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

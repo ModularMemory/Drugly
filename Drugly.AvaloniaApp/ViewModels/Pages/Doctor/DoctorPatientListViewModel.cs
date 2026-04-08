@@ -1,38 +1,40 @@
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Design;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
-public partial class DoctorMainViewModel : ViewModelBase
+public partial class DoctorPatientListViewModel : ViewModelBase
 {
-    private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly IServiceProvider _serviceProvider;
 
-    public DoctorMainViewModel(
-        ISukiDialogManager dialogManager,
+    public AvaloniaList<PatientViewModel> Patients { get; } = [];
+
+    public DoctorPatientListViewModel(
         IPageRouter pageRouter,
         IServiceProvider serviceProvider
     )
     {
-        _dialogManager = dialogManager;
         _pageRouter = pageRouter;
         _serviceProvider = serviceProvider;
+
+        Patients.AddRange(DesignData.ExamplePatients);
     }
 
     [RelayCommand]
-    private void ViewPatients()
+    private void NavigateBack()
     {
-        var vm = _serviceProvider.GetRequiredService<DoctorPatientListViewModel>();
-        _pageRouter.PushPage(vm);
+        _pageRouter.PopPage();
     }
 
     [RelayCommand]
-    private void PrescribeMedications()
+    private async Task ViewPatient(object? dataContext)
     {
-        var vm = _serviceProvider.GetRequiredService<DoctorMedicationListViewModel>();
+        var vm = _serviceProvider.GetRequiredService<PatientDetailsPageViewModel>();
+        vm.Patient = dataContext as PatientViewModel;
         _pageRouter.PushPage(vm);
     }
 }

@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMainView"
              x:DataType="doctor:DoctorMainViewModel"
@@ -25,18 +27,17 @@
         </Grid>
 
         <!-- Lower content -->
-        <Grid Grid.Row="1"
-              ColumnSpacing="2">
-            <StackPanel Spacing="8">
-                <Button Classes="Discrete"
-                        Content="Debug show dialog"
-                        Command="{Binding DialogClickCommand}" />
-                <Button Classes="Flat"
+        <Grid Grid.Row="1">
+            <StackPanel Spacing="16">
+                <Button Classes="Large Flat"
                         Content="View Patients"
-                        Command="{Binding ViewPatientsCommand}" />
-                <Button Classes="Flat"
+                        Command="{Binding ViewPatientsCommand}"
+                        suki:ButtonExtensions.Icon="{avalonia:MaterialIconExt People}" />
+
+                <Button Classes="Large Flat"
                         Content="Prescribe Medications"
-                        Command="{Binding PrescribeMedicationsCommand}" />
+                        Command="{Binding PrescribeMedicationsCommand}"
+                        suki:ButtonExtensions.Icon="{avalonia:MaterialIconExt Medication}" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -1,6 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Drugly.AvaloniaApp.ViewModels.Pages;
+using Drugly.AvaloniaApp.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Design;
@@ -28,6 +28,16 @@ public static partial class DesignData
     }
 
     private static Exception ExampleException { get; }
+
+    public static PatientViewModel[] ExamplePatients =>
+    [
+        new("John", "Doe", "jdoe@example.com"),
+        new("Ray", "March", "ray@march.com"),
+        new("Jane", "Remover", "jane@gmail.com"),
+        new("John", "Carmack", "jcarmack@aol.com"),
+    ];
+
+    public static PatientViewModel ExamplePatient => ExamplePatients[0];
 
     public static PrescriptionViewModel[] ExamplePrescriptions =>
     [
