@@ -5,12 +5,14 @@
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:controls="clr-namespace:Drugly.AvaloniaApp.Controls"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             MinWidth="600" MaxWidth="1000" MinHeight="600"
              mc:Ignorable="d"
-             MinWidth="700" MaxWidth="1000" MinHeight="500"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPrescribeModalView"
              x:DataType="doctor:DoctorPrescribeModalViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorPrescribeModalViewModel}">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto"
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto"
           RowSpacing="12">
         <!-- Heading -->
         <TextBlock Grid.Row="0"
@@ -60,8 +62,8 @@
                        Classes="H3" />
 
             <WrapPanel Orientation="Horizontal"
-                        ItemSpacing="6"
-                        LineSpacing="4">
+                       ItemSpacing="6"
+                       LineSpacing="4">
                 <TextBlock Text="Take"
                            VerticalAlignment="Center" />
                 <TextBox Text="{Binding DosagePerDay}"
@@ -102,14 +104,46 @@
                      MaxLength="500" />
         </Grid>
 
+        <!-- Doctor signature -->
+        <StackPanel Grid.Row="6"
+                    Spacing="2">
+            <TextBlock Text="Signature"
+                       Classes="H3" />
+
+            <suki:GlassCard Padding="10">
+                <StackPanel Spacing="6">
+                    <Panel>
+                        <controls:DrawableBitmap
+                            Name="SignatureBitmap"
+                            Background="White"
+                            Foreground="Black"
+                            StrokeThickness="2"
+                            Width="650"
+                            Height="150" />
+
+                        <Separator Margin="10,50,10,0"
+                                   IsHitTestVisible="False"
+                                   Foreground="Gray"/>
+                    </Panel>
+
+                    <!-- This sucks, but the alternative is figuring out how to make
+                    SignatureBitmap._bitmap an image source, and I'm tired -->
+                    <Button Classes="Discrete"
+                            Content="Clear"
+                            Command="{Binding #SignatureBitmap.ClearCommand}"
+                            suki:ButtonExtensions.Icon="{icons:MaterialIconExt Close}" />
+                </StackPanel>
+            </suki:GlassCard>
+        </StackPanel>
+
         <!-- Error text -->
-        <TextBlock Grid.Row="6"
+        <TextBlock Grid.Row="7"
                    Classes="Body Danger"
                    TextAlignment="Center"
-                   Text="{Binding ErrorText}"/>
+                   Text="{Binding ErrorText}" />
 
         <!-- Cancel/confirm buttons -->
-        <StackPanel Grid.Row="7"
+        <StackPanel Grid.Row="8"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Spacing="16">
@@ -120,6 +154,7 @@
             <Button Content="Create Prescription"
                     Classes="Flat"
                     Command="{Binding CreatePrescriptionCommand}"
+                    CommandParameter="{Binding #SignatureBitmap}"
                     suki:ButtonExtensions.ShowProgress="{Binding IsLoading}" />
         </StackPanel>
 

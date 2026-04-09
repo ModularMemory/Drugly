@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Controls;
 using Drugly.Validation;
 using SukiUI.Dialogs;
 
@@ -76,8 +78,10 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task CreatePrescription()
+    private async Task CreatePrescription(DrawableBitmap signature)
     {
+        Debug.Assert(signature != null);
+
         ErrorText = null;
         IsLoading = true;
 
@@ -86,15 +90,19 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
             if (HasErrors)
             {
                 await Task.Delay(500);
-                var errors = GetErrors()
-                    .Where(x => x.ErrorMessage is not null)
-                    .Select(x => x.ErrorMessage!.TrimEnd('.'));
 
-                ErrorText = string.Join(Environment.NewLine, errors);
+                ErrorText = string.Join(Environment.NewLine, GetErrors().Where(x => !string.IsNullOrWhiteSpace(x.ErrorMessage)));
                 return;
             }
 
-            // TODO: HTTP request
+            var signatureStream = new MemoryStream();
+            if (!signature.Save(signatureStream))
+            {
+                ErrorText = "Failed to save signature.";
+                return;
+            }
+
+            // TODO: HTTP request;
             await Task.Delay(1_000);
 
             PrescriptionConfirmed = true;
