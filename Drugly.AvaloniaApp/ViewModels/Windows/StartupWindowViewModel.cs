@@ -32,6 +32,8 @@ public partial class StartupWindowViewModel : ViewModelBase
         _loginService = loginService;
         _dialogManager = dialogManager;
         _loginService.LoginError += LoginService_OnLoginError;
+
+        ValidateAllProperties();
     }
 
     [RelayCommand]

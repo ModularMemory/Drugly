@@ -4,12 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d"
-             MinWidth="700" MinHeight="500"
+             MinWidth="700" MaxWidth="1000" MinHeight="500"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPrescribeModalView"
              x:DataType="doctor:DoctorPrescribeModalViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorPrescribeModalViewModel}">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto"
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto"
           RowSpacing="12">
         <!-- Heading -->
         <TextBlock Grid.Row="0"
@@ -69,12 +70,14 @@
                 <TextBlock Text="every"
                            VerticalAlignment="Center" />
                 <NumericUpDown Value="{Binding DaysBetweenDosage}"
+                               Watermark="0"
                                Minimum="0"
                                FormatString="N0"
                                VerticalAlignment="Center" />
                 <TextBlock Text="days for"
                            VerticalAlignment="Center" />
                 <NumericUpDown Value="{Binding DaysPrescribed}"
+                               Watermark="1"
                                Minimum="1"
                                FormatString="N0"
                                VerticalAlignment="Center" />
@@ -83,7 +86,7 @@
             </WrapPanel>
         </StackPanel>
 
-        <!-- Notes -->
+        <!-- Notes textbox -->
         <Grid Row="5"
               RowDefinitions="Auto,*"
               RowSpacing="2"
@@ -94,10 +97,19 @@
             <TextBox Grid.Row="1"
                      Text="{Binding PrescriptionNotes}"
                      AcceptsReturn="True"
-                     Watermark="Additional usage notes" />
+                     Watermark="Additional usage notes"
+                     TextWrapping="Wrap"
+                     MaxLength="500" />
         </Grid>
 
-        <StackPanel Grid.Row="6"
+        <!-- Error text -->
+        <TextBlock Grid.Row="6"
+                   Classes="Body Danger"
+                   TextAlignment="Center"
+                   Text="{Binding ErrorText}"/>
+
+        <!-- Cancel/confirm buttons -->
+        <StackPanel Grid.Row="7"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Spacing="16">
@@ -107,7 +119,8 @@
 
             <Button Content="Create Prescription"
                     Classes="Flat"
-                    Command="{Binding CreatePrescriptionCommand}" />
+                    Command="{Binding CreatePrescriptionCommand}"
+                    suki:ButtonExtensions.ShowProgress="{Binding IsLoading}" />
         </StackPanel>
 
     </Grid>
