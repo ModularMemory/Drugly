@@ -29,7 +29,7 @@
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Classes="H1"
-                       Text="{Binding Prescription.Name, StringFormat=Viewing {0}}" />
+                       Text="{Binding Medication.Name, StringFormat=Viewing {0}}" />
 
             <Separator Grid.Row="1"
                        Grid.Column="0"
@@ -49,7 +49,7 @@
                 <!-- Image -->
                 <Viewbox Height="384"
                          Width="{Binding $self.Height}">
-                    <Image asyncImageLoader:ImageLoader.Source="{Binding Prescription.ImageUri}" />
+                    <Image asyncImageLoader:ImageLoader.Source="{Binding Medication.ImageUri}" />
                 </Viewbox>
 
                 <Button Classes="Flat"
@@ -62,10 +62,10 @@
                         Orientation="Vertical"
                         Spacing="16">
                 <TextBlock Classes="H2"
-                           Text="{Binding Prescription.Name}" />
+                           Text="{Binding Medication.Name}" />
 
                 <TextBlock Classes="Body"
-                           Text="{Binding Prescription.Description}" />
+                           Text="{Binding Medication.Description}" />
             </StackPanel>
         </Grid>
     </Grid>

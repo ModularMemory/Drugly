@@ -1,12 +1,12 @@
-namespace Drugly.AvaloniaApp.ViewModels;
+namespace Drugly.AvaloniaApp.Models;
 
-public class PrescriptionViewModel : ViewModelBase
+public record MedicationModel
 {
     public string Name { get; }
     public string Description { get; }
     public string ImageUri { get; }
 
-    public PrescriptionViewModel(string name, string description, string imageUri)
+    public MedicationModel(string name, string description, string imageUri)
     {
         Name = name;
         Description = description;

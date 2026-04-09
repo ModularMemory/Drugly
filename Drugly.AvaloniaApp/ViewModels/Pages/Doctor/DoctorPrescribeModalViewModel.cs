@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Controls;
+using Drugly.AvaloniaApp.Models;
 using Drugly.Validation;
 using SukiUI.Dialogs;
 
@@ -12,7 +13,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
 {
     private readonly ISukiDialog _dialog;
 
-    public PrescriptionViewModel Prescription { get; }
+    public MedicationModel Medication { get; }
 
     public bool PrescriptionConfirmed { get; private set; }
 
@@ -62,10 +63,10 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
 
     public DoctorPrescribeModalViewModel(
         ISukiDialog dialog,
-        PrescriptionViewModel prescription
+        MedicationModel medication
     )
     {
-        Prescription = prescription;
+        Medication = medication;
         _dialog = dialog;
 
         ValidateAllProperties();

@@ -17,7 +17,7 @@
         <!-- Heading -->
         <TextBlock Grid.Row="0"
                    Classes="H1"
-                   Text="{Binding Prescription.Name, StringFormat=Prescribing {0}, FallbackValue=Unknown Medication}" />
+                   Text="{Binding Medication.Name, StringFormat=Prescribing {0}, FallbackValue=Unknown Medication}" />
 
         <Separator Grid.Row="1" />
 

@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Serilog;
 using SukiUI.Dialogs;
@@ -13,7 +14,7 @@ public partial class PatientDetailsPageViewModel : ViewModelBase
     private readonly ILogger _logger;
 
     [ObservableProperty]
-    public partial PatientViewModel? Patient { get; set; }
+    public partial PatientModel? Patient { get; set; }
 
     public PatientDetailsPageViewModel(
         ISukiDialogManager dialogManager,

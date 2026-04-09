@@ -1,12 +1,12 @@
-namespace Drugly.AvaloniaApp.ViewModels;
+namespace Drugly.AvaloniaApp.Models;
 
-public class PatientViewModel : ViewModelBase
+public record PatientModel
 {
     public string FirstName { get; }
     public string LastName { get; }
     public string Email { get; }
 
-    public PatientViewModel(string firstName, string lastName, string email)
+    public PatientModel(string firstName, string lastName, string email)
     {
         FirstName = firstName;
         LastName = lastName;

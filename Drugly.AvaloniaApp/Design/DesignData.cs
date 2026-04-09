@@ -1,6 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Drugly.AvaloniaApp.ViewModels;
+using Drugly.AvaloniaApp.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Design;
@@ -29,7 +29,7 @@ public static partial class DesignData
 
     private static Exception ExampleException { get; }
 
-    public static PatientViewModel[] ExamplePatients =>
+    public static PatientModel[] ExamplePatients =>
     [
         new("John", "Doe", "jdoe@example.com"),
         new("Ray", "March", "ray@march.com"),
@@ -37,9 +37,9 @@ public static partial class DesignData
         new("John", "Carmack", "jcarmack@aol.com"),
     ];
 
-    public static PatientViewModel ExamplePatient => ExamplePatients[0];
+    public static PatientModel ExamplePatient => ExamplePatients[0];
 
-    public static PrescriptionViewModel[] ExamplePrescriptions =>
+    public static MedicationModel[] ExampleMedications =>
     [
         new("Estrogen", "Mreowww", "https://i.redd.it/2yp7s912k6m81.jpg"),
         new("Addherall", "Girl, you need to focus.", "https://f4.bcbits.com/img/a4229702017_10.jpg"),
@@ -47,7 +47,7 @@ public static partial class DesignData
         new("Water", "Drink. Now.", "https://images.squarespace-cdn.com/content/v1/540e2e30e4b0a9fac1c138ac/27edb5eb-1ae1-4dc7-8440-db186f4e175b/glass_water.jpg"),
     ];
 
-    public static PrescriptionViewModel ExamplePrescription => ExamplePrescriptions[0];
+    public static MedicationModel ExampleMedication => ExampleMedications[0];
 
     private static IServiceProvider ServiceProvider
         => field ??= new ServiceCollection()

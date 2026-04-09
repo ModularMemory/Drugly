@@ -1,5 +1,6 @@
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,7 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
     private readonly IPageRouter _pageRouter;
     private readonly IServiceProvider _serviceProvider;
 
-    public AvaloniaList<PrescriptionViewModel> Medications { get; } = [];
+    public AvaloniaList<MedicationModel> Medications { get; } = [];
 
     public DoctorMedicationListViewModel(
         IPageRouter pageRouter,
@@ -20,7 +21,7 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
         _pageRouter = pageRouter;
         _serviceProvider = serviceProvider;
 
-        Medications.AddRange(Drugly.AvaloniaApp.Design.DesignData.ExamplePrescriptions);
+        Medications.AddRange(Drugly.AvaloniaApp.Design.DesignData.ExampleMedications);
     }
 
     [RelayCommand]
@@ -33,7 +34,7 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
     private void PrescribeMedication(object? dataContext)
     {
         var vm = _serviceProvider.GetRequiredService<DoctorMedicationDetailsPageViewModel>();
-        vm.Prescription = dataContext as PrescriptionViewModel;
+        vm.Medication = dataContext as MedicationModel;
         _pageRouter.PushPage(vm);
     }
 }

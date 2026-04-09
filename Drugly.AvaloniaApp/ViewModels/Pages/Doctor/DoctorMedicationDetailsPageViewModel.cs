@@ -2,6 +2,7 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Extensions;
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Serilog;
 using SukiUI.Dialogs;
@@ -15,7 +16,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
     private readonly ILogger _logger;
 
     [ObservableProperty]
-    public partial PrescriptionViewModel? Prescription { get; set; }
+    public partial MedicationModel? Medication { get; set; }
 
     public DoctorMedicationDetailsPageViewModel(
         ISukiDialogManager dialogManager,
@@ -37,7 +38,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task PrescribeToPatient()
     {
-        if (Prescription is null)
+        if (Medication is null)
         {
             _logger.Warning("Tried to prescribe a null prescription");
 
@@ -52,11 +53,11 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
             return;
         }
 
-        _logger.Debug("Opening prescription modal for {PrescriptionName}", Prescription.Name);
+        _logger.Debug("Opening prescription modal for {PrescriptionName}", Medication.Name);
 
         DoctorPrescribeModalViewModel? vm = null;
         await _dialogManager.CreateDialog()
-            .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Prescription))
+            .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Medication))
             .WithoutResult()
             .Dismiss().ByClickingBackground()
             .TryShowAsync();

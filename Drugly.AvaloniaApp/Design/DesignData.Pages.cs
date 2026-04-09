@@ -65,7 +65,7 @@ public static partial class DesignData
         {
             if (field == null)
             {
-                field = new DoctorPrescribeModalViewModel(null!, ExamplePrescription)
+                field = new DoctorPrescribeModalViewModel(null!, ExampleMedication)
                 {
                     PatientFirstName = "Jane",
                     PatientLastName = "Doe",
@@ -102,7 +102,7 @@ public static partial class DesignData
             if (field == null)
             {
                 field = ServiceProvider.GetRequiredService<DoctorMedicationListViewModel>();
-                field.Medications.AddRange(ExamplePrescriptions);
+                field.Medications.AddRange(ExampleMedications);
             }
 
             return field;
@@ -116,7 +116,7 @@ public static partial class DesignData
             if (field == null)
             {
                 field = ServiceProvider.GetRequiredService<DoctorMedicationDetailsPageViewModel>();
-                field.Prescription = ExamplePrescription;
+                field.Medication = ExampleMedication;
             }
 
             return field;
