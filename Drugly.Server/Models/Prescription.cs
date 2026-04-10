@@ -1,3 +1,5 @@
+using Drugly.DTO;
+
 namespace Drugly.Server.Models;
 
 public sealed record Prescription

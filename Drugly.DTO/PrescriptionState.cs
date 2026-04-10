@@ -5,7 +5,10 @@ namespace Drugly.DTO;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum PrescriptionState
 {
-    /// <summary>Default state - doctor hasn't finalized the order yet.</summary>
+    /// <summary>Default State</summary>
+    Unknown,
+
+    /// <summary>Doctor hasn't finalized the order yet.</summary>
     DoctorPrescription,
 
     /// <summary>Pharmacy is processing the order.</summary>
@@ -21,5 +24,5 @@ public enum PrescriptionState
     PickedUp,
 
     /// <summary>The prescription was deleted or canceled.</summary>
-    Canceled
+    Cancelled
 }

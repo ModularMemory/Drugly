@@ -1,5 +1,6 @@
-namespace Drugly.Server.Models;
+using Drugly.DTO;
 
+namespace Drugly.Server.Models;
 public class PrescriptionStateMachine : IAsyncDisposable, IDisposable
 {
     public PrescriptionStateMachine(PrescriptionState prescriptionState, Guid id)
@@ -21,20 +22,21 @@ public class PrescriptionStateMachine : IAsyncDisposable, IDisposable
     {
         switch(PrescriptionState)
         {
-            case PrescriptionState.Unconfirmed:
-                PrescriptionState = PrescriptionState.Processing;
+            // didn't add "unknown", don't know what you want to do with it
+            case PrescriptionState.DoctorPrescription:
+                PrescriptionState = PrescriptionState.PharmacyProcessing;
                 break;
-            case PrescriptionState.Processing:
-                PrescriptionState = PrescriptionState.Ready;
+            case PrescriptionState.PharmacyProcessing:
+                PrescriptionState = PrescriptionState.ReadyForPickup;
                 break;
-            case PrescriptionState.Ready:
+            case PrescriptionState.ReadyForPickup:
                 PrescriptionState = PrescriptionState.Billing;
                 break;
             case PrescriptionState.Billing:
                 PrescriptionState = PrescriptionState.PickedUp;
                 break;
             case PrescriptionState.PickedUp:
-                PrescriptionState = PrescriptionState.Processing;
+                PrescriptionState = PrescriptionState.PharmacyProcessing;
                 break;
             case PrescriptionState.Cancelled:
                 break;

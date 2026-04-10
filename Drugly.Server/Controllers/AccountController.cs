@@ -8,8 +8,8 @@ namespace Drugly.Server.Controllers;
 public class AccountController : ControllerBase
 {
     // /Account/Get
-    [HttpGet(nameof(Get))]
-    public async Task<IActionResult> Get(int id)
+    [HttpGet(nameof(GetAccount))]
+    public async Task<IActionResult> GetAccount(int id)
     {
 
 
