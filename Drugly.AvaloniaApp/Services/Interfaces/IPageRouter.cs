@@ -2,6 +2,7 @@ using Drugly.AvaloniaApp.ViewModels;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
+/// <summary>Allows individual pages to forward navigation requests to a containing view.</summary>
 public interface IPageRouter
 {
     /// <summary>Invoked when a page navigation is requested.</summary>

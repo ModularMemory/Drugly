@@ -6,13 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Services;
 
-public class ViewMap : IViewMap
+public class ViewFactory : IViewFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly FrozenDictionary<Type, Type> _vmToViewMap;
     private readonly FrozenDictionary<Type, Type> _viewToVmMap;
 
-    public ViewMap(IServiceProvider serviceProvider, Dictionary<Type, Type> vmToViewMap)
+    public ViewFactory(IServiceProvider serviceProvider, Dictionary<Type, Type> vmToViewMap)
     {
         _serviceProvider = serviceProvider;
         _vmToViewMap = vmToViewMap.ToFrozenDictionary();

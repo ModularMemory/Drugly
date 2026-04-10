@@ -11,7 +11,7 @@ public static class ServiceProviderExtensions
         public TView GetRequiredView<TView>() where TView : Control
         {
             return serviceProvider
-                .GetRequiredService<IViewMap>()
+                .GetRequiredService<IViewFactory>()
                 .CreateView<TView>();
         }
     }

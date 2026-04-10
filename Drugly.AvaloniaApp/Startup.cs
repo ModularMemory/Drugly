@@ -86,7 +86,7 @@ public static class Startup
         /// <returns>The <paramref name="serviceCollection"/>.</returns>
         public IServiceCollection ConfigureViews()
         {
-            var builder = new ViewMapBuilder(serviceCollection)
+            var builder = new ViewFactoryBuilder(serviceCollection)
                 .AddView<StartupWindow, StartupWindowViewModel>()
                 .AddView<PatientMainView, PatientMainViewModel>()
                 .AddView<PatientDetailsPageView, PatientDetailsPageViewModel>()
@@ -100,7 +100,7 @@ public static class Startup
 
             return serviceCollection
                 .AddSingleton<ViewLocator>()
-                .AddSingleton<IViewMap, ViewMap>(provider => builder.Build(provider));
+                .AddSingleton<IViewFactory, ViewFactory>(provider => builder.Build(provider));
         }
 
         private static void ConfigureHttpClient(HttpClient client)

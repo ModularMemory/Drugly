@@ -4,17 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Services;
 
-public sealed class ViewMapBuilder
+public sealed class ViewFactoryBuilder
 {
     private readonly IServiceCollection _serviceCollection;
     private readonly Dictionary<Type, Type> _vmToViewMap = [];
 
-    public ViewMapBuilder(IServiceCollection serviceCollection)
+    public ViewFactoryBuilder(IServiceCollection serviceCollection)
     {
         _serviceCollection = serviceCollection;
     }
 
-    public ViewMapBuilder AddView<TView, TViewModel>()
+    public ViewFactoryBuilder AddView<TView, TViewModel>()
         where TView : Control
         where TViewModel : ViewModelBase
     {
@@ -27,8 +27,8 @@ public sealed class ViewMapBuilder
         return this;
     }
 
-    public ViewMap Build(IServiceProvider serviceProvider)
+    public ViewFactory Build(IServiceProvider serviceProvider)
     {
-        return new ViewMap(serviceProvider, _vmToViewMap);
+        return new ViewFactory(serviceProvider, _vmToViewMap);
     }
 }

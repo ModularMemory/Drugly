@@ -2,6 +2,7 @@ using Drugly.AvaloniaApp.Models;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
+/// <summary>Provides functionality related to the currently logged in account session.</summary>
 public interface IAccountSessionService
 {
     /// <summary>The account type of the current session.</summary>

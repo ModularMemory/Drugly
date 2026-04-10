@@ -14,15 +14,15 @@ namespace Drugly.AvaloniaApp;
 /// </summary>
 public sealed class ViewLocator : IDataTemplate
 {
-    private readonly IViewMap _viewMap;
+    private readonly IViewFactory _viewFactory;
     private readonly ILogger _logger;
 
     public ViewLocator(
-        IViewMap viewMap,
+        IViewFactory viewFactory,
         ILogger logger
     )
     {
-        _viewMap = viewMap;
+        _viewFactory = viewFactory;
         _logger = logger;
     }
 
@@ -38,7 +38,7 @@ public sealed class ViewLocator : IDataTemplate
         var type = param.GetType();
         try
         {
-            return _viewMap.CreateViewFromVmNoDataContext(type);
+            return _viewFactory.CreateViewFromVmNoDataContext(type);
         }
         catch (Exception ex)
         {
