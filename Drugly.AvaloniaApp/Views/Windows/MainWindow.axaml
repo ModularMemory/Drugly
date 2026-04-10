@@ -10,7 +10,7 @@
         x:DataType="windows:MainWindowViewModel"
         d:DataContext="{x:Static design:DesignData.MainWindowViewModel}"
         WindowStartupLocation="CenterOwner"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Drugly.ico"
         Title="{Binding Title}">
 
     <ContentControl Content="{Binding ContentViewModel}" />

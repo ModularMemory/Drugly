@@ -12,7 +12,7 @@
         x:DataType="windows:StartupWindowViewModel"
         d:DataContext="{x:Static design:DesignData.StartupWindowViewModel}"
         WindowStartupLocation="CenterOwner"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Drugly.ico"
         Title="{Binding Title}">
     <suki:SukiMainHost Name="MainHost"
                        BackgroundAnimationEnabled="False"
