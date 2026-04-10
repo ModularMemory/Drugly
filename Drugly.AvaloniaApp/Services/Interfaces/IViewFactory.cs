@@ -9,16 +9,16 @@ public interface IViewFactory
     /// <summary>Creates a specified view with its associated viewmodel as the data context.</summary>
     /// <typeparam name="TView">The type of the view to create.</typeparam>
     /// <returns>The created view.</returns>
-    /// <exception cref="KeyNotFoundException">There is no view associated with the view of type <typeparam name="TView"/>.</exception>
-    /// <exception cref="InvalidOperationException">There is no registered view of type <typeparam name="TView"/>, or the associated viewmodel.</exception>
+    /// <exception cref="KeyNotFoundException">There is no view associated with the view of type <typeparamref name="TView"/>.</exception>
+    /// <exception cref="InvalidOperationException">There is no registered view of type <typeparamref name="TView"/>, or the associated viewmodel.</exception>
     TView CreateView<TView>() where TView : Control;
 
     /// <summary>Creates a view based on its associated viewmodel, with the viewmodel as the data context.</summary>
     /// <typeparam name="TViewModel">The type of the viewmodel to create a view from.</typeparam>
     /// <returns>The created view.</returns>
     /// <exception cref="ArgumentException"><typeparam name="TViewModel"/> does not inherit from type <see cref="ViewModelBase"/>.</exception>
-    /// <exception cref="KeyNotFoundException">There is no view associated with type <typeparam name="TViewModel"/>.</exception>
-    /// <exception cref="InvalidOperationException">There is no registered viewmodel of type <typeparam name="TViewModel"/>, or the associated view.</exception>
+    /// <exception cref="KeyNotFoundException">There is no view associated with type <typeparamref name="TViewModel"/>.</exception>
+    /// <exception cref="InvalidOperationException">There is no registered viewmodel of type <typeparamref name="TViewModel"/>, or the associated view.</exception>
     Control CreateViewFromVm<TViewModel>() where TViewModel : ViewModelBase;
 
     /// <summary>Creates a view based on its associated viewmodel.</summary>

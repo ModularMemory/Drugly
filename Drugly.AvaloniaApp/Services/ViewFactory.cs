@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Services;
 
+/// <inheritdoc />
 public class ViewFactory : IViewFactory
 {
     private readonly IServiceProvider _serviceProvider;

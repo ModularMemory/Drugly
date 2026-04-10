@@ -4,6 +4,7 @@ using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
 
+/// <inheritdoc />
 public sealed class PageRouter : IPageRouter
 {
     private readonly ILogger _logger;

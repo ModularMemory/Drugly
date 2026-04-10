@@ -7,6 +7,7 @@ using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
 
+/// <inheritdoc />
 public sealed class LoginService : ILoginService
 {
     private readonly IAccountSessionService _accountSessionService;
