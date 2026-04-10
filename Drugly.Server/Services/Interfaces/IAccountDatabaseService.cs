@@ -13,12 +13,12 @@ public interface IAccountDatabaseService {
     /// <summary>Sets the account details for a given ID</summary>
     /// <param name="id">The ID you want to save the details to</param>
     /// <param name="detailsDto">The AccountDetails object being saved to the ID</param>
-    /// <returns>nothing</returns>
+    /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown on error</exception>
     Task SetAccountById(Guid id, AccountDetails detailsDto);
 
     /// <summary>Gets the ID of an account by searching for the associated email</summary>
-    /// <param name="email">the email being seached for</param>
+    /// <param name="email">the email being searched for</param>
     /// <returns>The account ID</returns>
     /// <exception cref="AccountNotFoundException">Thrown when the email cannot be found</exception>
     /// <exception cref="IOException">Thrown when there's an error</exception>

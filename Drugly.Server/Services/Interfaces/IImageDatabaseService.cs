@@ -4,7 +4,7 @@ namespace Drugly.Server.Services.Interfaces;
 
 public interface IImageDatabaseService
 {
-    /// <summary>Gets an image from an id and a </summary>
+    /// <summary>Gets an image from an id, and sets the contentType</summary>
     /// <param name="id">The ID of the image</param>
     /// <param name="contentType">out parameter to describe the content type, must be set before returning</param>
     /// <returns>Image Stream</returns>
@@ -16,7 +16,7 @@ public interface IImageDatabaseService
     /// <param name="id">The ID to save the image to</param>
     /// <param name="contentType">The type of content the image is</param>
     /// <param name="content">The Stream for the image</param>
-    /// <returns>nothing</returns>
+    /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown when there's an error saving</exception>
     Task SetImageById(string id, string contentType, Stream content);
 }

@@ -14,7 +14,7 @@ public interface IMedicationDatabaseService
     /// <summary>Sets a new medication by its ID</summary>
     /// <param name="id">The ID you want to save the medication at</param>
     /// <param name="medication">The medication being saved</param>
-    /// <returns>nothing</returns>
+    /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown when there's an error</exception>
     Task SetMedicationById(Guid id, Medication medication);
 }

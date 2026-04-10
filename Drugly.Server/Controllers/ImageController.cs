@@ -4,7 +4,7 @@ namespace Drugly.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ImageController : ControllerBase
+public class ImageController : DruglyController
 {
 
 }

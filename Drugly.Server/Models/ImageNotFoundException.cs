@@ -9,7 +9,7 @@ public class ImageNotFoundException : Exception
         ImageMessage = "Image not found";
     }
 
-    public ImageNotFoundException(string message) : base(message)
+    public ImageNotFoundException(string message)
     {
         ImageMessage = message;
     }

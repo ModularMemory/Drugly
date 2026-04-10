@@ -9,7 +9,7 @@ public class MedicationNotFoundException : Exception
         MedicationMessage = "Medication not found";
     }
 
-    public MedicationNotFoundException(string message) : base(message)
+    public MedicationNotFoundException(string message)
     {
         MedicationMessage = message;
     }

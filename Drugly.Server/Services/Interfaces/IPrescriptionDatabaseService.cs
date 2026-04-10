@@ -14,7 +14,7 @@ public interface IPrescriptionDatabaseService
     /// <summary>Set a new prescription at a given ID</summary>
     /// <param name="id">The ID where you want to save the prescription</param>
     /// <param name="prescription">The prescription being saved</param>
-    /// <returns>nothing</returns>
+    /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown when there's an error</exception>
     Task SetPrescriptionById(Guid id, Prescription prescription);
 }

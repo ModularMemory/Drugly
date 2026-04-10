@@ -9,7 +9,7 @@ public class AccountNotFoundException : Exception
         AccountMessage = "Account not found";
     }
 
-    public AccountNotFoundException(string message) : base(message)
+    public AccountNotFoundException(string message)
     {
         AccountMessage = message;
     }
