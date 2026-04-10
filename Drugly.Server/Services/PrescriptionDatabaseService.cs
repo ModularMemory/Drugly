@@ -10,7 +10,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         throw new NotImplementedException();
     }
 
-    public Task<bool> SetPrescriptionById(Guid id, Prescription prescription)
+    public Task SetPrescriptionById(Guid id, Prescription prescription)
     {
         throw new NotImplementedException();
     }

@@ -10,7 +10,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         throw new NotImplementedException();
     }
 
-    public Task<bool> SetAccountById(Guid id, AccountDetails detailsDto)
+    public Task SetAccountById(Guid id, AccountDetails detailsDto)
     {
         throw new NotImplementedException();
     }

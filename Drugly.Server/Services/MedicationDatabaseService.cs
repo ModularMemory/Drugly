@@ -11,7 +11,7 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         throw new NotImplementedException();
     }
 
-    public Task<bool> SetMedicationById(Guid id, Medication medication)
+    public Task SetMedicationById(Guid id, Medication medication)
     {
         throw new NotImplementedException();
     }
