@@ -6,6 +6,7 @@
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:pages="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages"
              xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
+             xmlns:markup="clr-namespace:Drugly.AvaloniaApp.MarkupExtensions"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.MainView"
              x:DataType="pages:MainViewModel"
@@ -13,10 +14,21 @@
     <suki:SukiMainHost Name="MainHost"
                        BackgroundAnimationEnabled="False">
 
-        <ContentControl MaxWidth="{Binding $parent[Window].Bounds.Width,
-                        Converter={x:Static converters:NumberConverters.Divide},
-                        ConverterParameter=1.5}"
-                        Content="{Binding ContentViewModel}" />
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ContentControl Content="{Binding ContentViewModel}">
+                <ContentControl.MaxWidth>
+                    <MultiBinding Converter="{x:Static converters:NumberConverters.MultiMax}">
+                        <markup:DoubleLiteral Value="600" />
+                        <Binding Path="$parent[Window].Bounds.Width"
+                                 Converter="{x:Static converters:NumberConverters.Divide}"
+                                 ConverterParameter="1.5" />
+                    </MultiBinding>
+                </ContentControl.MaxWidth>
+            </ContentControl>
+
+        </ScrollViewer>
 
     </suki:SukiMainHost>
 </UserControl>
