@@ -29,6 +29,9 @@ public static class Startup
 {
     extension(IServiceCollection serviceCollection)
     {
+        /// <summary>Registers and configures the services required by <see cref="Drugly"/> in the given <paramref name="serviceCollection"/>.</summary>
+        /// <param name="application">The current application instance.</param>
+        /// <returns>The <paramref name="serviceCollection"/>.</returns>
         public IServiceCollection ConfigureServices(Application application)
         {
             if (application.ApplicationLifetime is { } lifetime)
@@ -79,6 +82,8 @@ public static class Startup
             return serviceCollection;
         }
 
+        /// <summary>Registers and configures the views and view models required by <see cref="Drugly"/> in the given <paramref name="serviceCollection"/>.</summary>
+        /// <returns>The <paramref name="serviceCollection"/>.</returns>
         public IServiceCollection ConfigureViews()
         {
             var builder = new ViewMapBuilder(serviceCollection)
@@ -90,7 +95,6 @@ public static class Startup
                 .AddView<DoctorMedicationListView, DoctorMedicationListViewModel>()
                 .AddView<DoctorPatientListView, DoctorPatientListViewModel>()
                 .AddView<DoctorMedicationDetailsPageView, DoctorMedicationDetailsPageViewModel>()
-                .AddView<PharmacistMainView, PharmacistMainViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();
 

@@ -7,5 +7,4 @@ public enum AccountTypeDto
 {
     Patient,
     Doctor,
-    Pharmacist
 }

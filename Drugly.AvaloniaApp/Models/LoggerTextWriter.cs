@@ -6,9 +6,7 @@ using Serilog.Events;
 
 namespace Drugly.AvaloniaApp.Models;
 
-// Source - https://stackoverflow.com/a
-// Posted by d_f
-// Retrieved 2026-02-04, License - CC BY-SA 4.0
+/// <summary>Forwards all writes to a given <see cref="ILogger"/>.</summary>
 public class LoggerTextWriter : TextWriter
 {
     private readonly LogEventLevel _logLevel;
@@ -16,6 +14,9 @@ public class LoggerTextWriter : TextWriter
     private readonly StringBuilder _builder = new();
     private bool _terminatorStarted;
 
+    /// <summary>Initializes a new <see cref="LoggerTextWriter"/>.</summary>
+    /// <param name="logLevel">The <see cref="LogEventLevel"/> that all forwarded writes will use.</param>
+    /// <param name="logger">The logger to forward to.</param>
     public LoggerTextWriter([ServiceKey] LogEventLevel logLevel, ILogger logger)
     {
         _logLevel = logLevel;

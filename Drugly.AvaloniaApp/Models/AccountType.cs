@@ -2,14 +2,18 @@ using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Models;
 
+/// <summary>The type of an account.</summary>
 public enum AccountType
 {
+    /// <summary>Default value. The account is something else.</summary>
     Unknown,
+    /// <summary>The account is a patient.</summary>
     Patient,
+    /// <summary>The account is a doctor.</summary>
     Doctor,
-    Pharmacist
 }
 
+/// <summary>Provides extensions methods for converting to and form <see cref="AccountType"/> and <see cref="AccountTypeDto"/>.</summary>
 public static class AccountTypeExtensions
 {
     public static AccountType ToAccountType(this AccountTypeDto dto)
@@ -18,7 +22,6 @@ public static class AccountTypeExtensions
         {
             AccountTypeDto.Patient => AccountType.Patient,
             AccountTypeDto.Doctor => AccountType.Doctor,
-            AccountTypeDto.Pharmacist => AccountType.Pharmacist,
             _ => throw new ArgumentOutOfRangeException(nameof(dto), dto, null)
         };
     }
@@ -29,11 +32,10 @@ public static class AccountTypeExtensions
         {
             AccountType.Patient => AccountTypeDto.Patient,
             AccountType.Doctor => AccountTypeDto.Doctor,
-            AccountType.Pharmacist => AccountTypeDto.Pharmacist,
             _ => throw new ArgumentOutOfRangeException(nameof(accountType), accountType, null)
         };
     }
 
     public static bool CanConvertToDto(this AccountType accountType)
-        => accountType is AccountType.Patient or AccountType.Doctor or AccountType.Pharmacist;
+        => accountType is AccountType.Patient or AccountType.Doctor;
 }

@@ -10,6 +10,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Drugly.AvaloniaApp.Controls;
 
+/// <summary>
+/// A <see cref="Control"/> which displays a mouse-interactive <see cref="Bitmap"/>.
+/// </summary>
 public sealed partial class DrawableBitmap : Control
 {
     /// <summary>

@@ -122,17 +122,4 @@ public static partial class DesignData
             return field;
         }
     }
-
-    public static PharmacistMainViewModel PharmacistMainViewModel
-    {
-        get
-        {
-            if (field == null)
-            {
-                field = ServiceProvider.GetRequiredService<PharmacistMainViewModel>();
-            }
-
-            return field;
-        }
-    }
 }

@@ -1,9 +1,15 @@
 namespace Drugly.AvaloniaApp.Models;
 
+/// <summary>Represents an account session.</summary>
 public record AccountSession
 {
+    /// <summary>The session token used to make authenticated HTTP requests.</summary>
     public string SessionToken { get; }
+
+    /// <summary>The type of the account associated with the session.</summary>
     public AccountType AccountType { get; }
+
+    /// <summary>The time when the session expires.</summary>
     public DateTimeOffset Expiration { get; }
 
     public AccountSession(string sessionToken, AccountType accountType, DateTimeOffset expiration)

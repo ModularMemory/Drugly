@@ -66,7 +66,7 @@ public sealed class LoginService : ILoginService
 
         // TODO: API request here
         // var accountTypeDto = AccountTypeDto.Patient;
-        var accountTypeDto = Random.Shared.GetItems([AccountTypeDto.Patient, AccountTypeDto.Doctor, AccountTypeDto.Pharmacist], 1)[0];
+        var accountTypeDto = Random.Shared.GetItems([AccountTypeDto.Patient, AccountTypeDto.Doctor], 1)[0];
         var sessionToken = authKey!;
         var accountType = accountTypeDto.ToAccountType();
         var expiration = DateTimeOffset.Now.AddDays(1);

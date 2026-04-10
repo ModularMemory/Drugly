@@ -34,7 +34,6 @@ public partial class MainViewModel : ViewModelBase
         {
             AccountType.Patient => serviceProvider.GetRequiredService<PatientMainViewModel>(),
             AccountType.Doctor => serviceProvider.GetRequiredService<DoctorMainViewModel>(),
-            AccountType.Pharmacist => serviceProvider.GetRequiredService<PharmacistMainViewModel>(),
             _ => null
         };
 
