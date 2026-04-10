@@ -1,56 +1,51 @@
-using System.Diagnostics;
-
 namespace Drugly.Server.Models;
 
 public class PrescriptionStateMachine : IAsyncDisposable, IDisposable
 {
-    public PrescriptionStateMachine(PrescriptionState prescriptionState, int id)
+    public PrescriptionStateMachine(PrescriptionState prescriptionState, Guid id)
     {
-        _prescriptionState  = prescriptionState;
-        _id = id;
+        PrescriptionState  = prescriptionState;
+        Id = id;
     }
 
-    private PrescriptionState _prescriptionState;
+    private PrescriptionState PrescriptionState { get; set; }
 
-    private int _id;
+    private Guid Id { get; set; }
 
     public PrescriptionState GetPrescriptionState()
     {
-        return _prescriptionState;
-    }
-
-    int GetId()
-    {
-        return _id;
+        return PrescriptionState;
     }
 
     public void ProgressState()
     {
-        switch(_prescriptionState)
+        switch(PrescriptionState)
         {
             case PrescriptionState.Unconfirmed:
-                _prescriptionState = PrescriptionState.Processing;
+                PrescriptionState = PrescriptionState.Processing;
                 break;
             case PrescriptionState.Processing:
-                _prescriptionState = PrescriptionState.Ready;
+                PrescriptionState = PrescriptionState.Ready;
                 break;
             case PrescriptionState.Ready:
-                _prescriptionState = PrescriptionState.Billing;
+                PrescriptionState = PrescriptionState.Billing;
                 break;
             case PrescriptionState.Billing:
-                _prescriptionState = PrescriptionState.PickedUp;
+                PrescriptionState = PrescriptionState.PickedUp;
                 break;
             case PrescriptionState.PickedUp:
-                _prescriptionState = PrescriptionState.Processing;
+                PrescriptionState = PrescriptionState.Processing;
+                break;
+            case PrescriptionState.Cancelled:
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(PrescriptionState));
         }
     }
 
     public void CancelPrescription()
     {
-        _prescriptionState = PrescriptionState.Cancelled;
+        PrescriptionState = PrescriptionState.Cancelled;
     }
 
     public ValueTask DisposeAsync()

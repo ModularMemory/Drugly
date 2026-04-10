@@ -11,7 +11,9 @@ public static class Startup
         {
             serviceCollection
                 .AddSingleton<IAccountDatabaseService, AccountDatabaseService>()
-                .AddSingleton<IPrescriptionStateService, PrescriptionStateService>();
+                .AddSingleton<IPrescriptionDatabaseService, PrescriptionDatabaseService>()
+                .AddSingleton<IMedicationDatabaseService, MedicationDatabaseService>()
+                .AddSingleton<IImageDatabaseService, ImageDatabaseService>();
             return serviceCollection;
         }
     }

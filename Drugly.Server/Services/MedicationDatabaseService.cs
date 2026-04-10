@@ -3,19 +3,15 @@ using Drugly.Server.Services.Interfaces;
 
 namespace Drugly.Server.Services;
 
-public class AccountDatabaseService : IHostedService, IAccountDatabaseService
+
+public class MedicationDatabaseService : IHostedService, IMedicationDatabaseService
 {
-    public Task<AccountDetails> GetAccountById(Guid id)
+    public Task<Medication> GetMedicationById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> SetAccountById(Guid id, AccountDetails detailsDto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Guid> GetIdByEmail(string email)
+    public Task<bool> SetMedicationById(Guid id, Medication medication)
     {
         throw new NotImplementedException();
     }
