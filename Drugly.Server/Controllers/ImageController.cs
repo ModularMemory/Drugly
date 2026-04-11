@@ -26,7 +26,7 @@ public class ImageController : DruglyController
         try
         {
             response = await _databaseService.GetImageById(id, out var contentType);
-            Response.Headers.ContentType= contentType;
+            Response.ContentType= contentType;
         }
         catch (ImageNotFoundException ex)
         {
@@ -42,9 +42,10 @@ public class ImageController : DruglyController
         return Ok(response);
     }
 
-    [HttpPost("{id}/{contentType}")]
-    public async Task<IActionResult> SetById(string id, string contentType, [FromBody] Stream content)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> SetById(string id, [FromBody] Stream content)
     {
+        string contentType = Request.ContentType ?? "image/bmp";
         try
         {
             await _databaseService.SetImageById(id, contentType, content);

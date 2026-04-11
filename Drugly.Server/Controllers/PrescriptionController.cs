@@ -8,11 +8,11 @@ namespace Drugly.Server.Controllers;
 public class PrescriptionController : DruglyController
 {
     private readonly IPrescriptionDatabaseService _databaseService;
-    private readonly ILogger<AccountController>  _logger;
+    private readonly ILogger<PrescriptionController>  _logger;
 
     public PrescriptionController(
         IPrescriptionDatabaseService databaseService,
-        ILogger<AccountController> logger
+        ILogger<PrescriptionController> logger
     )
     {
         _databaseService = databaseService;
