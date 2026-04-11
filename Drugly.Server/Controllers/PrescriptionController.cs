@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
-[ApiController]
-[Route("[controller]")]
 public class PrescriptionController : DruglyController
 {
     private readonly IPrescriptionDatabaseService _databaseService;
@@ -21,7 +19,8 @@ public class PrescriptionController : DruglyController
         _logger = logger;
     }
 
-    [HttpGet(nameof(GetById))]
+
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         ApiResponse<Prescription> response = new ApiResponse<Prescription>();
@@ -45,7 +44,7 @@ public class PrescriptionController : DruglyController
         return Ok(response);
     }
 
-    [HttpPost(nameof(SetById))]
+    [HttpPost("{id:guid}")]
     public async Task<IActionResult> SetById(Guid id, [FromBody] Prescription prescription)
     {
         try

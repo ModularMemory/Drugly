@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
-[ApiController]
-[Route("[controller]")]
 public class AccountController : DruglyController
 {
     private readonly IAccountDatabaseService _databaseService;
@@ -22,7 +20,7 @@ public class AccountController : DruglyController
     }
 
     // /Account/GetById
-    [HttpGet(nameof(GetById))]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         ApiResponse<AccountDetails> response = new ApiResponse<AccountDetails>();
@@ -46,8 +44,8 @@ public class AccountController : DruglyController
         return Ok(response);
     }
 
-    [HttpGet(nameof(GetId))]
-    public async Task<IActionResult> GetId(String email)
+    [HttpGet]
+    public async Task<IActionResult> GetIdByEmail([FromBody] string email)
     {
         ApiResponse<Guid> response = new ApiResponse<Guid>();
 
@@ -63,14 +61,14 @@ public class AccountController : DruglyController
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to fetch Id assocaited with email: {email}", email);
+            _logger.LogError(ex, "Failed to fetch Id associated with email: {email}", email);
             return InternalServerError(ApiResponse.Error("Internal server error"));
         }
         _logger.LogInformation("Id associated with {email} successfully retrieved", email);
         return Ok(response);
     }
 
-    [HttpPost(nameof(SetById))]
+    [HttpPost("{id:guid}")]
     public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails detailsDto)
     {
         try

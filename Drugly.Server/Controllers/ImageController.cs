@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
-[ApiController]
-[Route("[controller]")]
 public class ImageController : DruglyController
 {
     private readonly IImageDatabaseService _databaseService;
@@ -21,7 +19,7 @@ public class ImageController : DruglyController
         _logger = logger;
     }
 
-    [HttpGet(nameof(GetById))]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         Stream response;
@@ -44,8 +42,8 @@ public class ImageController : DruglyController
         return Ok(response);
     }
 
-    [HttpPost(nameof(SetById))]
-    public async Task<IActionResult> SetById(string id, string contentType, Stream content)
+    [HttpPost("{id}/{contentType}")]
+    public async Task<IActionResult> SetById(string id, string contentType, [FromBody] Stream content)
     {
         try
         {
