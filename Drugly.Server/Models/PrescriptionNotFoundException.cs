@@ -1,6 +1,6 @@
 namespace Drugly.Server.Models;
 
-public class PrescriptionNotFoundException
+public class PrescriptionNotFoundException : Exception
 {
     public string PrescriptionMessage;
 

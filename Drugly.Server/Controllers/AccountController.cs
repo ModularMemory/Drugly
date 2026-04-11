@@ -33,6 +33,7 @@ public class AccountController : DruglyController
         try
         {
             response.Data = await _databaseService.GetAccountById(id);
+            Response.Headers.ContentType = "application/json";
         }
         catch (AccountNotFoundException ex)
         {
@@ -46,5 +47,45 @@ public class AccountController : DruglyController
         }
         _logger.LogInformation("Account {id} successfully retrieved", id);
         return Ok(response);
+    }
+
+    [HttpGet(nameof(GetId))]
+    public async Task<IActionResult> GetId(String email)
+    {
+        ApiResponse<Guid> response = new ApiResponse<Guid>();
+
+        try
+        {
+            response.Data = await _databaseService.GetIdByEmail(email);
+            Response.Headers.ContentType = "application/json";
+        }
+        catch (AccountNotFoundException ex)
+        {
+            _logger.LogError(ex, "Failed to find Id associated with email: {email}", email);
+            return NotFound(ApiResponse.Error("Id not found"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to fetch Id assocaited with email: {email}", email);
+            return InternalServerError(ApiResponse.Error("Internal server error"));
+        }
+        _logger.LogInformation("Id associated with {email} successfully retrieved", email);
+        return Ok(response);
+    }
+
+    [HttpPost(nameof(SetById))]
+    public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails detailsDto)
+    {
+        try
+        {
+            await _databaseService.SetAccountById(id, detailsDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to set account {id} details", id);
+            return InternalServerError(ApiResponse.Error("Internal Server Error"));
+        }
+        _logger.LogInformation("Account {id} details successfully set", id);
+        return Ok();
     }
 }

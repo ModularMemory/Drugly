@@ -9,7 +9,7 @@ public interface IImageDatabaseService
     /// <param name="contentType">out parameter to describe the content type, must be set before returning</param>
     /// <returns>Image Stream</returns>
     /// <exception cref="ImageNotFoundException">Thrown when the image can't be found</exception>
-    /// <exception cref="IOException"></exception>
+    /// <exception cref="IOException">Thrown when there's an error</exception>
     Task<Stream> GetImageById(string id, out string contentType);
 
     /// <summary>Sets an image by its ID, with a content type</summary>
