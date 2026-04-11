@@ -5,13 +5,12 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.Extensions;
 
+/// <summary>Provides extensions for <see cref="SukiDialogBuilder"/>s.</summary>
 public static class SukiDialogBuilderExtensions
 {
     extension(SukiDialogBuilder builder)
     {
-        /// <summary>
-        /// Presents <paramref name="content"/> inside a <see cref="GroupBox"/>.
-        /// </summary>
+        /// <summary>Presents <paramref name="content"/> inside a <see cref="GroupBox"/>.</summary>
         /// <param name="content">The content to present.</param>
         /// <returns>The <see cref="SukiDialogBuilder"/> instance.</returns>
         /// <remarks><see cref="ViewModelBase"/>s will be presented with a <see cref="ContentControl"/>.</remarks>
@@ -20,9 +19,7 @@ public static class SukiDialogBuilderExtensions
             return builder.WithGroupedContent(null, content);
         }
 
-        /// <summary>
-        /// Presents <paramref name="content"/> and an optional <paramref name="title"/> inside a <see cref="GroupBox"/>.
-        /// </summary>
+        /// <summary>Presents <paramref name="content"/> and an optional <paramref name="title"/> inside a <see cref="GroupBox"/>.</summary>
         /// <param name="title">An optional title displayed above the <paramref name="content"/>.</param>
         /// <param name="content">The content to present.</param>
         /// <returns>The <see cref="SukiDialogBuilder"/> instance.</returns>
@@ -75,9 +72,7 @@ public static class SukiDialogBuilderExtensions
             return builder;
         }
 
-        /// <summary>
-        /// Provides a callback that will be called when this dialog is dismissed for any reason.
-        /// </summary>
+        /// <summary>Provides a callback that will be called when this dialog is dismissed for any reason.</summary>
         /// <param name="proc">The callback, with the dialog result as a parameter.</param>
         /// <returns>The <see cref="SukiDialogBuilder"/> instance.</returns>
         public SukiDialogBuilder OnClosed(Action<bool> proc)

@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Drugly.Validation.Common;
 
+/// <summary>Provides object length helper functions.</summary>
 internal static class LengthHelper
 {
     /// <summary>Tries to get the length from an <see cref="object"/> of unknown type.</summary>

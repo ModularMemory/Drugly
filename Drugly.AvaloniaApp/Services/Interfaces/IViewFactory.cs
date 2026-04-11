@@ -9,7 +9,7 @@ public interface IViewFactory
     /// <summary>Creates a specified view with its associated viewmodel as the data context.</summary>
     /// <typeparam name="TView">The type of the view to create.</typeparam>
     /// <returns>The created view.</returns>
-    /// <exception cref="KeyNotFoundException">There is no view associated with the view of type <typeparamref name="TView"/>.</exception>
+    /// <exception cref="KeyNotFoundException">There is no viewmodel associated with the view of type <typeparamref name="TView"/>.</exception>
     /// <exception cref="InvalidOperationException">There is no registered view of type <typeparamref name="TView"/>, or the associated viewmodel.</exception>
     TView CreateView<TView>() where TView : Control;
 

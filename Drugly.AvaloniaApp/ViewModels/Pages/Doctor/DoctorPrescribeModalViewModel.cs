@@ -51,13 +51,13 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
-    [NumberValidator.Minimum(0)]
+    [Minimum(0)]
     public partial decimal? DaysBetweenDosage { get; set; }
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
-    [NumberValidator.Minimum(1)]
+    [Minimum(1)]
     public partial decimal? DaysPrescribed { get; set; }
 
     [ObservableProperty]

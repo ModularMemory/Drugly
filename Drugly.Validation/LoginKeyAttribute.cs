@@ -3,6 +3,7 @@ using Drugly.Validation.Common;
 
 namespace Drugly.Validation;
 
+/// <summary>Validates if a variable follows the format of login keys.</summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class LoginKeyAttribute : ValidationAttribute
 {
