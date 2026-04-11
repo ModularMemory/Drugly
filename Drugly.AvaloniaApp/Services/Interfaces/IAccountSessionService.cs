@@ -1,4 +1,5 @@
 using Drugly.AvaloniaApp.Models;
+using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 

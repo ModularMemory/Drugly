@@ -1,3 +1,5 @@
+using Drugly.DTO;
+
 namespace Drugly.AvaloniaApp.Models;
 
 /// <summary>Represents an account session.</summary>

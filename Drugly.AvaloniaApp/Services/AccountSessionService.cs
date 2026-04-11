@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
+using Drugly.DTO;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;

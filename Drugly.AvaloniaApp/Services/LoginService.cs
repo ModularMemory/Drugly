@@ -44,7 +44,7 @@ public sealed class LoginService : ILoginService
         // Locally ensure it's valid before trying an API request
         if (!ValidatorCache<LoginKeyAttribute>.IsValid(authKey, out var message))
         {
-            await FakeDelay();
+            await DelayService.FakeDelay();
             OnLoginError($"Bad or invalid login information: {message}");
             return;
         }
@@ -66,18 +66,11 @@ public sealed class LoginService : ILoginService
         var client = _httpClientFactory.CreateClient(nameof(ILoginService));
 
         // TODO: API request here
-        // var accountTypeDto = AccountTypeDto.Patient;
-        var accountTypeDto = Random.Shared.GetItems([AccountTypeDto.Patient, AccountTypeDto.Doctor], 1)[0];
-        var sessionToken = authKey!;
-        var accountType = accountTypeDto.ToAccountType();
+        // var accountType = AccountType.Patient;
+        var accountType = Random.Shared.GetItems([AccountType.Patient, AccountType.Doctor], 1)[0];
+        var sessionToken = authKey;
         var expiration = DateTimeOffset.Now.AddDays(1);
 
         return new AccountSession(sessionToken, accountType, expiration);
     }
-
-    /// <summary>
-    /// Fake delay feels a lot better than instant feedback when we can validate an issue locally.
-    /// </summary>
-    private static Task FakeDelay()
-        => Task.Delay(100);
 }

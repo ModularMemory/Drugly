@@ -4,12 +4,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Controls;
 using Drugly.AvaloniaApp.Models;
+using Drugly.AvaloniaApp.Services;
 using Drugly.Validation;
 using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
-/// <summary>VV for the medication prescription modal.</summary>
+/// <summary>VM for the medication prescription modal.</summary>
 public partial class DoctorPrescribeModalViewModel : ViewModelBase
 {
     private readonly ISukiDialog _dialog;
@@ -96,7 +97,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
         {
             if (HasErrors)
             {
-                await Task.Delay(500);
+                await DelayService.FakeDelay(500);
 
                 ErrorText = string.Join(Environment.NewLine, GetErrors().Where(x => !string.IsNullOrWhiteSpace(x.ErrorMessage)));
                 return;
@@ -110,7 +111,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
             }
 
             // TODO: HTTP request;
-            await Task.Delay(1_000);
+            await DelayService.FakeDelay(1_000);
 
             PrescriptionConfirmed = true;
             _dialog.Dismiss();
