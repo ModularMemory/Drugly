@@ -9,6 +9,7 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
+/// <summary>VM for the medication details page for doctors.</summary>
 public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
 {
     private readonly ISukiDialogManager _dialogManager;
@@ -29,12 +30,14 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
         _logger = logger;
     }
 
+    /// <summary>Requests a page navigation back to the previous page.</summary>
     [RelayCommand]
     private void NavigateBack()
     {
         _pageRouter.PopPage();
     }
 
+    /// <summary>Opens the modal for prescribing the <see cref="Medication"/> to a patient.</summary>
     [RelayCommand]
     private async Task PrescribeToPatient()
     {
@@ -59,7 +62,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
         await _dialogManager.CreateDialog()
             .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Medication))
             .WithoutResult()
-            .Dismiss().ByClickingBackground()
+            // .Dismiss().ByClickingBackground() // Explicitly do not allow dismissing by clicking out to prevent accidental closes
             .TryShowAsync();
 
         if (vm is not { PrescriptionConfirmed: true })

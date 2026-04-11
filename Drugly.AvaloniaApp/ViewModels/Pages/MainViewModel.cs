@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
@@ -7,6 +8,7 @@ using Serilog;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages;
 
+/// <summary>VM for the main view of the application.</summary>
 public partial class MainViewModel : ViewModelBase
 {
     private readonly IPageRouter _pageRouter;
@@ -45,8 +47,17 @@ public partial class MainViewModel : ViewModelBase
         _pageRouter.RootPage = vm;
     }
 
+    /// <summary>Invoked when a page navigation is requested.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The requested page.</param>
     private void PageRouter_OnPageNavigate(object? sender, ViewModelBase? e)
     {
+        if (e is null)
+        {
+            var stack = new StackTrace();
+            _logger.Warning("A page navigation to null was requested. Stack trace {Stack}", stack);
+        }
+
         ContentViewModel = e;
     }
 

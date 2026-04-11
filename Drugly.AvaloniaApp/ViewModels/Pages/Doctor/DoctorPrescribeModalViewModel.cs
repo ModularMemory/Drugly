@@ -9,12 +9,15 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
+/// <summary>VV for the medication prescription modal.</summary>
 public partial class DoctorPrescribeModalViewModel : ViewModelBase
 {
     private readonly ISukiDialog _dialog;
 
+    /// <summary>The medication associated with the dialog.</summary>
     public MedicationModel Medication { get; }
 
+    /// <summary><see langword="true"/> if a prescription was successfully submitted by this dialog, otherwise <see langword="false"/>.</summary>
     public bool PrescriptionConfirmed { get; private set; }
 
     [ObservableProperty]
@@ -72,12 +75,15 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
         ValidateAllProperties();
     }
 
+    /// <summary>Closes the dialog.</summary>
     [RelayCommand]
     private void Cancel()
     {
         _dialog.Dismiss();
     }
 
+    /// <summary>Validates all fields, submits details to the server, and closes the dialog on success.</summary>
+    /// <param name="signature">The doctor's signature bitmap.</param>
     [RelayCommand]
     private async Task CreatePrescription(DrawableBitmap signature)
     {

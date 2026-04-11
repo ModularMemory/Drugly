@@ -9,11 +9,13 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Windows;
 
+/// <summary>VM for the window shown at startup. Includes logic for initiating logins.</summary>
 public partial class StartupWindowViewModel : ViewModelBase
 {
     private readonly ILoginService _loginService;
     private readonly ISukiDialogManager _dialogManager;
 
+    /// <summary>The title of the window.</summary>
     public string Title { get; } = $"{nameof(Drugly)} Login";
 
     [ObservableProperty]
@@ -36,6 +38,7 @@ public partial class StartupWindowViewModel : ViewModelBase
         ValidateAllProperties();
     }
 
+    /// <summary>Initiates a login via the <see cref="_loginService"/>.</summary>
     [RelayCommand]
     private async Task Login()
     {
@@ -51,6 +54,9 @@ public partial class StartupWindowViewModel : ViewModelBase
         }
     }
 
+    /// <summary>Invoked when the login service reports a failed login.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The login error message.</param>
     private void LoginService_OnLoginError(object? sender, string e)
     {
         _dialogManager.CreateDialog()

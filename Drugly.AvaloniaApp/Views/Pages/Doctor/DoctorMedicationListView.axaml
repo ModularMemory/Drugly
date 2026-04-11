@@ -58,7 +58,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Classes="Discrete Large"
-                                    Command="{Binding $parent[ItemsControl].((doctor:DoctorMedicationListViewModel)DataContext).PrescribeMedicationCommand}"
+                                    Command="{Binding $parent[ItemsControl].((doctor:DoctorMedicationListViewModel)DataContext).ViewMedicationCommand}"
                                     CommandParameter="{Binding}"
                                     HorizontalAlignment="Left"
                                     HorizontalContentAlignment="Left"

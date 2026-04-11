@@ -9,9 +9,7 @@ using SukiUI.Controls;
 
 namespace Drugly.AvaloniaApp;
 
-/// <summary>
-/// Given a view model, returns the corresponding view if possible.
-/// </summary>
+/// <summary>Given a view model, returns the corresponding view if possible.</summary>
 public sealed class ViewLocator : IDataTemplate
 {
     private readonly IViewFactory _viewFactory;
