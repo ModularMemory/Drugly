@@ -48,8 +48,28 @@ public static class Startup
                         .ConfigureHttpClient(ConfigureHttpClient)
                         .ConfigurePrimaryHttpMessageHandler(ConfigureHttpMessageHandler)
                         .AddResilienceHandler("Retry", ConfigureHttpRetryPolicy);
-                })
+                });
+
+            serviceCollection
                 .AddHttpClient(nameof(ILoginService), client =>
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+                });
+
+            serviceCollection
+                .AddHttpClient(nameof(IAccountDetailsService), client =>
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+                });
+
+            serviceCollection
+                .AddHttpClient(nameof(IMedicationDetailsService), client =>
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+                });
+
+            serviceCollection
+                .AddHttpClient(nameof(IPrescriptionDetailsService), client =>
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
                 });
@@ -69,6 +89,9 @@ public static class Startup
                         .CreateLogger())
                 // Misc
                 .AddSingleton<ILoginService, LoginService>()
+                .AddSingleton<IAccountDetailsService, AccountDetailsService>()
+                .AddSingleton<IMedicationDetailsService, MedicationDetailsService>()
+                .AddSingleton<IPrescriptionDetailsService, PrescriptionDetailsService>()
                 .AddSingleton<IAccountSessionService, AccountSessionService>()
                 // UI
                 .AddSingleton<IPageRouter, PageRouter>()
