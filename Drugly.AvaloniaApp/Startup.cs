@@ -48,27 +48,19 @@ public static class Startup
                         .ConfigureHttpClient(ConfigureHttpClient)
                         .ConfigurePrimaryHttpMessageHandler(ConfigureHttpMessageHandler)
                         .AddResilienceHandler("Retry", ConfigureHttpRetryPolicy);
-                });
-
-            serviceCollection
+                })
                 .AddHttpClient(nameof(ILoginService), client =>
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                });
-
-            serviceCollection
+                }).Services
                 .AddHttpClient(nameof(IAccountDetailsService), client =>
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                });
-
-            serviceCollection
+                }).Services
                 .AddHttpClient(nameof(IMedicationDetailsService), client =>
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                });
-
-            serviceCollection
+                }).Services
                 .AddHttpClient(nameof(IPrescriptionDetailsService), client =>
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
