@@ -1,53 +1,77 @@
 using Drugly.DTO;
 
 namespace Drugly.Server.Models;
+
 public class PrescriptionStateMachine : IAsyncDisposable, IDisposable
 {
-    public PrescriptionStateMachine(PrescriptionState prescriptionState, Guid id)
+    private readonly ILogger<PrescriptionStateMachine> _logger;
+    public Prescription prescription { get; }
+
+    public PrescriptionStateMachine(ILogger<PrescriptionStateMachine> logger, Prescription p)
     {
-        PrescriptionState  = prescriptionState;
-        Id = id;
+        _logger = logger;
+        prescription = p;
     }
 
-    private PrescriptionState PrescriptionState { get; set; }
 
-    private Guid Id { get; set; }
 
-    public PrescriptionState GetPrescriptionState()
+    public bool ProgressState(PrescriptionState newState)
     {
-        return PrescriptionState;
-    }
-
-    public void ProgressState()
-    {
-        switch(PrescriptionState)
+        if (newState is PrescriptionState.Cancelled && prescription.State is not  PrescriptionState.Cancelled)
         {
-            // didn't add "unknown", don't know what you want to do with it
+            prescription.State = PrescriptionState.Cancelled;
+            return true;
+        }
+
+        switch (prescription.State)
+        {
             case PrescriptionState.DoctorPrescription:
-                PrescriptionState = PrescriptionState.PharmacyProcessing;
+                if (newState == PrescriptionState.PharmacyProcessing)
+                {
+                    prescription.State = PrescriptionState.PharmacyProcessing;
+                    return true;
+                }
                 break;
+
             case PrescriptionState.PharmacyProcessing:
-                PrescriptionState = PrescriptionState.ReadyForPickup;
+                if (newState is PrescriptionState.ReadyForPickup)
+                {
+                    prescription.State = PrescriptionState.ReadyForPickup;
+                    return true;
+                }
                 break;
+
             case PrescriptionState.ReadyForPickup:
-                PrescriptionState = PrescriptionState.Billing;
+                if (newState is PrescriptionState.Billing)
+                {
+                    prescription.State = PrescriptionState.Billing;
+                    return true;
+                }
                 break;
+
             case PrescriptionState.Billing:
-                PrescriptionState = PrescriptionState.PickedUp;
+                if (newState is PrescriptionState.PickedUp)
+                {
+                    prescription.State = PrescriptionState.PickedUp;
+                    return true;
+                }
                 break;
             case PrescriptionState.PickedUp:
-                PrescriptionState = PrescriptionState.PharmacyProcessing;
+                if (newState is PrescriptionState.PharmacyProcessing)
+                {
+                    prescription.State = PrescriptionState.PharmacyProcessing;
+                    return true;
+                }
                 break;
+
             case PrescriptionState.Cancelled:
+            case PrescriptionState.Unknown:
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(PrescriptionState));
         }
-    }
-
-    public void CancelPrescription()
-    {
-        PrescriptionState = PrescriptionState.Cancelled;
+        return false;
     }
 
     public ValueTask DisposeAsync()
