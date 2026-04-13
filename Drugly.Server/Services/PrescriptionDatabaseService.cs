@@ -15,6 +15,11 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         throw new NotImplementedException();
     }
 
+    public Task<List<Prescription>> GetAllPrescriptionsByAccountId(Guid accountId)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

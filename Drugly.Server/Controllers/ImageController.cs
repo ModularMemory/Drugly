@@ -20,7 +20,7 @@ public class ImageController : DruglyController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(string id) // TODO: maybe add auth?
     {
         Stream response;
         try
@@ -43,7 +43,7 @@ public class ImageController : DruglyController
     }
 
     [HttpPost("{id}")]
-    public async Task<IActionResult> SetById(string id, [FromBody] Stream content)
+    public async Task<IActionResult> SetById(string id, [FromBody] Stream content) // TODO: Add auth
     {
         string contentType = Request.ContentType ?? "image/bmp";
         try

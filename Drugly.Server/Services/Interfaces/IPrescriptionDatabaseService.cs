@@ -17,4 +17,11 @@ public interface IPrescriptionDatabaseService
     /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown when there's an error</exception>
     Task SetPrescriptionById(Guid id, Prescription prescription);
+
+    /// <summary>Gets a list of all the prescriptions associated with an account</summary>
+    /// <param name="accountId">The account Id you want the prescriptions for</param>
+    /// <returns>A list of prescriptions</returns>
+    /// <exception cref="PrescriptionNotFoundException">thrown when prescriptions aren't found for that account</exception>
+    /// <exception cref="IOException">Thrown when there's an error</exception>
+    Task<List<Prescription>> GetAllPrescriptionsByAccountId(Guid accountId);
 }

@@ -5,9 +5,14 @@ namespace Drugly.Server.Services;
 
 public class StateMachineFactoryService : IStateMachineFactoryService
 {
-    public PrescriptionStateMachine GetStateMachine(IServiceProvider serviceProvider, Prescription prescription)
+    private readonly IServiceProvider _serviceProvider;
+    public StateMachineFactoryService(IServiceProvider serviceProvider)
     {
-        ILogger<PrescriptionStateMachine> logger = serviceProvider.GetService<ILogger<PrescriptionStateMachine>>();
+        _serviceProvider = serviceProvider;
+    }
+    public PrescriptionStateMachine GetStateMachine(Prescription prescription)
+    {
+        ILogger<PrescriptionStateMachine> logger = _serviceProvider.GetRequiredService<ILogger<PrescriptionStateMachine>>();
         return new PrescriptionStateMachine(logger, prescription);
     }
 }

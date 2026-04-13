@@ -20,6 +20,11 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         throw new NotImplementedException();
     }
 
+    public Task<List<AccountDetails>> GetAllPatientAccounts()
+    {
+        throw new NotImplementedException();
+    }
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

@@ -23,4 +23,10 @@ public interface IAccountDatabaseService {
     /// <exception cref="AccountNotFoundException">Thrown when the email cannot be found</exception>
     /// <exception cref="IOException">Thrown when there's an error</exception>
     Task<Guid> GetIdByEmail(string email);
+
+    /// <summary>Gets a list of all the patient accounts</summary>
+    /// <returns>the list of patient accounts</returns>
+    /// <exception cref="AccountNotFoundException">Thrown when no accounts are found</exception>
+    /// <exception cref="IOException">Thrown when there's an error</exception>
+    Task<List<AccountDetails>> GetAllPatientAccounts();
 }

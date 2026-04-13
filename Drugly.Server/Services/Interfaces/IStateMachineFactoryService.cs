@@ -4,5 +4,5 @@ namespace Drugly.Server.Services.Interfaces;
 
 public interface IStateMachineFactoryService
 {
-    PrescriptionStateMachine GetStateMachine(IServiceProvider serviceProvider, Prescription prescription);
+    PrescriptionStateMachine GetStateMachine(Prescription prescription);
 }

@@ -1,3 +1,4 @@
+using Drugly.AvaloniaApp.Models;
 using Drugly.DTO;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
@@ -8,20 +9,23 @@ namespace Drugly.Server.Controllers;
 public class AccountController : DruglyController
 {
     private readonly IAccountDatabaseService _databaseService;
+    private readonly IAuthorizationService _authorizationService;
     private readonly ILogger<AccountController>  _logger;
 
     public AccountController(
         IAccountDatabaseService databaseService,
-        ILogger<AccountController> logger
+        ILogger<AccountController> logger,
+        IAuthorizationService authService
     )
     {
         _databaseService = databaseService;
         _logger = logger;
+        _authorizationService = authService;
     }
 
     // /Account/GetById
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetById(Guid id) // TODO: add auth
     {
         ApiResponse<AccountDetails> response = new ApiResponse<AccountDetails>();
 
@@ -45,7 +49,7 @@ public class AccountController : DruglyController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetIdByEmail([FromBody] string email)
+    public async Task<IActionResult> GetIdByEmail([FromBody] string email) // TODO: add auth
     {
         ApiResponse<Guid> response = new ApiResponse<Guid>();
 
@@ -82,5 +86,44 @@ public class AccountController : DruglyController
         }
         _logger.LogInformation("Account {id} details successfully set", id);
         return Ok();
+    }
+
+    [HttpGet("{???}")] // idk what information I'm getting for this
+    public async Task<IActionResult> Login()
+    {
+        ApiResponse<AccountSession> response = new ApiResponse<AccountSession>();
+        try
+        {
+            _authorizationService.Authorize();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to authorize ");
+            return InternalServerError(ApiResponse.Error("Internal Server Error"));
+        }
+        _logger.LogInformation("Login successful");
+        return Ok(response);
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetPatientAccounts() // TODO: add auth
+    {
+        ApiResponse<List<AccountDetails>> response = new ApiResponse<List<AccountDetails>>();
+        try
+        {
+            _databaseService.GetAllPatientAccounts();
+        }
+        catch (AccountNotFoundException ex)
+        {
+            _logger.LogError(ex, "Failed to find any patient accounts");
+            return NotFound(ApiResponse.Error("Accounts not found"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to fetch patient accounts");
+            return InternalServerError(ApiResponse.Error("Internal Server Error"));
+        }
+        _logger.LogInformation("Patient account found successfully");
+        return Ok(response);
     }
 }
