@@ -1,6 +1,8 @@
 using Drugly.AvaloniaApp.ViewModels.Pages;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
+using Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 using Microsoft.Extensions.DependencyInjection;
+using PatientPrescriptionDetailsViewModel = Drugly.AvaloniaApp.ViewModels.Pages.PatientPrescriptionDetailsViewModel;
 
 namespace Drugly.AvaloniaApp.Design;
 
@@ -32,13 +34,13 @@ public static partial class DesignData
         }
     }
 
-    public static PatientDetailsPageViewModel PatientDetailsPageViewModel
+    public static PatientPrescriptionDetailsViewModel PatientPrescriptionDetailsViewModel
     {
         get
         {
             if (field == null)
             {
-                field = ServiceProvider.GetRequiredService<PatientDetailsPageViewModel>();
+                field = ServiceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
                 field.Patient = ExamplePatient;
             }
 

@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Drugly.AvaloniaApp.Views.Pages;
 
-public partial class PatientDetailsPageView : UserControl
+public partial class PatientPrescriptionView : UserControl
 {
-    public PatientDetailsPageView()
+    public PatientPrescriptionView()
     {
         InitializeComponent();
     }

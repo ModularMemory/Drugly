@@ -2,6 +2,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
+using Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 using Drugly.DTO;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -31,7 +32,7 @@ public partial class MainViewModel : ViewModelBase
         _pageRouter.PageNavigate += PageRouter_OnPageNavigate;
 
         // var accountType = accountSessionService.AccountType;
-        var accountType = AccountType.Doctor;
+        var accountType = AccountType.Patient;
         ViewModelBase? vm = accountType switch
         {
             AccountType.Patient => serviceProvider.GetRequiredService<PatientMainViewModel>(),

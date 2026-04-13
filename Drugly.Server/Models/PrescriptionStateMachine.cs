@@ -34,14 +34,14 @@ public class PrescriptionStateMachine : IAsyncDisposable, IDisposable
                 break;
 
             case PrescriptionState.PharmacyProcessing:
-                if (newState is PrescriptionState.ReadyForPickup)
+                if (newState is PrescriptionState.Filled)
                 {
-                    prescription.State = PrescriptionState.ReadyForPickup;
+                    prescription.State = PrescriptionState.Filled;
                     return true;
                 }
                 break;
 
-            case PrescriptionState.ReadyForPickup:
+            case PrescriptionState.Filled:
                 if (newState is PrescriptionState.Billing)
                 {
                     prescription.State = PrescriptionState.Billing;

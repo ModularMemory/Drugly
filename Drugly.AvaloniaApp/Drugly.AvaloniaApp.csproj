@@ -41,4 +41,15 @@
         <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
         <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Pages\Patient\PatientPrescriptionView.axaml.cs">
+        <DependentUpon>PatientDetailsPageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\Patient\PatientMainView.axaml.cs">
+        <DependentUpon>PatientMainView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

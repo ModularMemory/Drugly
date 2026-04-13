@@ -1,0 +1,42 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:pages="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages"
+             xmlns:patient="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Patient"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.PatientMainView"
+             x:DataType="patient:PatientMainViewModel"
+             d:DataContext="{x:Static design:DesignData.PatientMainViewModel}">
+    
+    <Grid Margin="8"
+          RowSpacing="16"
+          RowDefinitions="Auto,*">
+
+        <!-- Upper content -->
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto,Auto"
+              RowSpacing="{Binding $parent[Grid].RowSpacing}">
+
+            <TextBlock Grid.Row="0"
+                       Classes="H1"
+                       Text="Hello!" />
+
+            <Separator Grid.Row="1" />
+        </Grid>
+
+        <!-- Lower content -->
+        <Grid Grid.Row="1">
+            <StackPanel Spacing="16">
+                <Button Classes="Large Flat"
+                        Content="Medication 1"
+                        Command="{Binding ViewPrescriptionCommand}"
+                        suki:ButtonExtensions.Icon="{avalonia:MaterialIconExt People}" />
+                
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

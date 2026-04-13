@@ -14,8 +14,8 @@ public enum PrescriptionState
     /// <summary>Pharmacy is processing the order.</summary>
     PharmacyProcessing,
 
-    /// <summary>The pharmacy is ready for the client to pick up their prescription.</summary>
-    ReadyForPickup,
+    /// <summary>The pharmacy has filled the prescription.</summary>
+    Filled,
 
     /// <summary>The client must pay.</summary>
     Billing,

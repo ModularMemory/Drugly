@@ -9,6 +9,7 @@ using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.ViewModels.Pages;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
+using Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 using Drugly.AvaloniaApp.ViewModels.Windows;
 using Drugly.AvaloniaApp.Views.Pages;
 using Drugly.AvaloniaApp.Views.Pages.Doctor;
@@ -22,6 +23,7 @@ using Serilog.Events;
 using SukiUI.Controls;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
+using PatientPrescriptionDetailsViewModel = Drugly.AvaloniaApp.ViewModels.Pages.PatientPrescriptionDetailsViewModel;
 
 namespace Drugly.AvaloniaApp;
 
@@ -104,7 +106,7 @@ public static class Startup
             var builder = new ViewFactoryBuilder(serviceCollection)
                 .AddView<StartupWindow, StartupWindowViewModel>()
                 .AddView<PatientMainView, PatientMainViewModel>()
-                .AddView<PatientDetailsPageView, PatientDetailsPageViewModel>()
+                .AddView<PatientPrescriptionView, PatientPrescriptionDetailsViewModel>()
                 .AddView<DoctorMainView, DoctorMainViewModel>()
                 .AddView<DoctorPrescribeModalView, DoctorPrescribeModalViewModel>()
                 .AddView<DoctorMedicationListView, DoctorMedicationListViewModel>()
