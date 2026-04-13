@@ -10,22 +10,31 @@ public class PrescriptionController : DruglyController
     private readonly IPrescriptionDatabaseService _databaseService;
     private readonly IStateMachineFactoryService _stateMachineFactoryService;
     private readonly ILogger<PrescriptionController> _logger;
+    private readonly IAuthorizationService _authorizationService;
 
     public PrescriptionController(
         IPrescriptionDatabaseService databaseService,
         IStateMachineFactoryService stateMachineFactoryService,
-        ILogger<PrescriptionController> logger
+        ILogger<PrescriptionController> logger,
+        IAuthorizationService authorizationService
     )
     {
         _databaseService = databaseService;
         _stateMachineFactoryService = stateMachineFactoryService;
         _logger = logger;
+        _authorizationService = authorizationService;
     }
 
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id) // TODO: add auth
+    public async Task<IActionResult> GetById(Guid id)
     {
+        if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
+        {
+            _logger.LogInformation("User is not authorized");
+            return Forbid(ApiResponse.Error("User is not authorized"));
+        }
+
         ApiResponse<Prescription> response = new ApiResponse<Prescription>();
 
         try
@@ -49,8 +58,14 @@ public class PrescriptionController : DruglyController
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetByAccountId(Guid id) // TODO: add auth
+    public async Task<IActionResult> GetByAccountId(Guid id)
     {
+        if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
+        {
+            _logger.LogInformation("User is not authorized");
+            return Forbid(ApiResponse.Error("User is not authorized"));
+        }
+
         ApiResponse<List<Prescription>> response = new ApiResponse<List<Prescription>>();
 
         try
@@ -89,9 +104,15 @@ public class PrescriptionController : DruglyController
         return Ok();
     }
 
-    [HttpPut("{state:PrescriptionState}")]
-    public async Task<IActionResult> AdvanceState(PrescriptionState state, [FromBody] Prescription prescription)
+    [HttpPut("{stateInt:int}")]
+    public async Task<IActionResult> AdvanceState(int stateInt, [FromBody] Prescription prescription)
     {
+        var state = (PrescriptionState)stateInt;
+        if (!Enum.IsDefined(state) || state is PrescriptionState.Unknown)
+        {
+            return BadRequest(ApiResponse.Error("Invalid state"));
+        }
+
         PrescriptionStateMachine prescriptionStateMachine = _stateMachineFactoryService.GetStateMachine(prescription);
         try
         {
@@ -99,7 +120,7 @@ public class PrescriptionController : DruglyController
         }
         catch (ArgumentOutOfRangeException ex)
         {
-            _logger.LogError(ex, "Desired State  {state} Not Recognized", state);
+            _logger.LogError(ex, "Desired State {state} Not Recognized", state);
             return InternalServerError(ApiResponse.Error("Invalid state")); // probably not the right error
         }
         catch (Exception ex)
@@ -108,6 +129,25 @@ public class PrescriptionController : DruglyController
             return InternalServerError(ApiResponse.Error("Internal Server Error"));
         }
         _logger.LogInformation("Prescription State Progressed to {state}", state);
+        return Ok();
+    }
+
+    [HttpPost("{medicationId:guid}/{accountId:guid}")]
+    public async Task<IActionResult> AddPrescription(Guid medicationId, Guid accountId, [FromBody] Prescription prescription)
+    {
+        prescription.MedicationId = medicationId;
+        prescription.PatientId = accountId;
+        Guid prescriptionId = Guid.NewGuid();
+        try
+        {
+            await _databaseService.SetPrescriptionById(prescriptionId, prescription);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to set new prescription {id}", prescriptionId);
+            return InternalServerError("Internal server error");
+        }
+        _logger.LogInformation("New Prescription {id} Set", prescriptionId);
         return Ok();
     }
 }

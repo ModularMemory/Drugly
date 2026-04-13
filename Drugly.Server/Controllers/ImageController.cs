@@ -9,19 +9,27 @@ public class ImageController : DruglyController
 {
     private readonly IImageDatabaseService _databaseService;
     private readonly ILogger<ImageController>  _logger;
-
+    private readonly IAuthorizationService _authorizationService;
     public ImageController(
         IImageDatabaseService databaseService,
-        ILogger<ImageController> logger
+        ILogger<ImageController> logger,
+        IAuthorizationService authorizationService
     )
     {
         _databaseService = databaseService;
         _logger = logger;
+        _authorizationService = authorizationService;
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id) // TODO: maybe add auth?
+    public async Task<IActionResult> GetById(string id)
     {
+        if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
+        {
+            _logger.LogInformation("User is not authorized");
+            return Forbid(ApiResponse.Error("User is not authorized"));
+        }
+
         Stream response;
         try
         {
@@ -43,8 +51,14 @@ public class ImageController : DruglyController
     }
 
     [HttpPost("{id}")]
-    public async Task<IActionResult> SetById(string id, [FromBody] Stream content) // TODO: Add auth
+    public async Task<IActionResult> SetById(string id, [FromBody] Stream content)
     {
+        if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))
+        {
+            _logger.LogInformation("User is not authorized");
+            return Forbid(ApiResponse.Error("User is not authorized"));
+        }
+
         string contentType = Request.ContentType ?? "image/bmp";
         try
         {

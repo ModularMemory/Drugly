@@ -9,6 +9,11 @@ public abstract class DruglyController : ControllerBase
 {
     public IActionResult InternalServerError(object? value)
     {
-        return  StatusCode(StatusCodes.Status500InternalServerError, value);
+        return StatusCode(StatusCodes.Status500InternalServerError, value);
+    }
+
+    public IActionResult Forbid(object? value)
+    {
+        return StatusCode(StatusCodes.Status403Forbidden, value);
     }
 }

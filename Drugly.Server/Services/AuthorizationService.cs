@@ -1,20 +1,54 @@
-using Drugly.AvaloniaApp.Models;
+using System.Collections.Concurrent;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using Drugly.DTO;
+using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
+using AccountType = Drugly.DTO.AccountType;
 
 namespace Drugly.Server.Services;
 
 public class AuthorizationService : IAuthorizationService
 {
-    Dictionary<string, AccountSession> Authorizations { get; }
+    private readonly RandomNumberGenerator _randomNumberGenerator = RandomNumberGenerator.Create();
+    private ConcurrentDictionary<string, AccountSession> Authorizations { get; } = [];
 
-    public string Authorize()
+    public AccountSession CreateSession(AccountDetails accountDetails)
     {
-        throw new NotImplementedException();
+        Span<byte> tokenBytes = stackalloc byte[16];
+        _randomNumberGenerator.GetBytes(tokenBytes);
+        string token = Convert.ToBase64String(tokenBytes);
+        var expiration = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(1));
+
+        AccountSession session = new AccountSession(token, accountDetails.AccountType, expiration, accountDetails.UserId);
+        Authorizations.AddOrUpdate(token, _ => session, (_, __) => session);
+
+        return session;
     }
 
-    public bool IsUserAuthorized(HttpRequest request, AccountType accountType)
+    public bool IsUserAuthorized(IHeaderDictionary headers, AccountType allowedType)
     {
-        throw new NotImplementedException();
+        return IsUserAuthorized(headers, [allowedType]);
+    }
+
+    public bool IsUserAuthorized(IHeaderDictionary headers, ReadOnlySpan<AccountType> allowedTypes)
+    {
+        if (!headers.TryGetValue("Authorization", out var values))
+        {
+            return false;
+        }
+
+        var token = values.FirstOrDefault();
+        if (token is null || !Authorizations.TryGetValue(token, out var accountSession))
+        {
+            return false;
+        }
+
+        if (accountSession.Expiration < DateTimeOffset.UtcNow)
+        {
+            return false;
+        }
+
+        return allowedTypes.Contains(accountSession.AccountType);
     }
 }

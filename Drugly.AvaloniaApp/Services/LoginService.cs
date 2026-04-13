@@ -71,6 +71,6 @@ public sealed class LoginService : ILoginService
         var sessionToken = authKey;
         var expiration = DateTimeOffset.Now.AddDays(1);
 
-        return new AccountSession(sessionToken, accountType, expiration);
+        return new AccountSession(sessionToken, accountType, expiration, default);
     }
 }

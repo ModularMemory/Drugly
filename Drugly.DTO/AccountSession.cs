@@ -1,6 +1,4 @@
-using Drugly.DTO;
-
-namespace Drugly.AvaloniaApp.Models;
+namespace Drugly.DTO;
 
 /// <summary>Represents an account session.</summary>
 public record AccountSession
@@ -14,7 +12,9 @@ public record AccountSession
     /// <summary>The time when the session expires.</summary>
     public DateTimeOffset Expiration { get; }
 
-    public AccountSession(string sessionToken, AccountType accountType, DateTimeOffset expiration)
+    public Guid AccountId { get; }
+
+    public AccountSession(string sessionToken, AccountType accountType, DateTimeOffset expiration, Guid accountId)
     {
         ArgumentNullException.ThrowIfNull(sessionToken);
         if (accountType == AccountType.Unknown)
@@ -23,6 +23,7 @@ public record AccountSession
         SessionToken = sessionToken;
         AccountType = accountType;
         Expiration = expiration;
+        AccountId = accountId;
     }
 
     /// <summary>Checks if the session has expired.</summary>

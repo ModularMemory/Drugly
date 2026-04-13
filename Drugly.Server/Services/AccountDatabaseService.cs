@@ -5,12 +5,12 @@ namespace Drugly.Server.Services;
 
 public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 {
-    public Task<AccountDetails> GetAccountById(Guid id)
+    public Task<AccountDatabaseEntry> GetAccountById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Task SetAccountById(Guid id, AccountDetails detailsDto)
+    public Task SetAccountById(Guid id, string email, AccountDatabaseEntry entry)
     {
         throw new NotImplementedException();
     }
