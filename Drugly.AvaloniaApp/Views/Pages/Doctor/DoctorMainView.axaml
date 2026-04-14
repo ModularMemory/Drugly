@@ -21,7 +21,8 @@
 
             <TextBlock Grid.Row="0"
                        Classes="H1"
-                       Text="Hello, Doctor!" />
+                       Text="Hello, Doctor!"
+                       TextWrapping="Wrap" />
 
             <Separator Grid.Row="1" />
         </Grid>
@@ -30,14 +31,18 @@
         <Grid Grid.Row="1">
             <StackPanel Spacing="16">
                 <Button Classes="Large Flat"
-                        Content="View Patients"
                         Command="{Binding ViewPatientsCommand}"
-                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt People}" />
+                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt People}">
+                    <TextBlock Classes="H2"
+                               Text="View Patients" />
+                </Button>
 
                 <Button Classes="Large Flat"
-                        Content="Prescribe Medications"
                         Command="{Binding PrescribeMedicationsCommand}"
-                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt Medication}" />
+                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt Medication}">
+                    <TextBlock Classes="H2"
+                               Text="Browse Medications" />
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

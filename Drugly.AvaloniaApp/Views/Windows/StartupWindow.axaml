@@ -26,8 +26,8 @@
 
                     <StackPanel Orientation="Vertical"
                                 Spacing="6">
-                        <TextBlock Text="Email:"
-                                   Classes="H4"
+                        <TextBlock Classes="H4"
+                                   Text="Email:"
                                    FontWeight="Bold" />
 
                         <TextBox Watermark="jdoe@example.com"
@@ -38,8 +38,8 @@
 
                     <StackPanel Orientation="Vertical"
                                 Spacing="6">
-                        <TextBlock Text="Password:"
-                                   Classes="H4"
+                        <TextBlock Classes="H4"
+                                   Text="Password:"
                                    FontWeight="Bold" />
 
                         <TextBox Watermark="***"
@@ -50,10 +50,12 @@
                     </StackPanel>
 
                     <Button Classes="Flat"
-                            Content="Login"
                             Width="100"
                             Command="{Binding LoginCommand}"
-                            Margin="0,20,0,0"/>
+                            Margin="0,20,0,0">
+                        <TextBlock Classes="H4"
+                                   Text="Login"/>
+                    </Button>
                 </StackPanel>
 
                 <!-- Settings button -->

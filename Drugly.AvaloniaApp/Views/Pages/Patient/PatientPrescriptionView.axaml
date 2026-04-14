@@ -26,13 +26,16 @@
             <Button Grid.Row="0"
                     Grid.Column="0"
                     Classes="Flat"
-                    Content="&lt;"
-                    Command="{Binding NavigateBackCommand}" />
+                    Command="{Binding NavigateBackCommand}">
+                <TextBlock Classes="H4"
+                           Text="&lt;" />
+            </Button>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Classes="H1"
-                       Text="Medication 1" />
+                       Text="Medication 1"
+                       TextWrapping="Wrap" />
 
             <Separator Grid.Row="1"
                        Grid.Column="0"
@@ -69,8 +72,8 @@
                         <!-- Card Number -->
                         <StackPanel Grid.Row="0"
                                     Spacing="2">
-                            <TextBlock Text="Cardholder Name"
-                                       Classes="H3" />
+                            <TextBlock Classes="H3"
+                                       Text="Cardholder Name"/>
                             <TextBox Text="{Binding CardHolder}"
                                      Watermark="J Doe" />
                         </StackPanel>
@@ -78,8 +81,8 @@
                         <!-- Card Number -->
                         <StackPanel Grid.Row="1"
                                     Spacing="2">
-                            <TextBlock Text="Card Number"
-                                       Classes="H3" />
+                            <TextBlock Classes="H3"
+                                       Text="Card Number" />
                             <TextBox Text="{Binding CardNumber}"
                                      Watermark="XXXX-XXXX-XXXX-XXXX" />
                         </StackPanel>
@@ -91,16 +94,16 @@
                             
                             <StackPanel Grid.Column="0"
                                         Spacing="2">
-                                <TextBlock Text="Expiry Date"
-                                           Classes="H4" />
+                                <TextBlock Classes="H4"
+                                           Text="Expiry Date" />
                                 <TextBox Text="{Binding CardExpiry}"
                                          Watermark="MM/YY" />
                             </StackPanel>
                             
                             <StackPanel Grid.Column="1"
                                         Spacing="2">
-                                <TextBlock Text="CVV"
-                                           Classes="H4" />
+                                <TextBlock Classes="H4"
+                                           Text="CVV" />
                                 <TextBox Text="{Binding CardCCV}"
                                          Watermark="000" />
                             </StackPanel>
@@ -109,9 +112,11 @@
                         
                         <Button Grid.Row="3"
                                 Classes="Flat"
-                                Content="Submit"
-                                Command="{Binding SubmitBillingInfoCommand}" />
-                        
+                                Command="{Binding SubmitBillingInfoCommand}">
+                            <TextBlock Classes="H4"
+                                       Text="Submit" />
+                        </Button>
+
                     </Grid>
                     
                 </TabItem>

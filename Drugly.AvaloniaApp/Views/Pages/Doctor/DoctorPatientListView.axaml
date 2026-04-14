@@ -24,13 +24,16 @@
             <Button Grid.Row="0"
                     Grid.Column="0"
                     Classes="Flat"
-                    Content="&lt;"
-                    Command="{Binding NavigateBackCommand}" />
+                    Command="{Binding NavigateBackCommand}">
+                <TextBlock Classes="H4"
+                           Text="&lt;" />
+            </Button>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Classes="H1"
-                       Text="Choose a Patient to View" />
+                       Text="Choose a Patient to View"
+                       TextWrapping="Wrap" />
 
             <Separator Grid.Row="1"
                        Grid.Column="0"
@@ -77,7 +80,8 @@
 
                                     <!-- Name + email -->
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock Classes="H3">
+                                        <TextBlock Classes="H3"
+                                                   TextWrapping="Wrap">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="FirstName" />
@@ -87,7 +91,8 @@
                                         </TextBlock>
 
                                         <TextBlock Classes="H3"
-                                                   Text="{Binding Email}" />
+                                                   Text="{Binding Email}"
+                                                   TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Grid>
                             </Button>

@@ -23,13 +23,16 @@
             <Button Grid.Row="0"
                     Grid.Column="0"
                     Classes="Flat"
-                    Content="&lt;"
-                    Command="{Binding NavigateBackCommand}" />
+                    Command="{Binding NavigateBackCommand}">
+                <TextBlock Classes="H4"
+                           Text="&lt;" />
+            </Button>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Classes="H1"
-                       Text="{Binding Medication.Name, StringFormat=Viewing {0}}" />
+                       Text="{Binding Medication.Name, StringFormat=Viewing {0}}"
+                       TextWrapping="Wrap" />
 
             <Separator Grid.Row="1"
                        Grid.Column="0"
@@ -53,8 +56,11 @@
                 </Viewbox>
 
                 <Button Classes="Flat"
-                        Content="Prescribe to Patient"
-                        Command="{Binding PrescribeToPatientCommand}" />
+                        Command="{Binding PrescribeToPatientCommand}">
+                    <TextBlock Classes="H4"
+                               Text="Prescribe to Patient"
+                               TextWrapping="Wrap" />
+                </Button>
             </StackPanel>
 
             <!-- Right content -->
@@ -62,10 +68,12 @@
                         Orientation="Vertical"
                         Spacing="16">
                 <TextBlock Classes="H2"
-                           Text="{Binding Medication.Name}" />
+                           Text="{Binding Medication.Name}"
+                           TextWrapping="Wrap" />
 
                 <TextBlock Classes="Body"
-                           Text="{Binding Medication.Description}" />
+                           Text="{Binding Medication.Description}"
+                           TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
     </Grid>

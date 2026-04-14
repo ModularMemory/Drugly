@@ -24,13 +24,16 @@
             <Button Grid.Row="0"
                     Grid.Column="0"
                     Classes="Flat"
-                    Content="&lt;"
-                    Command="{Binding NavigateBackCommand}" />
+                    Command="{Binding NavigateBackCommand}">
+                <TextBlock Classes="H4"
+                           Text="&lt;" />
+            </Button>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Classes="H1"
-                       Text="Choose a Medication to Prescribe" />
+                       Text="Choose a Medication to Prescribe"
+                       TextWrapping="Wrap" />
 
             <Separator Grid.Row="1"
                        Grid.Column="0"
@@ -78,9 +81,11 @@
                                     <!-- Name + desc -->
                                     <StackPanel Grid.Column="1">
                                         <TextBlock Classes="H3"
-                                                   Text="{Binding Name}" />
+                                                   Text="{Binding Name}"
+                                                   TextWrapping="Wrap" />
                                         <TextBlock Classes="Body"
-                                                   Text="{Binding Description}" />
+                                                   Text="{Binding Description}"
+                                                   TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Grid>
                             </Button>
