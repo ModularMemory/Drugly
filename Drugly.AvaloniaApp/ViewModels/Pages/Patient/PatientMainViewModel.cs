@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Avalonia.Collections;
+using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +11,7 @@ public partial class PatientMainViewModel : ViewModelBase
     private readonly IPageRouter _pageRouter;
     private readonly IServiceProvider _serviceProvider;
 
+    public AvaloniaList<PrescriptionModel> Prescriptions { get; } = [];
     public PatientMainViewModel(
         IPageRouter pageRouter, 
         IServiceProvider serviceProvider
@@ -24,4 +27,6 @@ public partial class PatientMainViewModel : ViewModelBase
         var vm = _serviceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
         _pageRouter.PushPage(vm);
     }
+    
+    
 }
