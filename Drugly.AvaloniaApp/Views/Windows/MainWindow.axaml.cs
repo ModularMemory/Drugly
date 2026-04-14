@@ -7,16 +7,16 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        InitializeComponent();
+
 #pragma warning disable CA1826
         var primaryScreen = Screens.Primary ?? Screens.All.FirstOrDefault();
 #pragma warning restore CA1826
 
         if (primaryScreen != null)
         {
-            Width = Math.Min(Width, primaryScreen.WorkingArea.Width);
-            Height = Math.Min(Height, primaryScreen.WorkingArea.Height);
+            Width = Math.Min(Width, primaryScreen.WorkingArea.Width / primaryScreen.Scaling * 0.95);
+            Height = Math.Min(Height, primaryScreen.WorkingArea.Height / primaryScreen.Scaling * 0.95);
         }
-
-        InitializeComponent();
     }
 }
