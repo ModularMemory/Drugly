@@ -5,12 +5,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
+/// <summary>Controller class to handle HTTP requests relating to account management</summary>
 public class AccountController : DruglyController
 {
+    /// <summary>The database service object</summary>
     private readonly IAccountDatabaseService _databaseService;
+
+    /// <summary>The authorization service object</summary>
     private readonly IAuthorizationService _authorizationService;
+
+    /// <summary>The logger object</summary>
     private readonly ILogger<AccountController>  _logger;
 
+    /// <summary>The constructor for the Account controller for including dependencies</summary>
+    /// <param name="databaseService">The database service</param>
+    /// <param name="logger">The logger</param>
+    /// <param name="authService">The authentication service</param>
     public AccountController(
         IAccountDatabaseService databaseService,
         ILogger<AccountController> logger,
@@ -22,7 +32,9 @@ public class AccountController : DruglyController
         _authorizationService = authService;
     }
 
-    // /Account/GetById
+    /// <summary>A route to get an account's details by the ID of the account</summary>
+    /// <param name="id">The ID of the account being fetched</param>
+    /// <returns>The response object with the account details in the body</returns>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -54,6 +66,9 @@ public class AccountController : DruglyController
         return Ok(response);
     }
 
+    /// <summary>A route to get the ID of an account by the account's associated email</summary>
+    /// <param name="email">The email being searched for</param>
+    /// <returns>A response object that contains the ID in the body</returns>
     [HttpGet]
     public async Task<IActionResult> GetIdByEmail([FromBody] string email)
     {
@@ -83,6 +98,11 @@ public class AccountController : DruglyController
         return Ok(response);
     }
 
+    /// <summary>A route to set new account details for a given user ID</summary>
+    /// <param name="id">The user ID being set</param>
+    /// <param name="details">The new details</param>
+    /// <param name="login">The login information for the account</param>
+    /// <returns>An Ok response if successful</returns>
     [HttpPost("{id:guid}")]
     public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails details, LoginRequest login)
     {
@@ -100,6 +120,9 @@ public class AccountController : DruglyController
         return Ok();
     }
 
+    /// <summary>A route for loggin in</summary>
+    /// <param name="loginRequest">An object that contains the login information</param>
+    /// <returns>A response object with the assigned session in the body</returns>
     [HttpGet]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
@@ -159,6 +182,8 @@ public class AccountController : DruglyController
         return Ok(response);
     }
 
+    /// <summary>A route that fetches all patient accounts in the database</summary>
+    /// <returns>A list of patient's account details</returns>
     [HttpGet("")]
     public async Task<IActionResult> GetPatientAccounts()
     {

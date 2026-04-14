@@ -1,5 +1,6 @@
 namespace Drugly.Server.Models;
 
+/// <summary>A container class that contains the details of an account as well as the account's credentials to be stored in the database</summary>
 public class AccountDatabaseEntry
 {
     public AccountDatabaseEntry(string password, AccountDetails accountDetails)
@@ -8,6 +9,13 @@ public class AccountDatabaseEntry
         AccountDetails = accountDetails;
     }
 
+    /// <summary>
+    /// The user's credentials
+    /// </summary>
     public string Password { get; set; }
+
+    /// <summary>
+    /// The container class for the account's details
+    /// </summary>
     public AccountDetails AccountDetails { get; set; }
 }

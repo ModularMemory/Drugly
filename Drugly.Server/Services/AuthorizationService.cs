@@ -46,6 +46,7 @@ public class AuthorizationService : IAuthorizationService
 
         if (accountSession.Expiration < DateTimeOffset.UtcNow)
         {
+            // TODO: delete the session if its expired
             return false;
         }
 

@@ -2,6 +2,7 @@ using Drugly.Server.Models;
 
 namespace Drugly.Server.Services.Interfaces;
 
+/// <summary>A service that manages the database of medications</summary>
 public interface IMedicationDatabaseService
 {
     /// <summary>Gets a medication object by its ID</summary>

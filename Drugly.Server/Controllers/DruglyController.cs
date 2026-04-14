@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
+/// <summary>An abstract controller for defining status codes</summary>
 [ApiController]
 [Route("[controller]/[action]")]
 public abstract class DruglyController : ControllerBase

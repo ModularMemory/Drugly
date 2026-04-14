@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
+/// <summary>A controller that handles route requests for prescriptions</summary>
 public class PrescriptionController : DruglyController
 {
     private readonly IPrescriptionDatabaseService _databaseService;

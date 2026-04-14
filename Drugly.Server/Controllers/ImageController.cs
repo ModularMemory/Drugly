@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Drugly.Server.Controllers;
 
+/// <summary>A controller that handles routes for managing images</summary>
 public class ImageController : DruglyController
 {
     private readonly IImageDatabaseService _databaseService;

@@ -2,6 +2,7 @@ using Drugly.Server.Models;
 
 namespace Drugly.Server.Services.Interfaces;
 
+/// <summary>A service that manages the database holding all the account information</summary>
 public interface IAccountDatabaseService {
     /// <summary>Gets account details from an ID</summary>
     /// <param name="id">The id you want to find</param>

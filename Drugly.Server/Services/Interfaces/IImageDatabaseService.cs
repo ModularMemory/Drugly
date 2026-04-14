@@ -2,6 +2,7 @@ using Drugly.Server.Models;
 
 namespace Drugly.Server.Services.Interfaces;
 
+/// <summary>A service that manages the database of images</summary>
 public interface IImageDatabaseService
 {
     /// <summary>Gets an image from an id, and sets the contentType</summary>
