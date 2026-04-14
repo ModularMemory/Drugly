@@ -12,162 +12,167 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPrescribeModalView"
              x:DataType="doctor:DoctorPrescribeModalViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorPrescribeModalViewModel}">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto"
-          RowSpacing="12">
-        <!-- Heading -->
-        <TextBlock Grid.Row="0"
-                   Classes="H1"
-                   Text="{Binding Medication.Name, StringFormat=Prescribing {0}, FallbackValue=Unknown Medication}"
-                   TextWrapping="Wrap" />
-
-        <Separator Grid.Row="1" />
-
-        <!-- First/last name -->
-        <Grid Row="2"
-              IsSharedSizeScope="True"
-              ColumnDefinitions="*,*"
-              ColumnSpacing="12">
-
-            <!-- First name -->
-            <StackPanel Grid.Column="0"
-                        Spacing="2">
-                <TextBlock Text="First Name"
-                           Classes="H3" />
-                <TextBox Text="{Binding PatientFirstName}"
-                         Watermark="John" />
-            </StackPanel>
-
-            <!-- Last name -->
-            <StackPanel Grid.Column="1"
-                        Spacing="2">
-                <TextBlock Text="Last Name"
-                           Classes="H3" />
-                <TextBox Text="{Binding PatientLastName}"
-                         Watermark="Doe" />
-            </StackPanel>
-        </Grid>
-
-        <!-- Email -->
-        <StackPanel Grid.Row="3"
-                    Spacing="2">
-            <TextBlock Text="Email"
-                       Classes="H3" />
-            <TextBox Text="{Binding PatientEmail}"
-                     Watermark="jdoe@example.com" />
-        </StackPanel>
-
-        <!-- Dosage -->
-        <StackPanel Grid.Row="4"
-                    Spacing="2">
-            <TextBlock Text="Dosage"
-                       Classes="H3" />
-
-            <WrapPanel Orientation="Horizontal"
-                       ItemSpacing="6"
-                       LineSpacing="4">
-                <TextBlock Classes="Body"
-                           Text="Take"
-                           VerticalAlignment="Center" />
-                <TextBox Text="{Binding DosagePerDay}"
-                         Watermark="0mg"
-                         VerticalAlignment="Center" />
-                <TextBlock Classes="Body"
-                           Text="every"
-                           VerticalAlignment="Center" />
-                <NumericUpDown Value="{Binding DaysBetweenDosage}"
-                               Watermark="0"
-                               Minimum="0"
-                               FormatString="N0"
-                               VerticalAlignment="Center" />
-                <TextBlock Classes="Body"
-                           Text="days for"
-                           VerticalAlignment="Center" />
-                <NumericUpDown Value="{Binding DaysPrescribed}"
-                               Watermark="1"
-                               Minimum="1"
-                               FormatString="N0"
-                               VerticalAlignment="Center" />
-                <TextBlock Classes="Body"
-                           Text="days."
-                           VerticalAlignment="Center" />
-            </WrapPanel>
-        </StackPanel>
-
-        <!-- Notes textbox -->
-        <Grid Row="5"
-              RowDefinitions="Auto,*"
-              RowSpacing="2"
-              IsSharedSizeScope="True">
+    <ScrollViewer  VerticalScrollBarVisibility="Auto"
+                   HorizontalScrollBarVisibility="Disabled"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   IsScrollInertiaEnabled="True">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto"
+              RowSpacing="12">
+            <!-- Heading -->
             <TextBlock Grid.Row="0"
-                       Classes="H3"
-                       Text="Additional notes" />
-            <TextBox Grid.Row="1"
-                     Text="{Binding PrescriptionNotes}"
-                     AcceptsReturn="True"
-                     Watermark="Additional usage notes"
-                     TextWrapping="Wrap"
-                     MaxLength="500" />
-        </Grid>
+                       Classes="H1"
+                       Text="{Binding Medication.Name, StringFormat=Prescribing {0}, FallbackValue=Unknown Medication}"
+                       TextWrapping="Wrap" />
 
-        <!-- Doctor signature -->
-        <StackPanel Grid.Row="6"
-                    Spacing="2">
-            <TextBlock Classes="H3"
-                       Text="Signature" />
+            <Separator Grid.Row="1" />
 
-            <suki:GlassCard Padding="10">
-                <StackPanel Spacing="6">
-                    <Panel>
-                        <controls:DrawableBitmap
-                            Name="SignatureBitmap"
-                            Background="White"
-                            Foreground="Black"
-                            StrokeThickness="2"
-                            Width="650"
-                            Height="150" />
+            <!-- First/last name -->
+            <Grid Row="2"
+                  IsSharedSizeScope="True"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="12">
 
-                        <Separator Margin="10,50,10,0"
-                                   IsHitTestVisible="False"
-                                   Foreground="Gray"/>
-                    </Panel>
-
-                    <!-- This sucks, but the alternative is figuring out how to make
-                    SignatureBitmap._bitmap an image source, and I'm tired -->
-                    <Button Classes="Discrete"
-                            Command="{Binding #SignatureBitmap.ClearCommand}"
-                            suki:ButtonExtensions.Icon="{icons:MaterialIconExt Close}">
-                        <TextBlock Classes="H4"
-                                   Text="Clear" />
-                    </Button>
+                <!-- First name -->
+                <StackPanel Grid.Column="0"
+                            Spacing="2">
+                    <TextBlock Text="First Name"
+                               Classes="H3" />
+                    <TextBox Text="{Binding PatientFirstName}"
+                             Watermark="John" />
                 </StackPanel>
-            </suki:GlassCard>
-        </StackPanel>
 
-        <!-- Error text -->
-        <TextBlock Grid.Row="7"
-                   Classes="Body Danger"
-                   TextAlignment="Center"
-                   Text="{Binding ErrorText}" />
+                <!-- Last name -->
+                <StackPanel Grid.Column="1"
+                            Spacing="2">
+                    <TextBlock Text="Last Name"
+                               Classes="H3" />
+                    <TextBox Text="{Binding PatientLastName}"
+                             Watermark="Doe" />
+                </StackPanel>
+            </Grid>
 
-        <!-- Cancel/confirm buttons -->
-        <StackPanel Grid.Row="8"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="16">
-            <Button Classes="Danger"
-                    Command="{Binding CancelCommand}">
-                <TextBlock Classes="H4"
-                           Text="Cancel" />
-            </Button>
+            <!-- Email -->
+            <StackPanel Grid.Row="3"
+                        Spacing="2">
+                <TextBlock Text="Email"
+                           Classes="H3" />
+                <TextBox Text="{Binding PatientEmail}"
+                         Watermark="jdoe@example.com" />
+            </StackPanel>
 
-            <Button Classes="Flat"
-                    Command="{Binding CreatePrescriptionCommand}"
-                    CommandParameter="{Binding #SignatureBitmap}"
-                    suki:ButtonExtensions.ShowProgress="{Binding IsLoading}">
-                <TextBlock Classes="H4"
-                           Text="Create Prescription" />
-            </Button>
-        </StackPanel>
+            <!-- Dosage -->
+            <StackPanel Grid.Row="4"
+                        Spacing="2">
+                <TextBlock Text="Dosage"
+                           Classes="H3" />
 
-    </Grid>
+                <WrapPanel Orientation="Horizontal"
+                           ItemSpacing="6"
+                           LineSpacing="4">
+                    <TextBlock Classes="Body"
+                               Text="Take"
+                               VerticalAlignment="Center" />
+                    <TextBox Text="{Binding DosagePerDay}"
+                             Watermark="0mg"
+                             VerticalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="every"
+                               VerticalAlignment="Center" />
+                    <NumericUpDown Value="{Binding DaysBetweenDosage}"
+                                   Watermark="0"
+                                   Minimum="0"
+                                   FormatString="N0"
+                                   VerticalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="days for"
+                               VerticalAlignment="Center" />
+                    <NumericUpDown Value="{Binding DaysPrescribed}"
+                                   Watermark="1"
+                                   Minimum="1"
+                                   FormatString="N0"
+                                   VerticalAlignment="Center" />
+                    <TextBlock Classes="Body"
+                               Text="days."
+                               VerticalAlignment="Center" />
+                </WrapPanel>
+            </StackPanel>
+
+            <!-- Notes textbox -->
+            <Grid Row="5"
+                  RowDefinitions="Auto,*"
+                  RowSpacing="2"
+                  IsSharedSizeScope="True">
+                <TextBlock Grid.Row="0"
+                           Classes="H3"
+                           Text="Additional notes" />
+                <TextBox Grid.Row="1"
+                         Text="{Binding PrescriptionNotes}"
+                         AcceptsReturn="True"
+                         Watermark="Additional usage notes"
+                         TextWrapping="Wrap"
+                         MaxLength="500" />
+            </Grid>
+
+            <!-- Doctor signature -->
+            <StackPanel Grid.Row="6"
+                        Spacing="2">
+                <TextBlock Classes="H3"
+                           Text="Signature" />
+
+                <suki:GlassCard Padding="10">
+                    <StackPanel Spacing="6">
+                        <Panel>
+                            <controls:DrawableBitmap
+                                Name="SignatureBitmap"
+                                Background="White"
+                                Foreground="Black"
+                                StrokeThickness="2"
+                                Width="650"
+                                Height="150" />
+
+                            <Separator Margin="10,50,10,0"
+                                       IsHitTestVisible="False"
+                                       Foreground="Gray" />
+                        </Panel>
+
+                        <!-- This sucks, but the alternative is figuring out how to make
+                    SignatureBitmap._bitmap an image source, and I'm tired -->
+                        <Button Classes="Discrete"
+                                Command="{Binding #SignatureBitmap.ClearCommand}"
+                                suki:ButtonExtensions.Icon="{icons:MaterialIconExt Close}">
+                            <TextBlock Classes="H4"
+                                       Text="Clear" />
+                        </Button>
+                    </StackPanel>
+                </suki:GlassCard>
+            </StackPanel>
+
+            <!-- Error text -->
+            <TextBlock Grid.Row="7"
+                       Classes="Body Danger"
+                       TextAlignment="Center"
+                       Text="{Binding ErrorText}" />
+
+            <!-- Cancel/confirm buttons -->
+            <StackPanel Grid.Row="8"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="16">
+                <Button Classes="Danger"
+                        Command="{Binding CancelCommand}">
+                    <TextBlock Classes="H4"
+                               Text="Cancel" />
+                </Button>
+
+                <Button Classes="Flat"
+                        Command="{Binding CreatePrescriptionCommand}"
+                        CommandParameter="{Binding #SignatureBitmap}"
+                        suki:ButtonExtensions.ShowProgress="{Binding IsLoading}">
+                    <TextBlock Classes="H4"
+                               Text="Create Prescription" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

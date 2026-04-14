@@ -50,7 +50,6 @@
                     </StackPanel>
 
                     <Button Classes="Flat"
-                            Width="100"
                             Command="{Binding LoginCommand}"
                             Margin="0,20,0,0">
                         <TextBlock Classes="H4"
