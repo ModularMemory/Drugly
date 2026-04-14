@@ -49,6 +49,13 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase
         _pageRouter.PopPage();
     }
     
+    [RelayCommand]
+    private void SubmitBillingInfo()
+    {
+        // Do something here idk how this is handled :3c
+        _pageRouter.PopPage();
+    }
+    
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]

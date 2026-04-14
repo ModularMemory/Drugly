@@ -59,9 +59,10 @@
                     
                 </TabItem>
                     
-                <TabItem Header="Billing Information">
+                <TabItem Header="Billing Information" 
+                         IsEnabled="False">
                     
-                    <Grid RowDefinitions="Auto,Auto,Auto"
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           RowSpacing="16">
                         
                         <!-- Card Number -->
@@ -102,9 +103,13 @@
                                 <TextBox Text="{Binding CardCCV}"
                                          Watermark="000" />
                             </StackPanel>
+                            
                         </Grid>
                         
-                            
+                        <Button Grid.Row="3"
+                                Classes="Flat"
+                                Content="Submit"
+                                Command="{Binding SubmitBillingInfoCommand}" />
                         
                     </Grid>
                     
