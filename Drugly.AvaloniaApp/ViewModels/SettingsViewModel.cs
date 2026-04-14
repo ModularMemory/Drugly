@@ -4,6 +4,7 @@ using Drugly.AvaloniaApp.Services.Interfaces;
 
 namespace Drugly.AvaloniaApp.ViewModels;
 
+/// <summary>VM for the settings flyout of the application.</summary>
 public partial class SettingsViewModel : ViewModelBase
 {
     private readonly IFontSizeService _fontSizeService;

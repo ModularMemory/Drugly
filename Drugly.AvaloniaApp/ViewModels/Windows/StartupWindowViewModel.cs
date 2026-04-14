@@ -32,7 +32,7 @@ public partial class StartupWindowViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
-    [LoginKey]
+    [Password]
     public partial string? PasswordText { get; set; }
 
     [ObservableProperty]

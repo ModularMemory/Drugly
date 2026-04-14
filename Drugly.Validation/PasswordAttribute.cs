@@ -3,9 +3,9 @@ using Drugly.Validation.Common;
 
 namespace Drugly.Validation;
 
-/// <summary>Validates if a variable follows the format of login keys.</summary>
+/// <summary>Validates if a variable follows the format of passwords.</summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public class LoginKeyAttribute : ValidationAttribute
+public class PasswordAttribute : ValidationAttribute
 {
     private const int MIN_LENGTH = 2;
 
