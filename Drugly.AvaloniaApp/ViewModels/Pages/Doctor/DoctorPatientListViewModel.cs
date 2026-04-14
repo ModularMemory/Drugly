@@ -37,7 +37,7 @@ public partial class DoctorPatientListViewModel : ViewModelBase
     [RelayCommand]
     private void ViewPatient(object? dataContext)
     {
-        var vm = _serviceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
+        var vm = _serviceProvider.GetRequiredService<Patient.PatientPrescriptionDetailsViewModel>();
         vm.Patient = dataContext as PatientModel;
         _pageRouter.PushPage(vm);
     }

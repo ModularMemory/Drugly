@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using JetBrains.Annotations;
 using SukiUI.Controls;
 
@@ -17,16 +16,5 @@ public partial class StartupWindow : Window
     public StartupWindow(SukiDialogHost sukiDialogHost) : this()
     {
         MainHost.Hosts = [sukiDialogHost];
-    }
-
-    /// <summary>Allows moving the window by clicking and dragging anywhere.</summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The pointer even args.</param>
-    private void SukiMainHost_OnPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.Properties.IsLeftButtonPressed)
-        {
-            BeginMoveDrag(e);
-        }
     }
 }

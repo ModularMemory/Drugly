@@ -45,34 +45,35 @@
         </Border>
     </Design.PreviewWith>
     
-    <Style Selector="TextBlock">
+    <Style Selector=":is(TextBlock)">
+        <Setter Property="FontSize" Value="14" />
 
         <Style Selector="^.Body">
             <Setter Property="FontSize" Value="14" />
         </Style>
 
         <Style Selector="^.H1">
-            <Setter Property="FontSize" Value="32" />
+            <Setter Property="FontSize" Value="28" />
         </Style>
 
         <Style Selector="^.H2">
-            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontSize" Value="21" />
         </Style>
 
         <Style Selector="^.H3">
-            <Setter Property="FontSize" Value="18.7" />
+            <Setter Property="FontSize" Value="16.4" />
         </Style>
 
         <Style Selector="^.H4">
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontSize" Value="14" />
         </Style>
 
         <Style Selector="^.H5">
-            <Setter Property="FontSize" Value="13.3" />
+            <Setter Property="FontSize" Value="11.6" />
         </Style>
 
         <Style Selector="^.H6">
-            <Setter Property="FontSize" Value="10.7" />
+            <Setter Property="FontSize" Value="9.4" />
         </Style>
 
         <Style Selector="^.Danger">

@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:viewModels="clr-namespace:Drugly.AvaloniaApp.ViewModels"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             mc:Ignorable="d"
+             x:Class="Drugly.AvaloniaApp.Views.SettingsView"
+             x:DataType="viewModels:SettingsViewModel"
+             d:DataContext="{x:Static design:DesignData.SettingsViewModel}">
+    <Panel>
+        <!-- Shadow -->
+        <Border Margin="5"
+                BoxShadow="{DynamicResource SukiPopupShadow}"
+                CornerRadius="20" />
+
+        <!-- Flyout Content -->
+        <Border Margin="5"
+                Background="{DynamicResource SukiCardBackground}"
+                BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                BorderThickness="1"
+                ClipToBounds="True"
+                CornerRadius="15">
+            <suki:GlassCard Margin="10">
+                <StackPanel>
+                    <TextBlock Classes="H3"
+                               Text="Font size" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Slider Width="200"
+                                Value="{Binding FontSize}"
+                                Minimum="{Binding MinFontSize}"
+                                Maximum="{Binding MaxFontSize}"
+                                Ticks="{Binding FontSizeTicks}"
+                                TickPlacement="BottomRight"
+                                IsSnapToTickEnabled="True" />
+
+                        <TextBlock Classes="Body"
+                                   Text="{Binding FontSize}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </suki:GlassCard>
+        </Border>
+    </Panel>
+</UserControl>

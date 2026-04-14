@@ -5,6 +5,7 @@
         xmlns:suki="https://github.com/kikipoulet/SukiUI"
         xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
         xmlns:windows="clr-namespace:Drugly.AvaloniaApp.ViewModels.Windows"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d"
         Width="600" Height="350"
         MinWidth="600" MinHeight="350"
@@ -15,29 +16,58 @@
         Icon="/Assets/Drugly.ico"
         Title="{Binding Title}">
     <suki:SukiMainHost Name="MainHost"
-                       BackgroundAnimationEnabled="False"
-                       PointerPressed="SukiMainHost_OnPointerPressed">
+                       BackgroundAnimationEnabled="False">
         <suki:BusyArea IsBusy="{Binding LoggingIn}">
-            <StackPanel Margin="10"
-                        Spacing="10"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
+            <Panel>
+                <StackPanel Margin="10"
+                            Spacing="20"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
 
-                <TextBlock Text="Email:"
-                           Classes="H4"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Vertical"
+                                Spacing="6">
+                        <TextBlock Text="Email:"
+                                   Classes="H4"
+                                   FontWeight="Bold" />
 
-                <TextBox Watermark="Key..."
-                         Text="{Binding KeyText, Mode=TwoWay}"
-                         Width="250"
-                         suki:TextBoxExtensions.AddDeleteButton="True" />
+                        <TextBox Watermark="jdoe@example.com"
+                                 Text="{Binding EmailText}"
+                                 Width="250"
+                                 suki:TextBoxExtensions.AddDeleteButton="True" />
+                    </StackPanel>
 
-                <Button Classes="Flat"
-                        Content="Login"
-                        Width="100"
-                        Command="{Binding LoginCommand}" />
-            </StackPanel>
+                    <StackPanel Orientation="Vertical"
+                                Spacing="6">
+                        <TextBlock Text="Password:"
+                                   Classes="H4"
+                                   FontWeight="Bold" />
+
+                        <TextBox Watermark="***"
+                                 Text="{Binding PasswordText}"
+                                 PasswordChar="*"
+                                 Width="250"
+                                 suki:TextBoxExtensions.AddDeleteButton="True" />
+                    </StackPanel>
+
+                    <Button Classes="Flat"
+                            Content="Login"
+                            Width="100"
+                            Command="{Binding LoginCommand}"
+                            Margin="0,20,0,0"/>
+                </StackPanel>
+
+                <!-- Settings button -->
+                <Button Classes="Basic"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt Cog}">
+                    <Button.Flyout>
+                        <Flyout>
+                            <ContentControl Content="{Binding SettingsViewModel}" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Panel>
         </suki:BusyArea>
     </suki:SukiMainHost>
 </Window>

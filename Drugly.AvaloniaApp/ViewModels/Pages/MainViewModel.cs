@@ -18,14 +18,19 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial ViewModelBase? ContentViewModel { get; set; }
 
+    [ObservableProperty]
+    public partial ViewModelBase SettingsViewModel { get; set; }
+
     public MainViewModel(
         IServiceProvider serviceProvider,
         IPageRouter pageRouter,
         IAccountSessionService accountSessionService,
+        SettingsViewModel settingsViewModel,
         ILogger logger
     )
     {
         _pageRouter = pageRouter;
+        SettingsViewModel = settingsViewModel;
         _logger = logger;
 
         _pageRouter.ResetPageHistory();

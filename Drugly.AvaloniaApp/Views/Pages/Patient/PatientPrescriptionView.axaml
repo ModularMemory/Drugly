@@ -5,9 +5,10 @@
              xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages"
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:patient="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Patient"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.PatientPrescriptionView"
-             x:DataType="doctor:PatientPrescriptionDetailsViewModel"
+             x:DataType="patient:PatientPrescriptionDetailsViewModel"
              d:DataContext="{x:Static design:DesignData.PatientPrescriptionDetailsViewModel}">
 
 

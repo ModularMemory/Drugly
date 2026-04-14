@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;
@@ -39,7 +38,6 @@ public sealed class AccountSessionService : IAccountSessionService
         ArgumentNullException.ThrowIfNull(session);
 
         Session = session;
-        // TODO: Store this in a config file somewhere to restore sessions on future startup
     }
 
     public bool TryAuthorizeClient(HttpClient httpClient)

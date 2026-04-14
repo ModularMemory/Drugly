@@ -11,8 +11,9 @@ public interface ILoginService
     /// <summary>Invoked when a call is <see cref="TryLoginAsync"/> is not successful.</summary>
     event EventHandler<string>? LoginError;
 
-    /// <summary>Attempts to log in with the server using a given <paramref name="authKey"/>.</summary>
-    /// <param name="authKey">The authentication key.</param>
+    /// <summary>Attempts to log in with the server using a given <paramref name="email"/> and <paramref name="password"/>.</summary>
+    /// <param name="email">The email.</param>
+    /// <param name="password">The password.</param>
     /// <returns>A task that can be awaited to complete the login operation.</returns>
-    Task TryLoginAsync(string? authKey);
+    Task TryLoginAsync(string email, string password);
 }

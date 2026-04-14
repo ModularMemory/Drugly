@@ -1,8 +1,5 @@
-using System.Diagnostics;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
-using Drugly.Validation;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
@@ -39,18 +36,9 @@ public sealed class LoginService : ILoginService
         LoginError?.Invoke(this, e);
     }
 
-    public async Task TryLoginAsync(string? authKey)
+    public async Task TryLoginAsync(string email, string password)
     {
-        // Locally ensure it's valid before trying an API request
-        if (!ValidatorCache<LoginKeyAttribute>.IsValid(authKey, out var message))
-        {
-            await DelayService.FakeDelay();
-            OnLoginError($"Bad or invalid login information: {message}");
-            return;
-        }
-
-        Debug.Assert(authKey != null);
-        var session = GetAccountSession(authKey);
+        var session = await GetAccountSession(email, password);
         if (session is null)
         {
             OnLoginError("Failed to fetch account data");
@@ -61,14 +49,14 @@ public sealed class LoginService : ILoginService
         OnLoginSuccessful(session.AccountType);
     }
 
-    private AccountSession? GetAccountSession(string authKey)
+    private async Task<AccountSession?> GetAccountSession(string email, string password)
     {
         var client = _httpClientFactory.CreateClient(nameof(ILoginService));
 
         // TODO: API request here
         // var accountType = AccountType.Patient;
         var accountType = Random.Shared.GetItems([AccountType.Patient, AccountType.Doctor], 1)[0];
-        var sessionToken = authKey;
+        var sessionToken = password;
         var expiration = DateTimeOffset.Now.AddDays(1);
 
         return new AccountSession(sessionToken, accountType, expiration, default);
