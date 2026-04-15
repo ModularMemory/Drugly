@@ -1,5 +1,7 @@
+using System.Net.Http.Json;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
+using Drugly.DTO;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
@@ -21,10 +23,22 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         _logger = logger;
     }
 
-    public MedicationModel GetMedication(Guid id)
+    public async Task<Medication> GetMedication(Guid id)
     {
         var client = _httpClientFactory.CreateClient(nameof(IMedicationDetailsService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            throw new IOException();
+        }
 
-        throw new NotImplementedException();
+        using var res = await client.GetAsync($"/Medication/GetById/{id}");
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<Medication>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while fetching info for medication {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+        }
+
+        return resBody!.Data!;
     }
 }

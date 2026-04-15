@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;
@@ -21,13 +22,44 @@ public sealed class AccountDetailsService : IAccountDetailsService
         _logger = logger;
     }
 
-    public AccountDetails GetAccountById(Guid id)
+    public async Task<AccountDetails> GetAccountById(Guid id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient(nameof(IAccountDetailsService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            throw new IOException();
+        }
+
+        using var res = await client.GetAsync($"/Account/GetById/{id}");
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while fetching info for account {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+        }
+
+        return resBody!.Data!;
     }
 
-    public AccountDetails GetAccountByEmail(string email)
+    public async Task<AccountDetails> GetAccountByEmail(string email)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient(nameof(IAccountDetailsService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            throw new IOException();
+        }
+
+        using var req = new HttpRequestMessage(HttpMethod.Get, "/Account/GetByEmail/");
+        req.Content = new StringContent(email);
+
+        using var res = await client.SendAsync(req);
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while fetching info for account {Email} in: {Code} - {Message}", email, res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+        }
+
+        return resBody!.Data!;
     }
 }

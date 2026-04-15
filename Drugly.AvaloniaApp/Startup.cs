@@ -157,9 +157,9 @@ public static class Startup
                 {
                     BackoffType = DelayBackoffType.Exponential,
                     UseJitter = true,
-                    MaxRetryAttempts = 6
+                    MaxRetryAttempts = 3
                 })
-                .AddTimeout(TimeSpan.FromSeconds(15));
+                .AddTimeout(TimeSpan.FromSeconds(10));
         }
     }
 }

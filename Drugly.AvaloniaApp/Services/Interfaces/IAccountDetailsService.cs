@@ -11,12 +11,12 @@ public interface IAccountDetailsService
     /// <returns>The found account.</returns>
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
-    AccountDetails GetAccountById(Guid id);
+    Task<AccountDetails> GetAccountById(Guid id);
 
     /// <summary>Gets an account by a given email.</summary>
     /// <param name="email">The email of the account.</param>
     /// <returns>The found account.</returns>
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
-    AccountDetails GetAccountByEmail([EmailAddress] string email);
+    Task<AccountDetails> GetAccountByEmail([EmailAddress] string email);
 }

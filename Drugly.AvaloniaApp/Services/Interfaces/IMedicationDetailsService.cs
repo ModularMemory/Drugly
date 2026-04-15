@@ -1,4 +1,5 @@
 using Drugly.AvaloniaApp.Models;
+using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
@@ -10,5 +11,5 @@ public interface IMedicationDetailsService
     /// <returns>The found medication.</returns>
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
-    MedicationModel GetMedication(Guid id);
+    Task<Medication> GetMedication(Guid id);
 }
