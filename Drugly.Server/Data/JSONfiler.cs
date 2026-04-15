@@ -1,8 +1,9 @@
-namespace Drugly.Server.Models;
-using Drugly.DTO;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Drugly.DTO;
+
+namespace Drugly.Server.Data;
+
 public static class JsonWritePrescription
 {
     private static readonly JsonSerializerOptions _options = new()
@@ -13,6 +14,12 @@ public static class JsonWritePrescription
 
     public static void SavePrescription(Prescription prescription, string filePath)
     {
+        var directoryName = Path.GetDirectoryName(filePath)!;
+        if (!Directory.Exists(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
+
         var json = JsonSerializer.Serialize(prescription, _options);
         File.WriteAllText(filePath, json);
     }
@@ -46,6 +53,12 @@ public static class JsonWriteMedication
 
     public static void SavePrescription(Medication medication, string filePath)
     {
+        var directoryName = Path.GetDirectoryName(filePath)!;
+        if (!Directory.Exists(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
+
         var json = JsonSerializer.Serialize(medication, _options);
         File.WriteAllText(filePath, json);
     }
@@ -79,6 +92,12 @@ public static class JsonWriteAccountDetails
 
     public static void SavePrescription(AccountDetails accountdetails, string filePath)
     {
+        var directoryName = Path.GetDirectoryName(filePath)!;
+        if (!Directory.Exists(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
+
         var json = JsonSerializer.Serialize(accountdetails, _options);
         File.WriteAllText(filePath, json);
     }
@@ -112,6 +131,12 @@ public static class JsonWriteAccountDatabaseEntry
 
     public static void SaveAccount(AccountCredentials entry, string filePath)
     {
+        var directoryName = Path.GetDirectoryName(filePath)!;
+        if (!Directory.Exists(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
+
         var json = JsonSerializer.Serialize(entry, _options);
         File.WriteAllText(filePath, json);
     }
