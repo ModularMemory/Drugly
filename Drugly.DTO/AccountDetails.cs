@@ -1,6 +1,4 @@
-using Drugly.DTO;
-
-namespace Drugly.Server.Models;
+namespace Drugly.DTO;
 
 /// <summary>A container class for all the information relating to an account</summary>
 public class AccountDetails

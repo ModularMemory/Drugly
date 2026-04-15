@@ -1,4 +1,4 @@
-namespace Drugly.Server.Models;
+namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a medication</summary>
 public class Medication

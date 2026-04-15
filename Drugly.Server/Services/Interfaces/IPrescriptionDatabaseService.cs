@@ -1,3 +1,4 @@
+using Drugly.DTO;
 using Drugly.Server.Models;
 
 namespace Drugly.Server.Services.Interfaces;

@@ -1,6 +1,4 @@
-using Drugly.DTO;
-
-namespace Drugly.Server.Models;
+namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a prescription</summary>
 public sealed record Prescription
