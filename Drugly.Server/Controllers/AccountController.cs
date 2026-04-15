@@ -123,7 +123,7 @@ public class AccountController : DruglyController
     /// <summary>A route for loggin in</summary>
     /// <param name="loginRequest">An object that contains the login information</param>
     /// <returns>A response object with the assigned session in the body</returns>
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         ApiResponse<AccountSession> response = new ApiResponse<AccountSession>();
@@ -180,6 +180,19 @@ public class AccountController : DruglyController
 
         _logger.LogInformation("Login successful");
         return Ok(response);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Logout([FromBody] AccountSession accountSession)
+    {
+        if (!_authorizationService.DeleteSession(accountSession))
+        {
+            _logger.LogError("Logout failed");
+            return BadRequest(ApiResponse.Error("Internal Server Error"));
+        }
+
+        _logger.LogInformation("Logout successful");
+        return Ok();
     }
 
     /// <summary>A route that fetches all patient accounts in the database</summary>

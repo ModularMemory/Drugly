@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using Drugly.DTO;
@@ -24,6 +25,17 @@ public class AuthorizationService : IAuthorizationService
         Authorizations.AddOrUpdate(token, _ => session, (_, __) => session);
 
         return session;
+    }
+
+    public bool DeleteSession(AccountSession session)
+    {
+        if (!Authorizations.TryGetValue(session.SessionToken, out var accountSession)
+            || session != accountSession)
+        {
+            return false;
+        }
+
+        return Authorizations.TryRemove(session.SessionToken, out _);
     }
 
     public bool IsUserAuthorized(IHeaderDictionary headers, AccountType allowedType)

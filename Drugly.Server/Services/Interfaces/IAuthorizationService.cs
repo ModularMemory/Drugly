@@ -12,6 +12,11 @@ public interface IAuthorizationService
     /// <returns>An account session object to the user</returns>
     AccountSession CreateSession(AccountDetails accountDetails);
 
+    /// <summary>Deletes the session for a safe log out</summary>
+    /// <param name="session">The user's session to be deleted</param>
+    /// <returns>A bool to represent success or failure</returns>
+    bool DeleteSession(AccountSession session);
+
     /// <summary>Checks for a user's token in the dictionary to get their session and determines if they're authorized for this request</summary>
     /// <param name="headers">The header of the request that has the token</param>
     /// <param name="allowedType">The account type permitted to make this request</param>
