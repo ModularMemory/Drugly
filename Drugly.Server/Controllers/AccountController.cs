@@ -48,7 +48,7 @@ public class AccountController : DruglyController
 
         try
         {
-            AccountDatabaseEntry entry = await _databaseService.GetAccountById(id);
+            AccountCredentials entry = await _databaseService.GetAccountById(id);
             response.Data = entry.AccountDetails;
             Response.Headers.ContentType = "application/json";
         }
@@ -106,7 +106,7 @@ public class AccountController : DruglyController
     [HttpPost("{id:guid}")]
     public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails details, LoginRequest login)
     {
-        AccountDatabaseEntry entry = new AccountDatabaseEntry(login.Password, details);
+        AccountCredentials entry = new AccountCredentials(login.Password, details);
         try
         {
             await _databaseService.SetAccountById(id, login.Email, entry);
@@ -128,7 +128,7 @@ public class AccountController : DruglyController
     {
         ApiResponse<AccountSession> response = new ApiResponse<AccountSession>();
         Guid id;
-        AccountDatabaseEntry entry;
+        AccountCredentials entry;
         // get the ID from the email
         try
         {
@@ -183,9 +183,10 @@ public class AccountController : DruglyController
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Logout([FromBody] AccountSession accountSession)
+    public async Task<IActionResult> Logout()
     {
-        if (!_authorizationService.DeleteSession(accountSession))
+
+        if (!_authorizationService.DeleteSession(Request.Headers))
         {
             _logger.LogError("Logout failed");
             return BadRequest(ApiResponse.Error("Internal Server Error"));

@@ -13,9 +13,9 @@ public interface IAuthorizationService
     AccountSession CreateSession(AccountDetails accountDetails);
 
     /// <summary>Deletes the session for a safe log out</summary>
-    /// <param name="session">The user's session to be deleted</param>
+    /// <param name="headers">The headers that contain the user's token</param>
     /// <returns>A bool to represent success or failure</returns>
-    bool DeleteSession(AccountSession session);
+    bool DeleteSession(IHeaderDictionary headers);
 
     /// <summary>Checks for a user's token in the dictionary to get their session and determines if they're authorized for this request</summary>
     /// <param name="headers">The header of the request that has the token</param>

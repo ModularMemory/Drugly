@@ -110,7 +110,7 @@ public static class JsonWriteAccountDatabaseEntry
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static void SaveAccount(AccountDatabaseEntry entry, string filePath)
+    public static void SaveAccount(AccountCredentials entry, string filePath)
     {
         var json = JsonSerializer.Serialize(entry, _options);
         File.WriteAllText(filePath, json);
@@ -125,12 +125,12 @@ public static class JsonReadAccountDatabaseEntry
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static AccountDatabaseEntry? LoadAccount(string filePath)
+    public static AccountCredentials? LoadAccount(string filePath)
     {
         if (!File.Exists(filePath))
             return null;
 
         var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<AccountDatabaseEntry>(json, _options);
+        return JsonSerializer.Deserialize<AccountCredentials>(json, _options);
     }
 }

@@ -6,17 +6,17 @@ namespace Drugly.Server.Services;
 
 public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 {
-    private readonly Dictionary<Guid, AccountDatabaseEntry> _accounts = new();
+    private readonly Dictionary<Guid, AccountCredentials> _accounts = new();
     private readonly Dictionary<string, Guid> _emailToId = new();
 
     private readonly string _folderPath = "Accounts";
-    public Task<AccountDatabaseEntry> GetAccountById(Guid id)
+    public Task<AccountCredentials> GetAccountById(Guid id)
     {
         _accounts.TryGetValue(id, out var account);
         return Task.FromResult(account);
     }
 
-    public Task SetAccountById(Guid id, string email, AccountDatabaseEntry entry)
+    public Task SetAccountById(Guid id, string email, AccountCredentials entry)
     {
         _accounts[id] = entry;
         _emailToId[email] = id;

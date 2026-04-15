@@ -10,14 +10,14 @@ public interface IAccountDatabaseService {
     /// <returns>details of the account associated with the id</returns>
     /// <exception cref="AccountNotFoundException">Thrown when an account is not found</exception>
     /// <exception cref="IOException">Thrown when there's an error</exception>
-    Task<AccountDatabaseEntry> GetAccountById(Guid id);
+    Task<AccountCredentials> GetAccountById(Guid id);
 
     /// <summary>Sets the account details for a given ID</summary>
     /// <param name="id">The ID you want to save the details to</param>
     /// <param name="detailsDto">The AccountDetails object being saved to the ID</param>
     /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown on error</exception>
-    Task SetAccountById(Guid id, string email, AccountDatabaseEntry entry);
+    Task SetAccountById(Guid id, string email, AccountCredentials entry);
 
     /// <summary>Gets the ID of an account by searching for the associated email</summary>
     /// <param name="email">the email being searched for</param>
