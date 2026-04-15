@@ -14,7 +14,8 @@ public interface IAccountDatabaseService {
 
     /// <summary>Sets the account details for a given ID</summary>
     /// <param name="id">The ID you want to save the details to</param>
-    /// <param name="detailsDto">The AccountDetails object being saved to the ID</param>
+    /// <param name="email">The email associated with the account for lookup purposes</param>
+    /// <param name="entry">The account information bundle being saved</param>
     /// <returns>returns A task that can be awaited</returns>
     /// <exception cref="IOException">Thrown on error</exception>
     Task SetAccountById(Guid id, string email, AccountCredentials entry);

@@ -104,12 +104,11 @@ public class AccountController : DruglyController
     /// <param name="login">The login information for the account</param>
     /// <returns>An Ok response if successful</returns>
     [HttpPost("{id:guid}")]
-    public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails details, LoginRequest login)
+    public async Task<IActionResult> SetById(Guid id, [FromBody] AccountCredentials accountCredentials)
     {
-        AccountCredentials entry = new AccountCredentials(login.Password, details);
         try
         {
-            await _databaseService.SetAccountById(id, login.Email, entry);
+            await _databaseService.SetAccountById(id, accountCredentials.AccountDetails.Email, accountCredentials);
         }
         catch (Exception ex)
         {
