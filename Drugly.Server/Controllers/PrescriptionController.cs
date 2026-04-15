@@ -93,6 +93,8 @@ public class PrescriptionController : DruglyController
     [HttpPut("{stateInt:int}")]
     public async Task<IActionResult> AdvanceState(int stateInt, [FromBody] Prescription prescription)
     {
+        ApiResponse<Prescription> response = new ApiResponse<Prescription>();
+
         var state = (PrescriptionState)stateInt;
         if (!Enum.IsDefined(state) || state is PrescriptionState.Unknown)
         {
@@ -107,15 +109,27 @@ public class PrescriptionController : DruglyController
         catch (ArgumentOutOfRangeException ex)
         {
             _logger.LogError(ex, "Desired State {state} Not Recognized", state);
-            return InternalServerError(ApiResponse.Error("Invalid state")); // probably not the right error
+            return BadRequest(ApiResponse.Error("Invalid state"));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed To Progress State");
             return InternalServerError(ApiResponse.Error("Internal Server Error"));
         }
+
+        try
+        {
+            await _databaseService.SetPrescriptionById(prescription.PrescriptionId, prescription);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update prescription {id}", prescription.PrescriptionId);
+            return InternalServerError(ApiResponse.Error("Internal server error"));
+        }
+
+        response.Data = prescription;
         _logger.LogInformation("Prescription State Progressed to {state}", state);
-        return Ok();
+        return Ok(response);
     }
 
     [HttpPost]
