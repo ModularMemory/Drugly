@@ -1,36 +1,42 @@
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.ViewModels;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
 
-/// <inheritdoc />
-public sealed class PageRouter : IPageRouter
+/// <inheritdoc cref="IPageRouter" />
+public sealed partial class PageRouter : ObservableObject, IPageRouter
 {
     private readonly ILogger _logger;
-    private readonly List<ViewModelBase> _viewModels = [];
+    private readonly ObservableCollection<ViewModelBase> _viewModels = [];
 
     public PageRouter(
         ILogger logger
     )
     {
         _logger = logger;
+
+        HistoryEmpty = true;
+        _viewModels.CollectionChanged += (_, _) => HistoryEmpty = _viewModels.Count == 0;
     }
 
     public event EventHandler<ViewModelBase?>? PageNavigate;
 
-    public ViewModelBase? RootPage
+    [ObservableProperty]
+    public partial ViewModelBase? RootPage { get; set; }
+
+    partial void OnRootPageChanged(ViewModelBase? value)
     {
-        get;
-        set
+        if (_viewModels.Count == 0)
         {
-            field = value;
-            if (_viewModels.Count == 0)
-            {
-                OnPageNavigate(value);
-            }
+            OnPageNavigate(value);
         }
     }
+
+    [ObservableProperty]
+    public partial bool HistoryEmpty { get; private set; }
 
     private void OnPageNavigate(ViewModelBase? e)
     {

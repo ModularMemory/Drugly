@@ -10,40 +10,21 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMainView"
              x:DataType="doctor:DoctorMainViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMainViewModel}">
-    <Grid Margin="8"
-          RowSpacing="16"
-          RowDefinitions="Auto,*">
+    <Grid>
+        <StackPanel Spacing="16">
+            <Button Classes="Large Flat"
+                    Command="{Binding ViewPatientsCommand}"
+                    suki:ButtonExtensions.Icon="{icons:MaterialIconExt People}">
+                <TextBlock Classes="H2"
+                           Text="View Patients" />
+            </Button>
 
-        <!-- Upper content -->
-        <Grid Grid.Row="0"
-              RowDefinitions="Auto,Auto"
-              RowSpacing="{Binding $parent[Grid].RowSpacing}">
-
-            <TextBlock Grid.Row="0"
-                       Classes="H1"
-                       Text="Hello, Doctor!"
-                       TextWrapping="Wrap" />
-
-            <Separator Grid.Row="1" />
-        </Grid>
-
-        <!-- Lower content -->
-        <Grid Grid.Row="1">
-            <StackPanel Spacing="16">
-                <Button Classes="Large Flat"
-                        Command="{Binding ViewPatientsCommand}"
-                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt People}">
-                    <TextBlock Classes="H2"
-                               Text="View Patients" />
-                </Button>
-
-                <Button Classes="Large Flat"
-                        Command="{Binding PrescribeMedicationsCommand}"
-                        suki:ButtonExtensions.Icon="{icons:MaterialIconExt Medication}">
-                    <TextBlock Classes="H2"
-                               Text="Browse Medications" />
-                </Button>
-            </StackPanel>
-        </Grid>
+            <Button Classes="Large Flat"
+                    Command="{Binding PrescribeMedicationsCommand}"
+                    suki:ButtonExtensions.Icon="{icons:MaterialIconExt Medication}">
+                <TextBlock Classes="H2"
+                           Text="Browse Medications" />
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
 /// <summary>VM for the medication list page for doctors.</summary>
-public partial class DoctorMedicationListViewModel : ViewModelBase
+public partial class DoctorMedicationListViewModel : ViewModelBase, IPageViewModel
 {
     private readonly IPageRouter _pageRouter;
     private readonly IServiceProvider _serviceProvider;
+
+    public string? PageTitle => "Choose a Medication to Prescribe";
 
     public AvaloniaList<MedicationModel> Medications { get; } = [];
 
@@ -23,13 +25,6 @@ public partial class DoctorMedicationListViewModel : ViewModelBase
         _serviceProvider = serviceProvider;
 
         Medications.AddRange(Drugly.AvaloniaApp.Design.DesignData.ExampleMedications);
-    }
-
-    /// <summary>Requests a page navigation back to the previous page.</summary>
-    [RelayCommand]
-    private void NavigateBack()
-    {
-        _pageRouter.PopPage();
     }
 
     /// <summary>Requests a page navigation to the medication details page.</summary>

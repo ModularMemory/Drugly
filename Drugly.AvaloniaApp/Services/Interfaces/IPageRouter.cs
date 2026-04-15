@@ -1,9 +1,10 @@
+using System.ComponentModel;
 using Drugly.AvaloniaApp.ViewModels;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
 /// <summary>Allows individual pages to forward navigation requests to a containing view.</summary>
-public interface IPageRouter
+public interface IPageRouter : INotifyPropertyChanged
 {
     /// <summary>Invoked when a page navigation is requested.</summary>
     event EventHandler<ViewModelBase?>? PageNavigate;
@@ -11,6 +12,9 @@ public interface IPageRouter
     /// <summary>The page to be returned when a navigation is requested with an empty page history.</summary>
     /// <remarks>Immediately requests a navigation on set if the history is empty.</remarks>
     ViewModelBase? RootPage { get; set; }
+
+    /// <summary><see langword="true"/> if the history is empty, otherwise <see langword="false"/>.</summary>
+    bool HistoryEmpty { get; }
 
     /// <summary>Clears the page history.</summary>
     void ResetPageHistory();

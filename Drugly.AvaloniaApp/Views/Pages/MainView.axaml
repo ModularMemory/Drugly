@@ -19,17 +19,49 @@
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
 
-                <ContentControl Content="{Binding ContentViewModel}">
-                    <ContentControl.MaxWidth>
+                <Grid Margin="8"
+                      RowSpacing="16"
+                      RowDefinitions="Auto,*">
+                    <Grid.MaxWidth>
                         <MultiBinding Converter="{x:Static converters:NumberConverters.MultiMax}">
                             <markup:DoubleLiteral Value="600" />
                             <Binding Path="$parent[Window].Bounds.Width"
                                      Converter="{x:Static converters:NumberConverters.Divide}"
                                      ConverterParameter="1.5" />
                         </MultiBinding>
-                    </ContentControl.MaxWidth>
-                </ContentControl>
+                    </Grid.MaxWidth>
 
+                    <!-- Title + back button -->
+                    <Grid Grid.Row="0"
+                          RowDefinitions="Auto,Auto"
+                          RowSpacing="{Binding $parent[Grid].RowSpacing}"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="8">
+
+                        <Button Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="Flat"
+                                Command="{Binding NavigateBackCommand}"
+                                IsVisible="{Binding PageRouter.HistoryEmpty, Converter={x:Static BoolConverters.Not}}">
+                            <TextBlock Classes="H4"
+                                       Text="&lt;" />
+                        </Button>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   Classes="H1"
+                                   Text="Choose a Medication to Prescribe"
+                                   TextWrapping="Wrap" />
+
+                        <Separator Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2" />
+                    </Grid>
+
+                    <!-- Lower content -->
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding ContentViewModel}" />
+                </Grid>
             </ScrollViewer>
 
             <!-- Settings button -->

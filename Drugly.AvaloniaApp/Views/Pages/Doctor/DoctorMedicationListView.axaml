@@ -10,89 +10,56 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMedicationListView"
              x:DataType="doctor:DoctorMedicationListViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMedicationListViewModel}">
-    <Grid Margin="8"
-          RowSpacing="16"
-          RowDefinitions="Auto,*">
+    <Grid ColumnSpacing="2">
 
-        <!-- Upper content -->
-        <Grid Grid.Row="0"
-              RowDefinitions="Auto,Auto"
-              RowSpacing="{Binding $parent[Grid].RowSpacing}"
-              ColumnDefinitions="Auto,*"
-              ColumnSpacing="8">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      IsScrollInertiaEnabled="True">
 
-            <Button Grid.Row="0"
-                    Grid.Column="0"
-                    Classes="Flat"
-                    Command="{Binding NavigateBackCommand}">
-                <TextBlock Classes="H4"
-                           Text="&lt;" />
-            </Button>
-
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Classes="H1"
-                       Text="Choose a Medication to Prescribe"
-                       TextWrapping="Wrap" />
-
-            <Separator Grid.Row="1"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2" />
-        </Grid>
-
-        <!-- Lower content -->
-        <Grid Grid.Row="1"
-              ColumnSpacing="2">
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          HorizontalAlignment="Stretch"
+            <ItemsControl HorizontalAlignment="Center"
                           VerticalAlignment="Stretch"
-                          IsScrollInertiaEnabled="True">
+                          ItemsSource="{Binding Medications}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="8" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Classes="Discrete Large"
+                                Command="{Binding $parent[ItemsControl].((doctor:DoctorMedicationListViewModel)DataContext).ViewMedicationCommand}"
+                                CommandParameter="{Binding}"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
+                                Width="{Binding $parent[ScrollViewer].Bounds.Width}">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="16">
 
-                <ItemsControl HorizontalAlignment="Center"
-                              VerticalAlignment="Stretch"
-                              ItemsSource="{Binding Medications}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Spacing="8" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Classes="Discrete Large"
-                                    Command="{Binding $parent[ItemsControl].((doctor:DoctorMedicationListViewModel)DataContext).ViewMedicationCommand}"
-                                    CommandParameter="{Binding}"
-                                    HorizontalAlignment="Left"
-                                    HorizontalContentAlignment="Left"
-                                    Width="{Binding $parent[ScrollViewer].Bounds.Width}">
-                                <Grid ColumnDefinitions="Auto,*"
-                                      ColumnSpacing="16">
-
-                                    <!-- Image -->
-                                    <Viewbox Grid.Column="0"
-                                             Height="{Binding $parent[Grid].Bounds.Height,
+                                <!-- Image -->
+                                <Viewbox Grid.Column="0"
+                                         Height="{Binding $parent[Grid].Bounds.Height,
                                                 Converter={x:Static converters:NumberConverters.Max},
                                                 ConverterParameter=96}"
-                                             Width="{Binding $self.Height}">
-                                        <Image asyncImageLoader:ImageLoader.Source="{Binding ImageUri}" />
-                                    </Viewbox>
+                                         Width="{Binding $self.Height}">
+                                    <Image asyncImageLoader:ImageLoader.Source="{Binding ImageUri}" />
+                                </Viewbox>
 
-                                    <!-- Name + desc -->
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Classes="H3"
-                                                   Text="{Binding Name}"
-                                                   TextWrapping="Wrap" />
-                                        <TextBlock Classes="Body"
-                                                   Text="{Binding Description}"
-                                                   TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
+                                <!-- Name + desc -->
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Classes="H3"
+                                               Text="{Binding Name}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Classes="Body"
+                                               Text="{Binding Description}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

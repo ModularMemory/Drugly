@@ -10,11 +10,13 @@ using SukiUI.Dialogs;
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
 /// <summary>VM for the medication details page for doctors.</summary>
-public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
+public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
+
+    public string? PageTitle => $"Viewing {Medication?.Name}";
 
     [ObservableProperty]
     public partial MedicationModel? Medication { get; set; }
@@ -28,13 +30,6 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase
         _dialogManager = dialogManager;
         _pageRouter = pageRouter;
         _logger = logger;
-    }
-
-    /// <summary>Requests a page navigation back to the previous page.</summary>
-    [RelayCommand]
-    private void NavigateBack()
-    {
-        _pageRouter.PopPage();
     }
 
     /// <summary>Opens the modal for prescribing the <see cref="Medication"/> to a patient.</summary>

@@ -9,72 +9,39 @@
              x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorMedicationDetailsPageView"
              x:DataType="doctor:DoctorMedicationDetailsPageViewModel"
              d:DataContext="{x:Static design:DesignData.DoctorMedicationDetailsPageViewModel}">
-    <Grid Margin="8"
-          RowSpacing="16"
-          RowDefinitions="Auto,*">
+    <Grid ColumnDefinitions="Auto,*"
+          ColumnSpacing="16"
+          Margin="16,0,16,0">
 
-        <!-- Upper content -->
-        <Grid Grid.Row="0"
-              RowDefinitions="Auto,Auto"
-              RowSpacing="{Binding $parent[Grid].RowSpacing}"
-              ColumnDefinitions="Auto,*"
-              ColumnSpacing="8">
+        <!-- Left content -->
+        <StackPanel Grid.Column="0"
+                    Orientation="Vertical"
+                    Spacing="16">
+            <!-- Image -->
+            <Viewbox Height="384"
+                     Width="{Binding $self.Height}">
+                <Image asyncImageLoader:ImageLoader.Source="{Binding Medication.ImageUri}" />
+            </Viewbox>
 
-            <Button Grid.Row="0"
-                    Grid.Column="0"
-                    Classes="Flat"
-                    Command="{Binding NavigateBackCommand}">
+            <Button Classes="Flat"
+                    Command="{Binding PrescribeToPatientCommand}">
                 <TextBlock Classes="H4"
-                           Text="&lt;" />
+                           Text="Prescribe to Patient"
+                           TextWrapping="Wrap" />
             </Button>
+        </StackPanel>
 
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Classes="H1"
-                       Text="{Binding Medication.Name, StringFormat=Viewing {0}}"
+        <!-- Right content -->
+        <StackPanel Grid.Column="1"
+                    Orientation="Vertical"
+                    Spacing="16">
+            <TextBlock Classes="H2"
+                       Text="{Binding Medication.Name}"
                        TextWrapping="Wrap" />
 
-            <Separator Grid.Row="1"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2" />
-        </Grid>
-
-        <!-- Lower content -->
-        <Grid Grid.Row="1"
-              ColumnDefinitions="Auto,*"
-              ColumnSpacing="16"
-              Margin="16,0,16,0">
-
-            <!-- Left content -->
-            <StackPanel Grid.Column="0"
-                        Orientation="Vertical"
-                        Spacing="16">
-                <!-- Image -->
-                <Viewbox Height="384"
-                         Width="{Binding $self.Height}">
-                    <Image asyncImageLoader:ImageLoader.Source="{Binding Medication.ImageUri}" />
-                </Viewbox>
-
-                <Button Classes="Flat"
-                        Command="{Binding PrescribeToPatientCommand}">
-                    <TextBlock Classes="H4"
-                               Text="Prescribe to Patient"
-                               TextWrapping="Wrap" />
-                </Button>
-            </StackPanel>
-
-            <!-- Right content -->
-            <StackPanel Grid.Column="1"
-                        Orientation="Vertical"
-                        Spacing="16">
-                <TextBlock Classes="H2"
-                           Text="{Binding Medication.Name}"
-                           TextWrapping="Wrap" />
-
-                <TextBlock Classes="Body"
-                           Text="{Binding Medication.Description}"
-                           TextWrapping="Wrap" />
-            </StackPanel>
-        </Grid>
+            <TextBlock Classes="Body"
+                       Text="{Binding Medication.Description}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
     </Grid>
 </UserControl>

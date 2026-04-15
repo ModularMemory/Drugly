@@ -68,7 +68,11 @@ public partial class StartupWindowViewModel : ViewModelBase
             if (HasErrors)
             {
                 await DelayService.FakeDelay();
-                ShowLoginError($"Bad or invalid login information: {string.Join(", ", GetErrors())}");
+                var errors = GetErrors()
+                    .Where(x => !string.IsNullOrWhiteSpace(x.ErrorMessage))
+                    .Select(x => x.ErrorMessage!.TrimEnd('.'));
+
+                ShowLoginError($"Bad or invalid login information:{Environment.NewLine}{string.Join(", ", errors)}.");
                 return;
             }
 

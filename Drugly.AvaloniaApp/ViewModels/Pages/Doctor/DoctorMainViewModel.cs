@@ -6,11 +6,13 @@ using SukiUI.Dialogs;
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 
 /// <summary>VM for the main page for doctors.</summary>
-public partial class DoctorMainViewModel : ViewModelBase
+public partial class DoctorMainViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly IServiceProvider _serviceProvider;
+
+    public string? PageTitle => "Hello, Doctor!";
 
     public DoctorMainViewModel(
         ISukiDialogManager dialogManager,
