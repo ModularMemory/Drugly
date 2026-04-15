@@ -12,6 +12,7 @@ public sealed class LoginService : ILoginService
     private readonly ILogger _logger;
     public event EventHandler<AccountType>? LoginSuccessful;
     public event EventHandler<string>? LoginError;
+    public event EventHandler? Logout;
 
     public LoginService(
         IAccountSessionService accountSessionService,
@@ -34,6 +35,12 @@ public sealed class LoginService : ILoginService
     {
         _logger.Error("Failed to log in: {ErrorMessage}", e);
         LoginError?.Invoke(this, e);
+    }
+
+    private void OnLogout()
+    {
+        _logger.Information("Successfully logged out");
+        Logout?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task TryLoginAsync(string email, string password)
@@ -60,5 +67,15 @@ public sealed class LoginService : ILoginService
         var expiration = DateTimeOffset.Now.AddDays(1);
 
         return new AccountSession(sessionToken, accountType, expiration, default);
+    }
+
+    public async Task LogoutAsync()
+    {
+        var client = _httpClientFactory.CreateClient(nameof(ILoginService));
+
+        // TODO: API request here
+
+        _accountSessionService.ClearSession();
+        OnLogout();
     }
 }

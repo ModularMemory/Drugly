@@ -40,6 +40,11 @@ public sealed class AccountSessionService : IAccountSessionService
         Session = session;
     }
 
+    public void ClearSession()
+    {
+        Session = null;
+    }
+
     public bool TryAuthorizeClient(HttpClient httpClient)
     {
         ArgumentNullException.ThrowIfNull(httpClient);

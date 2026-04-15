@@ -1,4 +1,3 @@
-using Drugly.AvaloniaApp.Models;
 using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
@@ -12,6 +11,9 @@ public interface IAccountSessionService
     /// <summary>Stores the current account login session.</summary>
     /// <param name="session">The session to store.</param>
     void StoreSession(AccountSession session);
+
+    /// <summary>Clears the current account login session.</summary>
+    void ClearSession();
 
     /// <summary>Tries to set the current session token as the default authorization request header on the given <see cref="HttpClient"/>.</summary>
     /// <param name="httpClient">The client to authorize.</param>

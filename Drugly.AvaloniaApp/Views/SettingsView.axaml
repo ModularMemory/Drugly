@@ -5,6 +5,8 @@
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
              xmlns:viewModels="clr-namespace:Drugly.AvaloniaApp.ViewModels"
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:dto="clr-namespace:Drugly.DTO;assembly=Drugly.DTO"
              mc:Ignorable="d"
              x:Class="Drugly.AvaloniaApp.Views.SettingsView"
              x:DataType="viewModels:SettingsViewModel"
@@ -22,26 +24,40 @@
                 BorderThickness="1"
                 ClipToBounds="True"
                 CornerRadius="15">
-            <suki:GlassCard Margin="10">
-                <StackPanel>
-                    <TextBlock Classes="H3"
-                               Text="Font size" />
+            <StackPanel Margin="10"
+                        Spacing="10">
+                <!-- Font size -->
+                <suki:GlassCard>
+                    <StackPanel>
+                        <TextBlock Classes="H3"
+                                   Text="Font size" />
 
-                    <StackPanel Orientation="Horizontal">
-                        <Slider Width="200"
-                                Value="{Binding FontSize}"
-                                Minimum="{Binding MinFontSize}"
-                                Maximum="{Binding MaxFontSize}"
-                                Ticks="{Binding FontSizeTicks}"
-                                TickPlacement="BottomRight"
-                                IsSnapToTickEnabled="True" />
+                        <StackPanel Orientation="Horizontal">
+                            <Slider Width="200"
+                                    Value="{Binding FontSize}"
+                                    Minimum="{Binding MinFontSize}"
+                                    Maximum="{Binding MaxFontSize}"
+                                    Ticks="{Binding FontSizeTicks}"
+                                    TickPlacement="BottomRight"
+                                    IsSnapToTickEnabled="True" />
 
-                        <TextBlock Classes="Body"
-                                   Text="{Binding FontSize}"
-                                   VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="{Binding FontSize}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </suki:GlassCard>
+                </suki:GlassCard>
+
+                <!-- Logout -->
+                <suki:GlassCard IsVisible="{Binding AccountSessionService.AccountType, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static dto:AccountType.Unknown}}">
+                    <Button Classes="Flat"
+                            Command="{Binding LogoutCommand}"
+                            suki:ButtonExtensions.Icon="{icons:MaterialIconExt Logout}">
+                        <TextBlock Classes="H4"
+                                   Text="Log out" />
+                    </Button>
+                </suki:GlassCard>
+            </StackPanel>
         </Border>
     </Panel>
 </UserControl>

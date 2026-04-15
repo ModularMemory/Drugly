@@ -51,21 +51,28 @@ public partial class App : Application
             desktop.MainWindow = _serviceProvider.GetRequiredView<StartupWindow>();
 
             var loginService = _serviceProvider.GetRequiredService<ILoginService>();
-            loginService.LoginSuccessful += (s, e) => Dispatcher.UIThread.Invoke(() =>
-            {
-                // Swap the old main window with a new instance of MainWindow
-                // Replaces the startup window at login, or relaunches the MainWindow on re-login
-                var oldWindow = desktop.MainWindow;
-
-                var mainWindow = _serviceProvider.GetRequiredView<MainWindow>();
-                desktop.MainWindow = mainWindow;
-
-                mainWindow.Show();
-                oldWindow.Close();
-            });
+            loginService.LoginSuccessful += (_, _) => ReplaceMainWindow<MainWindow>(desktop, _serviceProvider);
+            loginService.Logout += (_, _) => ReplaceMainWindow<StartupWindow>(desktop, _serviceProvider);
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private static void ReplaceMainWindow<TWindow>(IClassicDesktopStyleApplicationLifetime desktop, IServiceProvider serviceProvider)
+        where TWindow : Window
+    {
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            // Swap the old main window with a new instance of MainWindow
+            // Replaces the startup window at login, or relaunches the MainWindow on re-login
+            var oldWindow = desktop.MainWindow;
+
+            var mainWindow = serviceProvider.GetRequiredView<TWindow>();
+            desktop.MainWindow = mainWindow;
+
+            mainWindow.Show();
+            oldWindow?.Close();
+        });
     }
 
     private void UIThread_OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

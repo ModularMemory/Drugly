@@ -22,5 +22,6 @@
 
     <Style Selector="suki|GlassCard">
         <Setter Property="IsAnimated" Value="False" />
+        <Setter Property="Padding" Value="15" />
     </Style>
 </Styles>

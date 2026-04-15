@@ -51,7 +51,8 @@
 
                     <Button Classes="Flat"
                             Command="{Binding LoginCommand}"
-                            Margin="0,20,0,0">
+                            Margin="0,20,0,0"
+                            suki:ButtonExtensions.Icon="{icons:MaterialIconExt Login}">
                         <TextBlock Classes="H4"
                                    Text="Login"/>
                     </Button>
