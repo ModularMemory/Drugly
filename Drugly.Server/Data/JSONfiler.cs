@@ -101,3 +101,36 @@ public static class JsonReadAccountDetails
         return JsonSerializer.Deserialize<AccountDetails>(json, _options);
     }
 }
+
+public static class JsonWriteAccountDatabaseEntry
+{
+    private static readonly JsonSerializerOptions _options = new()
+    {
+        WriteIndented = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static void SaveAccount(AccountDatabaseEntry entry, string filePath)
+    {
+        var json = JsonSerializer.Serialize(entry, _options);
+        File.WriteAllText(filePath, json);
+    }
+}
+
+public static class JsonReadAccountDatabaseEntry
+{
+    private static readonly JsonSerializerOptions _options = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static AccountDatabaseEntry? LoadAccount(string filePath)
+    {
+        if (!File.Exists(filePath))
+            return null;
+
+        var json = File.ReadAllText(filePath);
+        return JsonSerializer.Deserialize<AccountDatabaseEntry>(json, _options);
+    }
+}
