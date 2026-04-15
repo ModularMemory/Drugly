@@ -6,11 +6,23 @@ public class ImageDatabaseService : IImageDatabaseService
 {
     public Task<Stream> GetImageById(string id, out string contentType)
     {
-        throw new NotImplementedException();
+        var path = Path.Combine("images", $"{id}.bin");
+
+        if (!File.Exists(path))
+            throw new FileNotFoundException();
+
+        contentType = "application/octet-stream";
+
+        return Task.FromResult<Stream>(File.OpenRead(path));
     }
 
-    public Task SetImageById(string id, string contentType, Stream content)
+    public async Task SetImageById(string id, string contentType, Stream content)
     {
-        throw new NotImplementedException();
+        var path = Path.Combine("images", $"{id}.bin");
+
+        Directory.CreateDirectory("images");
+
+        await using var fs = File.Create(path);
+        await content.CopyToAsync(fs);
     }
 }
