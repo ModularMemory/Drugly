@@ -26,7 +26,6 @@ public class PrescriptionController : DruglyController
         _authorizationService = authorizationService;
     }
 
-
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -88,7 +87,6 @@ public class PrescriptionController : DruglyController
         _logger.LogInformation("Prescriptions associated with account {id} successfully retrieved", id);
         return Ok(response);
     }
-
 
     [HttpPut("{stateInt:int}")]
     public async Task<IActionResult> AdvanceState(int stateInt, [FromBody] Prescription prescription)
