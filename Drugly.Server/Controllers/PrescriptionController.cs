@@ -89,21 +89,6 @@ public class PrescriptionController : DruglyController
         return Ok(response);
     }
 
-[HttpPost("{id:guid}")]
-    public async Task<IActionResult> SetById(Guid id, [FromBody] Prescription prescription)
-    {
-        try
-        {
-            await _databaseService.SetPrescriptionById(id, prescription);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to set prescription {id}", id);
-            return InternalServerError(ApiResponse.Error("Internal server error"));
-        }
-        _logger.LogInformation("Prescription {id} successfully set", id);
-        return Ok();
-    }
 
     [HttpPut("{stateInt:int}")]
     public async Task<IActionResult> AdvanceState(int stateInt, [FromBody] Prescription prescription)
@@ -133,12 +118,12 @@ public class PrescriptionController : DruglyController
         return Ok();
     }
 
-    [HttpPost("{medicationId:guid}/{accountId:guid}")]
-    public async Task<IActionResult> AddPrescription(Guid medicationId, Guid accountId, [FromBody] Prescription prescription)
+    [HttpPost]
+    public async Task<IActionResult> AddPrescription([FromBody] Prescription prescription)
     {
-        prescription.MedicationId = medicationId;
-        prescription.PatientId = accountId;
+        ApiResponse<Prescription> response = new ApiResponse<Prescription>();
         Guid prescriptionId = Guid.NewGuid();
+        prescription.PrescriptionId = prescriptionId;
         try
         {
             await _databaseService.SetPrescriptionById(prescriptionId, prescription);
@@ -146,9 +131,10 @@ public class PrescriptionController : DruglyController
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to set new prescription {id}", prescriptionId);
-            return InternalServerError("Internal server error");
+            return InternalServerError(ApiResponse.Error("Internal server error"));
         }
+        response.Data = prescription;
         _logger.LogInformation("New Prescription {id} Set", prescriptionId);
-        return Ok();
+        return Ok(response);
     }
 }

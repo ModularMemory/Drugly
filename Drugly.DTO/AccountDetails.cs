@@ -1,8 +1,20 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information relating to an account</summary>
 public class AccountDetails
 {
+    [SetsRequiredMembers]
+    public AccountDetails(Guid id, AccountType type, string firstName, string lastName, string email)
+    {
+        UserId = id;
+        AccountType = type;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+    }
+
     /// <summary>
     /// The ID of the account
     /// </summary>
