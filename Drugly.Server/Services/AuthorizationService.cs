@@ -35,10 +35,15 @@ public class AuthorizationService : IAuthorizationService
         }
         var token = values.FirstOrDefault();
 
-        if (token is null
-            || !Authorizations.TryGetValue(token, out var accountSession))
+        if (token is null)
         {
             return false;
+        }
+
+        const string BEARER = "Bearer ";
+        if (token.StartsWith(BEARER))
+        {
+            token = token[BEARER.Length..];
         }
 
         return Authorizations.TryRemove(token, out _);
@@ -55,16 +60,22 @@ public class AuthorizationService : IAuthorizationService
         {
             return false;
         }
-
         var token = values.FirstOrDefault();
+
         if (token is null || !Authorizations.TryGetValue(token, out var accountSession))
         {
             return false;
         }
 
+        const string BEARER = "Bearer ";
+        if (token.StartsWith(BEARER))
+        {
+            token = token[BEARER.Length..];
+        }
+
         if (accountSession.Expiration < DateTimeOffset.UtcNow)
         {
-            // TODO: delete the session if its expired
+            Authorizations.TryRemove(token, out _);
             return false;
         }
 
