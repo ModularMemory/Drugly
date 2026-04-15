@@ -1,4 +1,5 @@
 using Drugly.AvaloniaApp.Services.Interfaces;
+using Drugly.DTO;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
@@ -18,5 +19,15 @@ public sealed class AccountDetailsService : IAccountDetailsService
         _accountSessionService = accountSessionService;
         _httpClientFactory = httpClientFactory;
         _logger = logger;
+    }
+
+    public AccountDetails GetAccountById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public AccountDetails GetAccountByEmail(string email)
+    {
+        throw new NotImplementedException();
     }
 }

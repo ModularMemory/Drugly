@@ -72,8 +72,24 @@ public sealed class LoginService : ILoginService
     public async Task LogoutAsync()
     {
         var client = _httpClientFactory.CreateClient(nameof(ILoginService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            _logger.Warning("Failed to authorize {MethodName} client", nameof(LogoutAsync));
+        }
 
-        // TODO: API request here
+        try
+        {
+            var res = await client.PostAsync("/account/logout", null);
+            if (!res.IsSuccessStatusCode)
+            {
+                var resBody = await res.Content.ReadAsStringAsync();
+                _logger.Error("Error while logging out: {Code} - {Message}", res.StatusCode, resBody);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to log out");
+        }
 
         _accountSessionService.ClearSession();
         OnLogout();
