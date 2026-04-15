@@ -8,7 +8,7 @@ namespace Drugly.Server.Services;
 public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 {
     private readonly Dictionary<Guid, AccountCredentials> _accounts = new();
-    private readonly Dictionary<string, Guid> _emailToId = new();
+    private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly string _folderPath = "Accounts";
     public Task<AccountCredentials> GetAccountById(Guid id)
