@@ -11,7 +11,11 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
     private readonly string _folderPath = "Medications";
     public Task<Medication> GetMedicationById(Guid id)
     {
-        _medications.TryGetValue(id, out var medication);
+        if (!_medications.TryGetValue(id, out var medication))
+        {
+            throw new MedicationNotFoundException();
+        }
+
         return Task.FromResult(medication);
     }
 

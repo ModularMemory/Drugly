@@ -12,7 +12,11 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     private readonly string _folderPath = "Accounts";
     public Task<AccountCredentials> GetAccountById(Guid id)
     {
-        _accounts.TryGetValue(id, out var account);
+        if (!_accounts.TryGetValue(id, out var account))
+        {
+            throw new AccountNotFoundException();
+        }
+
         return Task.FromResult(account);
     }
 
@@ -29,10 +33,13 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
     public Task<Guid> GetIdByEmail(string email)
     {
-        if (_emailToId.TryGetValue(email, out var id))
-            return Task.FromResult(id);
+        if (!_emailToId.TryGetValue(email, out var id))
+        {
+            throw new AccountNotFoundException("Email not found");
+        }
 
-        throw new KeyNotFoundException("Email not found");
+        return Task.FromResult(id);
+
     }
 
     public Task<List<AccountDetails>> GetAllPatientAccounts()
@@ -42,6 +49,11 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
             .Where(a => a.AccountDetails.AccountType == AccountType.Patient)
             .Select(a => a.AccountDetails)
             .ToList();
+
+        if (patients.Count == 0)
+        {
+            throw new AccountNotFoundException("Patient accounts not found");
+        }
 
         return Task.FromResult(patients);
     }

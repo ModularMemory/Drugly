@@ -1,3 +1,4 @@
+using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 
 namespace Drugly.Server.Services;
@@ -9,10 +10,12 @@ public class ImageDatabaseService : IImageDatabaseService
         var path = Path.Combine("images", $"{id}.bin");
 
         if (!File.Exists(path))
-            throw new FileNotFoundException();
+        {
+           throw new ImageNotFoundException();
+        }
+
 
         contentType = "application/octet-stream";
-
         return Task.FromResult<Stream>(File.OpenRead(path));
     }
 
