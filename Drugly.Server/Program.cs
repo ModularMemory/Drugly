@@ -27,7 +27,7 @@ public class Program
         var credentialsPatient = new AccountCredentials("123", detailsPatient);
         accountDb.SetAccountById(detailsPatient.UserId, detailsPatient.Email, credentialsPatient);
 
-        var detailsDoctor = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Doctor", "John@doctor.com");
+        var detailsDoctor = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Doctor", "John@doctor.com");
         var credentialsDoctor = new AccountCredentials("123", detailsDoctor);
         accountDb.SetAccountById(detailsDoctor.UserId, detailsDoctor.Email, credentialsDoctor);
         app.Run();
