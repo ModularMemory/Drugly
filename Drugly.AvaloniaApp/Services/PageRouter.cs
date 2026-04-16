@@ -75,4 +75,14 @@ public sealed partial class PageRouter : ObservableObject, IPageRouter
 
         OnPageNavigate(vm);
     }
+
+    public void ReshowPage()
+    {
+        var currentPage = _viewModels.Count == 0
+            ? RootPage
+            : _viewModels[^1];
+
+        OnPageNavigate(null);
+        OnPageNavigate(currentPage);
+    }
 }

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Models;
-using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Humanizer;
@@ -17,6 +17,7 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
+    private readonly IPrescriptionDetailsService _prescriptionDetailsService;
 
     public string? PageTitle => $"Viewing Prescription for {Prescription?.Medication.Name}";
 
@@ -25,6 +26,9 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
 
     [ObservableProperty]
     public partial PatientPrescription? Prescription { get; set; }
+
+    [ObservableProperty]
+    public partial string DoctorPrescriptionStateText { get; set; } = "Approve";
 
     [ObservableProperty]
     public partial int StepIndex { get; set; }
@@ -36,36 +40,91 @@ public PatientPrescriptionDetailsViewModel(
         ISukiDialogManager dialogManager,
         IPageRouter pageRouter,
         ILogger logger,
-        IAccountSessionService accountSessionService
+        IAccountSessionService accountSessionService,
+        IPrescriptionDetailsService prescriptionDetailsService
     )
     {
         AccountSessionService = accountSessionService;
         _dialogManager = dialogManager;
         _pageRouter = pageRouter;
         _logger = logger;
+        _prescriptionDetailsService = prescriptionDetailsService;
 
         Steps = Enum.GetValues<PrescriptionState>()
             .Where(x => x is not PrescriptionState.Unknown and not PrescriptionState.Cancelled)
             .Select(x => x.Humanize(LetterCasing.Title));
+
+        SetDoctorPrescriptionStateText();
+        ValidateAllProperties();
     }
 
     [RelayCommand]
-    private void NavigateBack()
+    private async Task SubmitBillingInfo()
     {
-        _pageRouter.PopPage();
+        ValidateAllProperties();
+
+        if (HasErrors)
+        {
+            var errors = string.Join(Environment.NewLine, GetErrors().Where(x => !string.IsNullOrWhiteSpace(x.ErrorMessage)));
+            await _dialogManager.CreateDialog()
+                .OfType(NotificationType.Error)
+                .WithTitle("Invalid Billing Information")
+                .WithContent(errors)
+                .WithOkResult("Ok")
+                .Dismiss().ByClickingBackground()
+                .TryShowAsync();
+
+            return;
+        }
+
+        await ProgressStepper();
+        _pageRouter.ReshowPage();
     }
 
     [RelayCommand]
-    private void SubmitBillingInfo()
+    private async Task ProgressStepper()
     {
-        // Do something here idk how this is handled :3c
-        _pageRouter.PopPage();
+        if (Prescription is null)
+        {
+            _logger.Warning("Tried to advance state of null prescription");
+            return;
+        }
+
+        var prescription = Prescription.Prescription;
+        prescription.State++;
+        prescription = await _prescriptionDetailsService.AdvanceState(prescription, prescription.State);
+
+        Prescription = new PatientPrescription(prescription, Prescription.Medication);
+        SetDoctorPrescriptionStateText();
+    }
+
+    private void SetDoctorPrescriptionStateText()
+    {
+        DoctorPrescriptionStateText = Prescription?.Prescription.State switch
+        {
+            PrescriptionState.DoctorPrescription => "Approve",
+            PrescriptionState.PharmacyProcessing => "Ready at Pharmacy",
+            PrescriptionState.Filled => "Confirmed payment",
+            PrescriptionState.Billing => "Patient picked up",
+            PrescriptionState.PickedUp => "Approve",
+            PrescriptionState.Cancelled => "Approve",
+            _ => "Unknown",
+        };
     }
 
     [RelayCommand]
-    private void ProgressStepper()
+    private async Task CancelPrescription()
     {
-        Prescription.Prescription.State++;
+        if (Prescription is null)
+        {
+            _logger.Warning("Tried to cancel a null prescription");
+            return;
+        }
+
+        var prescription = Prescription.Prescription;
+        prescription = await _prescriptionDetailsService.AdvanceState(prescription, PrescriptionState.Cancelled);
+
+        Prescription = new PatientPrescription(prescription, Prescription.Medication);
     }
 
     [ObservableProperty]

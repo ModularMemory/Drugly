@@ -25,4 +25,7 @@ public interface IPageRouter : INotifyPropertyChanged
     /// <summary>Removes most recent page from the page history, then navigates to the last page in the page history.</summary>
     /// <remarks>Navigates to the <see cref="RootPage"/> if the history empty before or as a result of calling this operation.</remarks>
     void PopPage();
+
+    /// <summary>Hides and restores the current page.</summary>
+    void ReshowPage();
 }

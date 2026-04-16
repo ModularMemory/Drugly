@@ -1,9 +1,10 @@
-﻿using Drugly.DTO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Models;
 
 /// <summary>Combines a Prescription and medication.</summary>
-public class PatientPrescription
+public partial class PatientPrescription : ObservableObject
 {
     public PatientPrescription(Prescription prescription, Medication medication)
     {
@@ -12,8 +13,10 @@ public class PatientPrescription
     }
 
     /// <summary>The prescription.</summary>
-    public Prescription Prescription { get; set; }
+    [ObservableProperty]
+    public partial Prescription Prescription { get; set; }
 
     /// <summary>The medication.</summary>
-    public Medication Medication { get; set; }
+    [ObservableProperty]
+    public partial Medication Medication { get; set; }
 }

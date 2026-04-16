@@ -26,14 +26,23 @@
                           Steps="{Binding Steps}" />
             
             <Grid Grid.Row="1"
-                  RowDefinitions="Auto"
-                  ColumnDefinitions="Auto,Auto,Auto">
-                
-                <Button Grid.Row="0"
-                        Grid.Column="0"
-                        Command="{Binding ProgressStepperCommand}"
-                        IsVisible="{Binding AccountSessionService.AccountType, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static dto:AccountType.Doctor}}">
-                    <TextBlock Text="Approve"/>
+                  ColumnDefinitions="Auto,Auto,Auto"
+                  ColumnSpacing="8"
+                  IsVisible="{Binding AccountSessionService.AccountType, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static dto:AccountType.Doctor}}"
+                  IsEnabled="{Binding Prescription.Prescription.State, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static dto:PrescriptionState.Cancelled}}">
+
+                <Button Grid.Column="0"
+                        Classes="Flat"
+                        Command="{Binding ProgressStepperCommand}">
+                    <TextBlock Classes="Body"
+                               Text="{Binding DoctorPrescriptionStateText}"/>
+                </Button>
+
+                <Button Grid.Column="1"
+                        Classes="Danger"
+                        Command="{Binding ProgressStepperCommand}">
+                    <TextBlock Classes="Body"
+                               Text="Cancel"/>
                 </Button>
             </Grid>
 

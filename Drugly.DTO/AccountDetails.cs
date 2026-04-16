@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information relating to an account</summary>
-public class AccountDetails
+public record AccountDetails
 {
     [UsedImplicitly]
     public AccountDetails() { }

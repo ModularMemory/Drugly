@@ -3,6 +3,7 @@ using Drugly.AvaloniaApp.ViewModels;
 using Drugly.AvaloniaApp.ViewModels.Pages;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 using Drugly.AvaloniaApp.ViewModels.Pages.Patient;
+using Drugly.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.Design;
@@ -56,7 +57,7 @@ public static partial class DesignData
             if (field == null)
             {
                 field = ServiceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
-                field.Patient = ExamplePatient;
+                field.Patient = ExamplePatient with { AccountType = AccountType.Doctor };
                 field.Prescription = new PatientPrescription(ExamplePrescription, ExampleMedication);
             }
 
