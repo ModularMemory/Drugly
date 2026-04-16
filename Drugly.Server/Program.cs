@@ -38,7 +38,7 @@ public class Program
         medicationDb.SetMedicationById(medicationId, medication);
 
         var prescriptionDb = app.Services.GetRequiredService<IPrescriptionDatabaseService>();
-        var prescription = new Prescription(medicationId, patientId, "1", 1, 10, "no notes");
+        var prescription = new Prescription(medicationId, patientId, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
         prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription);
 
         app.Run();
