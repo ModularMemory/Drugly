@@ -2,8 +2,8 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Extensions;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
+using Drugly.DTO;
 using Serilog;
 using SukiUI.Dialogs;
 
@@ -19,7 +19,7 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPage
     public string? PageTitle => $"Viewing {Medication?.Name}";
 
     [ObservableProperty]
-    public partial MedicationModel? Medication { get; set; }
+    public partial Medication? Medication { get; set; }
 
     public DoctorMedicationDetailsPageViewModel(
         ISukiDialogManager dialogManager,

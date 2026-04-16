@@ -1,9 +1,8 @@
-using Drugly.AvaloniaApp.Models;
 using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
-/// <summary>Provides functionality related to <see cref="MedicationModel"/>s.</summary>
+/// <summary>Provides functionality related to <see cref="Medication"/>s.</summary>
 public interface IMedicationDetailsService
 {
     /// <summary>Gets a medication by a given id.</summary>

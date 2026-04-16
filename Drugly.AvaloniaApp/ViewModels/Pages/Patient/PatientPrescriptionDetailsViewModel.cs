@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Humanizer;
@@ -17,7 +16,7 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase
     private readonly ILogger _logger;
 
     [ObservableProperty]
-    public partial PatientModel? Patient { get; set; }
+    public partial AccountDetails? Patient { get; set; }
 
     [ObservableProperty]
     public partial int StepIndex { get; set; }

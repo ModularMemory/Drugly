@@ -1,8 +1,24 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a prescription</summary>
 public sealed record Prescription
 {
+    [SetsRequiredMembers]
+    public Prescription(Guid medicationId, Guid patientId, string dosagePerDay, ulong daysBetweenDosage, ulong daysPrescribed, string additionalNotes)
+    {
+        State = PrescriptionState.Unknown;
+        PrescriptionId = Guid.Empty;
+
+        MedicationId = medicationId;
+        PatientId = patientId;
+        DosagePerDay = dosagePerDay;
+        DaysBetweenDosage = daysBetweenDosage;
+        DaysPrescribed = daysPrescribed;
+        AdditionalNotes = additionalNotes;
+    }
+
     /// <summary>
     /// The state of the prescription
     /// </summary>

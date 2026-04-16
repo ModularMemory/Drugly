@@ -1,8 +1,19 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a medication</summary>
 public class Medication
 {
+    [SetsRequiredMembers]
+    public Medication(Guid id, string name, string description, string imageUri)
+    {
+        Id = id;
+        Name = name;
+        Description = description;
+        ImageUri = imageUri;
+    }
+
     /// <summary>
     /// The ID of the medication
     /// </summary>

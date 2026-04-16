@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Design;
 using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
+using Drugly.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
@@ -15,7 +16,7 @@ public partial class DoctorPatientListViewModel : ViewModelBase, IPageViewModel
 
     public string? PageTitle => "Choose a Patient to View";
 
-    public AvaloniaList<PatientModel> Patients { get; } = [];
+    public AvaloniaList<AccountDetails> Patients { get; } = [];
 
     public DoctorPatientListViewModel(
         IPageRouter pageRouter,
@@ -33,7 +34,7 @@ public partial class DoctorPatientListViewModel : ViewModelBase, IPageViewModel
     private void ViewPatient(object? dataContext)
     {
         var vm = _serviceProvider.GetRequiredService<Patient.PatientPrescriptionDetailsViewModel>();
-        vm.Patient = dataContext as PatientModel;
+        vm.Patient = dataContext as AccountDetails;
         _pageRouter.PushPage(vm);
     }
 }

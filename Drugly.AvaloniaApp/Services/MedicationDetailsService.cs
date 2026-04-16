@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;

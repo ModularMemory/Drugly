@@ -3,8 +3,8 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Controls;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services;
+using Drugly.DTO;
 using Drugly.Validation;
 using SukiUI.Dialogs;
 
@@ -16,7 +16,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
     private readonly ISukiDialog _dialog;
 
     /// <summary>The medication associated with the dialog.</summary>
-    public MedicationModel Medication { get; }
+    public Medication Medication { get; }
 
     /// <summary><see langword="true"/> if a prescription was successfully submitted by this dialog, otherwise <see langword="false"/>.</summary>
     public bool PrescriptionConfirmed { get; private set; }
@@ -67,7 +67,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
 
     public DoctorPrescribeModalViewModel(
         ISukiDialog dialog,
-        MedicationModel medication
+        Medication medication
     )
     {
         Medication = medication;
