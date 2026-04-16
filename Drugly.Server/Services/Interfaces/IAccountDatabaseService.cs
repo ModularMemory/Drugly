@@ -31,5 +31,5 @@ public interface IAccountDatabaseService {
     /// <returns>the list of patient accounts</returns>
     /// <exception cref="AccountNotFoundException">Thrown when no accounts are found</exception>
     /// <exception cref="IOException">Thrown when there's an error</exception>
-    Task<List<AccountDetails>> GetAllPatientAccounts();
+    Task<AccountDetails[]> GetAllPatientAccounts();
 }

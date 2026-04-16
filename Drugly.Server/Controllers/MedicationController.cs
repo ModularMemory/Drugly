@@ -44,6 +44,29 @@ public class MedicationController : DruglyController
         return Ok(response);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllMedications()
+    {
+        ApiResponse<Medication[]> response = new ApiResponse<Medication[]>();
+        try
+        {
+            response.Data = await _databaseService.GetAllMedications();
+        }
+        catch (MedicationNotFoundException ex)
+        {
+            _logger.LogError(ex, "No medications found");
+            return NotFound(ApiResponse.Error("No medications found"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching medications");
+            return InternalServerError(ApiResponse.Error("Internal server error"));
+        }
+
+        _logger.LogInformation("{count} Medications successfully retrieved", response.Data.Length);
+        return Ok(response);
+    }
+
     [HttpPost("{id:guid}")]
     public async Task<IActionResult> SetById(Guid id, [FromBody] Medication medication)
     {

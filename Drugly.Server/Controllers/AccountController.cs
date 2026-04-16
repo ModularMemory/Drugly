@@ -197,7 +197,7 @@ public class AccountController : DruglyController
 
     /// <summary>A route that fetches all patient accounts in the database</summary>
     /// <returns>A list of patient's account details</returns>
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IActionResult> GetPatientAccounts()
     {
         if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))
@@ -206,10 +206,11 @@ public class AccountController : DruglyController
             return Forbid(ApiResponse.Error("User is not authorized"));
         }
 
-        ApiResponse<List<AccountDetails>> response = new ApiResponse<List<AccountDetails>>();
+        ApiResponse<AccountDetails[]> response = new ApiResponse<AccountDetails[]>();
+
         try
         {
-            await _databaseService.GetAllPatientAccounts();
+            response.Data = await _databaseService.GetAllPatientAccounts();
         }
         catch (AccountNotFoundException ex)
         {
@@ -221,6 +222,7 @@ public class AccountController : DruglyController
             _logger.LogError(ex, "Failed to fetch patient accounts");
             return InternalServerError(ApiResponse.Error("Internal Server Error"));
         }
+
         _logger.LogInformation("Patient account found successfully");
         return Ok(response);
     }

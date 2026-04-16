@@ -43,15 +43,15 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
     }
 
-    public Task<List<AccountDetails>> GetAllPatientAccounts()
+    public Task<AccountDetails[]> GetAllPatientAccounts()
     {
 
         var patients = _accounts.Values
             .Where(a => a.AccountDetails.AccountType == AccountType.Patient)
             .Select(a => a.AccountDetails)
-            .ToList();
+            .ToArray();
 
-        if (patients.Count == 0)
+        if (patients.Length == 0)
         {
             throw new AccountNotFoundException("Patient accounts not found");
         }

@@ -20,6 +20,18 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         return Task.FromResult(medication);
     }
 
+    public Task<Medication[]> GetAllMedications()
+    {
+        var medications = _medications.Values.ToArray();
+
+        if (medications.Length == 0)
+        {
+            throw new MedicationNotFoundException("Medications not found");
+        }
+
+        return Task.FromResult(medications);
+    }
+
     public Task SetMedicationById(Guid id, Medication medication)
     {
         _medications[id] = medication;

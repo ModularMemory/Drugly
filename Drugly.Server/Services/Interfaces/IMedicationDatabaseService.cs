@@ -13,6 +13,12 @@ public interface IMedicationDatabaseService
     /// <exception cref="IOException">Thrown when there's an error</exception>
     Task<Medication> GetMedicationById(Guid id);
 
+    /// <summary>Gets a list of all medications</summary>
+    /// <returns>A list of medications</returns>
+    /// <exception cref="MedicationNotFoundException">Thrown if there are no medications to return</exception>
+    /// <exception cref="IOException">Thrown when there's an error</exception>
+    Task<Medication[]> GetAllMedications();
+
     /// <summary>Sets a new medication by its ID</summary>
     /// <param name="id">The ID you want to save the medication at</param>
     /// <param name="medication">The medication being saved</param>
