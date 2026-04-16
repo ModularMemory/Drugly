@@ -24,33 +24,54 @@
                           AlternativeStyle="True"
                           Index="{Binding StepIndex}"
                           Steps="{Binding Steps}" />
-            
+
             <Separator Grid.Row="1"
-                       Grid.Column="0"/>
-            
+                       Grid.Column="0" />
+
             <TabControl Grid.Row="2">
                 <TabItem Header="Usage Instructions">
-                    
-                    <TextBlock Classes="H3"
-                               Text="Take 2 35mg tablets twice a day." />
-                    
+                    <WrapPanel Orientation="Horizontal"
+                               ItemSpacing="6"
+                               LineSpacing="4">
+                        <TextBlock Classes="Body"
+                                   Text="Take"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="{Binding Prescription.DosagePerDay}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="every"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="{Binding Prescription.DaysBetweenDosage}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="days for"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="{Binding Prescription.DaysPrescribed}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Classes="Body"
+                                   Text="days."
+                                   VerticalAlignment="Center" />
+                    </WrapPanel>
                 </TabItem>
-                    
-                <TabItem Header="Billing Information" 
+
+                <TabItem Header="Billing Information"
                          IsEnabled="False">
-                    
+
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           RowSpacing="16">
-                        
+
                         <!-- Card Number -->
                         <StackPanel Grid.Row="0"
                                     Spacing="2">
                             <TextBlock Classes="H3"
-                                       Text="Cardholder Name"/>
+                                       Text="Cardholder Name" />
                             <TextBox Text="{Binding CardHolder}"
                                      Watermark="J Doe" />
                         </StackPanel>
-                        
+
                         <!-- Card Number -->
                         <StackPanel Grid.Row="1"
                                     Spacing="2">
@@ -59,12 +80,12 @@
                             <TextBox Text="{Binding CardNumber}"
                                      Watermark="XXXX-XXXX-XXXX-XXXX" />
                         </StackPanel>
-                        
+
                         <!-- Expiry/CVV -->
-                        <Grid Grid.Row="2" 
+                        <Grid Grid.Row="2"
                               ColumnDefinitions="Auto,Auto"
                               ColumnSpacing="8">
-                            
+
                             <StackPanel Grid.Column="0"
                                         Spacing="2">
                                 <TextBlock Classes="H4"
@@ -72,7 +93,7 @@
                                 <TextBox Text="{Binding CardExpiry}"
                                          Watermark="MM/YY" />
                             </StackPanel>
-                            
+
                             <StackPanel Grid.Column="1"
                                         Spacing="2">
                                 <TextBlock Classes="H4"
@@ -80,9 +101,9 @@
                                 <TextBox Text="{Binding CardCCV}"
                                          Watermark="000" />
                             </StackPanel>
-                            
+
                         </Grid>
-                        
+
                         <Button Grid.Row="3"
                                 Classes="Flat"
                                 Command="{Binding SubmitBillingInfoCommand}">
@@ -91,13 +112,13 @@
                         </Button>
 
                     </Grid>
-                    
+
                 </TabItem>
-                
+
             </TabControl>
 
         </Grid>
-        
+
     </Grid>
 
 </UserControl>

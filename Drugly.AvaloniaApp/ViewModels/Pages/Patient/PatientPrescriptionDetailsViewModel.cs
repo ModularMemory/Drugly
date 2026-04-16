@@ -21,6 +21,9 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     public partial AccountDetails? Patient { get; set; }
 
     [ObservableProperty]
+    public partial Prescription? Prescription { get; set; }
+
+    [ObservableProperty]
     public partial int StepIndex { get; set; }
 
     public IEnumerable<string> Steps { get; }
