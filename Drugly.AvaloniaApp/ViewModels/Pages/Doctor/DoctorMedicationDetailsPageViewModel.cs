@@ -2,7 +2,6 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Extensions;
-using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;
 using SukiUI.Dialogs;
@@ -13,7 +12,7 @@ namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;
-    private readonly IPageRouter _pageRouter;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
 
     public string? PageTitle => $"Viewing {Medication?.Name}";
@@ -23,12 +22,12 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPage
 
     public DoctorMedicationDetailsPageViewModel(
         ISukiDialogManager dialogManager,
-        IPageRouter pageRouter,
+        IServiceProvider serviceProvider,
         ILogger logger
     )
     {
         _dialogManager = dialogManager;
-        _pageRouter = pageRouter;
+        _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
@@ -55,17 +54,22 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPage
 
         DoctorPrescribeModalViewModel? vm = null;
         await _dialogManager.CreateDialog()
-            .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Medication))
+            .WithViewModel(dialog => vm = new DoctorPrescribeModalViewModel(dialog, Medication, _serviceProvider))
             .WithoutResult()
             // .Dismiss().ByClickingBackground() // Explicitly do not allow dismissing by clicking out to prevent accidental closes
             .TryShowAsync();
 
-        if (vm is not { PrescriptionConfirmed: true })
+        if (vm is not { CreatedPrescription: { } prescription })
         {
             _logger.Debug("Canceled new prescription");
-            return;
         }
 
-        // TODO:
+        await _dialogManager.CreateDialog()
+            .OfType(NotificationType.Success)
+            .WithTitle("Success")
+            .WithContent("Prescription created successfully!")
+            .WithOkResult("Ok")
+            .Dismiss().ByClickingBackground()
+            .TryShowAsync();
     }
 }

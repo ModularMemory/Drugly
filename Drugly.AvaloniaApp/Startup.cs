@@ -59,7 +59,8 @@ public static class Startup
                 .AddHttpClient(nameof(ILoginService), ConfigureJsonHttpClient).Services
                 .AddHttpClient(nameof(IAccountDetailsService), ConfigureJsonHttpClient).Services
                 .AddHttpClient(nameof(IMedicationDetailsService), ConfigureJsonHttpClient).Services
-                .AddHttpClient(nameof(IPrescriptionDetailsService), ConfigureJsonHttpClient);
+                .AddHttpClient(nameof(IPrescriptionDetailsService), ConfigureJsonHttpClient).Services
+                .AddHttpClient(nameof(IImageDetailsService), ConfigureJsonHttpClient);
 
             serviceCollection
                 // Config
@@ -85,6 +86,7 @@ public static class Startup
                 .AddSingleton<IAccountDetailsService, AccountDetailsService>()
                 .AddSingleton<IMedicationDetailsService, MedicationDetailsService>()
                 .AddSingleton<IPrescriptionDetailsService, PrescriptionDetailsService>()
+                .AddSingleton<IImageDetailsService, ImageDetailsService>()
                 .AddSingleton<IAccountSessionService, AccountSessionService>()
                 // UI
                 .AddSingleton<IPageRouter, PageRouter>()

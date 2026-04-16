@@ -6,7 +6,15 @@ namespace Drugly.DTO;
 public sealed record Prescription
 {
     [SetsRequiredMembers]
-    public Prescription(Guid medicationId, Guid patientId, string dosagePerDay, ulong daysBetweenDosage, ulong daysPrescribed, string additionalNotes)
+    public Prescription(
+        Guid medicationId,
+        Guid patientId,
+        string dosagePerDay,
+        ulong daysBetweenDosage,
+        ulong daysPrescribed,
+        string additionalNotes,
+        string doctorSignatureUri
+    )
     {
         State = PrescriptionState.Unknown;
         PrescriptionId = Guid.Empty;
@@ -17,6 +25,7 @@ public sealed record Prescription
         DaysBetweenDosage = daysBetweenDosage;
         DaysPrescribed = daysPrescribed;
         AdditionalNotes = additionalNotes;
+        DoctorSignatureUri = doctorSignatureUri;
     }
 
     /// <summary>
@@ -58,4 +67,9 @@ public sealed record Prescription
     /// Any additional notes specified by the doctor
     /// </summary>
     public required string AdditionalNotes { get; set; }
+
+    /// <summary>
+    /// A link to the doctor's signature
+    /// </summary>
+    public required string DoctorSignatureUri { get; set; }
 }

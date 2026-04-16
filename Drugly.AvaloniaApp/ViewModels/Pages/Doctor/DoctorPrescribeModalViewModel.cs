@@ -4,8 +4,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Controls;
 using Drugly.AvaloniaApp.Services;
+using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Drugly.Validation;
+using Microsoft.Extensions.DependencyInjection;
 using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
@@ -14,12 +16,14 @@ namespace Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
 public partial class DoctorPrescribeModalViewModel : ViewModelBase
 {
     private readonly ISukiDialog _dialog;
+    private readonly IAccountDetailsService _accountDetailsService;
+    private readonly IPrescriptionDetailsService _prescriptionDetailsService;
+    private readonly IImageDetailsService _imageDetailsService;
 
     /// <summary>The medication associated with the dialog.</summary>
     public Medication Medication { get; }
 
-    /// <summary><see langword="true"/> if a prescription was successfully submitted by this dialog, otherwise <see langword="false"/>.</summary>
-    public bool PrescriptionConfirmed { get; private set; }
+    public Prescription? CreatedPrescription { get; private set; }
 
     [ObservableProperty]
     public partial string? ErrorText { get; private set; }
@@ -67,11 +71,15 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
 
     public DoctorPrescribeModalViewModel(
         ISukiDialog dialog,
-        Medication medication
+        Medication medication,
+        IServiceProvider serviceProvider
     )
     {
         Medication = medication;
         _dialog = dialog;
+        _accountDetailsService = serviceProvider.GetRequiredService<IAccountDetailsService>();
+        _prescriptionDetailsService = serviceProvider.GetRequiredService<IPrescriptionDetailsService>();
+        _imageDetailsService = serviceProvider.GetRequiredService<IImageDetailsService>();
 
         ValidateAllProperties();
     }
@@ -110,15 +118,41 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
                 return;
             }
 
-            // TODO: HTTP request;
-            await DelayService.FakeDelay(1_000);
-
-            PrescriptionConfirmed = true;
-            _dialog.Dismiss();
+            if (await SubmitPrescription(signatureStream))
+            {
+                _dialog.Dismiss();
+            }
         }
         finally
         {
             IsLoading = false;
         }
+    }
+
+    private async Task<bool> SubmitPrescription(MemoryStream signatureStream)
+    {
+        try
+        {
+            var patient = await _accountDetailsService.GetAccountByEmail(PatientEmail!);
+            var uri = await _imageDetailsService.UploadImage(signatureStream);
+            var prescription = new Prescription(
+                Medication.Id,
+                patient.UserId,
+                DosagePerDay!,
+                (ulong)DaysBetweenDosage!,
+                (ulong)DaysPrescribed!,
+                PrescriptionNotes!,
+                uri.AbsoluteUri
+            );
+
+            CreatedPrescription = await _prescriptionDetailsService.CreatePrescription(prescription);
+        }
+        catch (Exception ex)
+        {
+            ErrorText = ex.Message;
+            return false;
+        }
+
+        return true;
     }
 }

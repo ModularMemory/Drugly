@@ -80,7 +80,7 @@ public static partial class DesignData
         {
             if (field == null)
             {
-                field = new DoctorPrescribeModalViewModel(null!, ExampleMedication)
+                field = new DoctorPrescribeModalViewModel(null!, ExampleMedication, ServiceProvider)
                 {
                     PatientFirstName = "Jane",
                     PatientLastName = "Doe",

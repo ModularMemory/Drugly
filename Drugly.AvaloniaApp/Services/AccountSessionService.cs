@@ -26,6 +26,8 @@ public sealed class AccountSessionService : IAccountSessionService
 
     public AccountType AccountType => Session?.AccountType ?? AccountType.Unknown;
 
+    public Guid AccountId => Session?.AccountId ?? Guid.Empty;
+
     public AccountSessionService(
         ILogger logger
     )
