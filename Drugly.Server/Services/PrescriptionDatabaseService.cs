@@ -19,14 +19,13 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         return Task.FromResult(prescription);
     }
 
-    public Task SetPrescriptionById(Guid id, Prescription prescription)
+    public async Task SetPrescriptionById(Guid id, Prescription prescription)
     {
         _prescriptions[id] = prescription;
 
         var filePath = Path.Combine(_folderPath, $"{id}.json");
-        JsonWritePrescription.SavePrescription(prescription, filePath);
 
-        return Task.CompletedTask;
+        await JsonWritePrescription.SavePrescription(prescription, filePath);
     }
 
     public Task<List<Prescription>> GetAllPrescriptionsByAccountId(Guid accountId)
@@ -41,7 +40,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         return Task.FromResult(result);
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
             Directory.CreateDirectory(_folderPath);
@@ -50,7 +49,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
 
         foreach (var file in files)
         {
-            var prescription = JsonReadPrescription.LoadPrescription(file);
+            var prescription = await JsonReadPrescription.LoadPrescription(file);
 
             if (prescription != null)
             {
@@ -59,7 +58,6 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         }
 
         Console.WriteLine($"Loaded {_prescriptions.Count} prescriptions.");
-        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

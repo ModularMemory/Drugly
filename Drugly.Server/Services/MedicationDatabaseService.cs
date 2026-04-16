@@ -32,17 +32,16 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         return Task.FromResult(medications);
     }
 
-    public Task SetMedicationById(Guid id, Medication medication)
+    public async Task SetMedicationById(Guid id, Medication medication)
     {
         _medications[id] = medication;
 
         var filePath = Path.Combine(_folderPath, $"{id}.json");
-        JsonWriteMedication.SavePrescription(medication, filePath);
 
-        return Task.CompletedTask;
+        await JsonWriteMedication.SaveMedication(medication, filePath);
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
             Directory.CreateDirectory(_folderPath);
@@ -51,16 +50,15 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
 
         foreach (var file in files)
         {
-            var medication = JsonReadMedication.LoadMedication(file);
+            var medication = await JsonReadMedication.LoadMedication(file);
 
-            if (medication != null)
-            {
-                _medications[medication.Id] = medication;
-            }
+            if (medication is null)
+                continue;
+
+            _medications[medication.Id] = medication;
         }
 
         Console.WriteLine($"Loaded {_medications.Count} medications.");
-        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

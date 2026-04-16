@@ -4,121 +4,74 @@ using Drugly.DTO;
 
 namespace Drugly.Server.Data;
 
-public static class JsonWritePrescription
+
+public static class JsonWriter
 {
-    private static readonly JsonSerializerOptions _options = new()
+    private static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true,
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static void SavePrescription(Prescription prescription, string filePath)
+    public static async Task SaveAsync<T>(T data, string filePath)
     {
-        var directoryName = Path.GetDirectoryName(filePath)!;
-        if (!Directory.Exists(directoryName))
-        {
-            Directory.CreateDirectory(directoryName);
-        }
-
-        var json = JsonSerializer.Serialize(prescription, _options);
-        File.WriteAllText(filePath, json);
+        var json = JsonSerializer.Serialize(data, Options);
+        await File.WriteAllTextAsync(filePath, json);
     }
+}
+
+public static class JsonReader
+{
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static async Task<T?> LoadAsync<T>(string filePath)
+    {
+        if (!File.Exists(filePath))
+            return default;
+
+        var json = await File.ReadAllTextAsync(filePath);
+        return JsonSerializer.Deserialize<T>(json, Options);
+    }
+}
+
+public static class JsonWritePrescription
+{
+    public static Task SavePrescription(Prescription prescription, string filePath) =>
+        JsonWriter.SaveAsync(prescription, filePath);
 }
 
 public static class JsonReadPrescription
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static Prescription? LoadPrescription(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<Prescription>(json, _options);
-    }
+    public static Task<Prescription?> LoadPrescription(string filePath) =>
+      JsonReader.LoadAsync<Prescription>(filePath);
 }
 
 public static class JsonWriteMedication
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SavePrescription(Medication medication, string filePath)
-    {
-        var directoryName = Path.GetDirectoryName(filePath)!;
-        if (!Directory.Exists(directoryName))
-        {
-            Directory.CreateDirectory(directoryName);
-        }
-
-        var json = JsonSerializer.Serialize(medication, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SaveMedication(Medication medication, string filePath) =>
+          JsonWriter.SaveAsync(medication, filePath);
 }
 
 public static class JsonReadMedication
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static Medication? LoadMedication(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<Medication>(json, _options);
-    }
+    public static Task<Medication?> LoadMedication(string filePath) =>
+       JsonReader.LoadAsync<Medication>(filePath);
 }
 
 public static class JsonWriteAccountDetails
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SavePrescription(AccountDetails accountdetails, string filePath)
-    {
-        var directoryName = Path.GetDirectoryName(filePath)!;
-        if (!Directory.Exists(directoryName))
-        {
-            Directory.CreateDirectory(directoryName);
-        }
-
-        var json = JsonSerializer.Serialize(accountdetails, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SaveAccountDetails(AccountDetails details, string filePath) =>
+         JsonWriter.SaveAsync(details, filePath);
 }
 
 public static class JsonReadAccountDetails
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static AccountDetails? LoadAccountDetails(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<AccountDetails>(json, _options);
-    }
+    public static Task<AccountDetails?> LoadAccountDetails(string filePath) =>
+        JsonReader.LoadAsync<AccountDetails>(filePath);
 }
 
 public static class JsonWriteAccountDatabaseEntry
@@ -129,7 +82,7 @@ public static class JsonWriteAccountDatabaseEntry
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static void SaveAccount(AccountCredentials entry, string filePath)
+    public static async Task SaveAccount(AccountCredentials entry, string filePath)
     {
         var directoryName = Path.GetDirectoryName(filePath)!;
         if (!Directory.Exists(directoryName))
@@ -138,7 +91,7 @@ public static class JsonWriteAccountDatabaseEntry
         }
 
         var json = JsonSerializer.Serialize(entry, _options);
-        File.WriteAllText(filePath, json);
+        File.WriteAllTextAsync(filePath, json);
     }
 }
 
@@ -155,7 +108,7 @@ public static class JsonReadAccountDatabaseEntry
         if (!File.Exists(filePath))
             return null;
 
-        var json = File.ReadAllText(filePath);
+        var json = File.ReadAllTextAsync(filePath);
         return JsonSerializer.Deserialize<AccountCredentials>(json, _options);
     }
 }

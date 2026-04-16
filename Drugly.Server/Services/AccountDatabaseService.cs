@@ -11,7 +11,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly string _folderPath = "Accounts";
-    public Task<AccountCredentials> GetAccountById(Guid id)
+    public  Task<AccountCredentials> GetAccountById(Guid id)
     {
         if (!_accounts.TryGetValue(id, out var account))
         {
@@ -21,7 +21,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         return Task.FromResult(account);
     }
 
-    public Task SetAccountById(Guid id, string email, AccountCredentials entry)
+    public async Task SetAccountById(Guid id, string email, AccountCredentials entry)
     {
         _accounts[id] = entry;
         _emailToId[email] = id;
@@ -29,7 +29,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         var filePath = Path.Combine(_folderPath, $"{id}.json");
         JsonWriteAccountDatabaseEntry.SaveAccount(entry, filePath);
 
-        return Task.CompletedTask;
+        await JsonWriteAccountDatabaseEntry.SaveAccount(entry, filePath);
     }
 
     public Task<Guid> GetIdByEmail(string email)
@@ -59,7 +59,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         return Task.FromResult(patients);
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
             Directory.CreateDirectory(_folderPath);
@@ -81,7 +81,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         }
 
         Console.WriteLine($"Loaded {_accounts.Count} accounts.");
-        return Task.CompletedTask;
+        return await JsonReadAccountDatabaseEntry.LoadAccount(file)
     }
 
 
