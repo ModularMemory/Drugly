@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a prescription</summary>

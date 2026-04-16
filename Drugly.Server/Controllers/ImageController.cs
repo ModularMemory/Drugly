@@ -25,12 +25,6 @@ public class ImageController : DruglyController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
-        if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
-        {
-            _logger.LogInformation("User is not authorized");
-            return Forbid(ApiResponse.Error("User is not authorized"));
-        }
-
         Stream response;
         try
         {
