@@ -3,134 +3,95 @@ using Drugly.DTO;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+
+/// <summary> General JSON Writer to prevent repetition 
+public static class JsonWriter
+{
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        WriteIndented = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static async Task SaveAsync<T>(T data, string filePath)
+    {
+        var json = JsonSerializer.Serialize(data, Options);
+        await File.WriteAllTextAsync(filePath, json);
+    }
+}
+
+/// <summary> General JSON Reader to prevent repetition 
+public static class JsonReader
+{
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static async Task<T?> LoadAsync<T>(string filePath)
+    {
+        if (!File.Exists(filePath))
+            return default;
+
+        var json = await File.ReadAllTextAsync(filePath);
+        return JsonSerializer.Deserialize<T>(json, Options);
+    }
+}
+
+/// <summary> Json Writer for Prescription data.  Writes Prescription Data to file
 public static class JsonWritePrescription
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SavePrescription(Prescription prescription, string filePath)
-    {
-        var json = JsonSerializer.Serialize(prescription, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SavePrescription(Prescription prescription, string filePath) =>
+        JsonWriter.SaveAsync(prescription, filePath);
 }
 
+
+/// <summary> Json Reader for Prescription data.  Reads Prescription Data from file
 public static class JsonReadPrescription
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static Prescription? LoadPrescription(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<Prescription>(json, _options);
-    }
+    public static Task<Prescription?> LoadPrescription(string filePath) =>
+         JsonReader.LoadAsync<Prescription>(filePath);
 }
 
+/// <summary> Json Writer for Medication data.  Writes Medication Data to file
 public static class JsonWriteMedication
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SavePrescription(Medication medication, string filePath)
-    {
-        var json = JsonSerializer.Serialize(medication, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SaveMedication(Medication medication, string filePath) =>
+        JsonWriter.SaveAsync(medication, filePath);
 }
 
+/// <summary> Json Reader for Medication data.  Reads Medication Data from file
 public static class JsonReadMedication
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static Medication? LoadMedication(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<Medication>(json, _options);
-    }
+public static Task<Medication?> LoadMedication(string filePath) =>
+         JsonReader.LoadAsync<Medication>(filePath);
 }
 
+/// <summary> Json Writer for Account Details.  Writes Account Details to JSON file
 public static class JsonWriteAccountDetails
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SavePrescription(AccountDetails accountdetails, string filePath)
-    {
-        var json = JsonSerializer.Serialize(accountdetails, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SaveAccountDetails(AccountDetails details, string filePath) =>
+        JsonWriter.SaveAsync(details, filePath);
 }
 
+/// <summary> Json Reader for Account Details.  Reads Account Data from file
 public static class JsonReadAccountDetails
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static AccountDetails? LoadAccountDetails(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<AccountDetails>(json, _options);
-    }
+    public static Task<AccountDetails?> LoadAccountDetails(string filePath) =>
+        JsonReader.LoadAsync<AccountDetails>(filePath);
 }
-
+/// <summary> Json Writer for Account Entry Database.  Writes Accounts to File
 public static class JsonWriteAccountDatabaseEntry
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static void SaveAccount(AccountDatabaseEntry entry, string filePath)
-    {
-        var json = JsonSerializer.Serialize(entry, _options);
-        File.WriteAllText(filePath, json);
-    }
+    public static Task SaveAccount(AccountDatabaseEntry entry, string filePath) =>
+            JsonWriter.SaveAsync(entry, filePath);
 }
 
+/// <summary> Json Reader for Accout Entry Database.  Reads Accounts from Json File
 public static class JsonReadAccountDatabaseEntry
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static AccountDatabaseEntry? LoadAccount(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<AccountDatabaseEntry>(json, _options);
-    }
+    public static Task<AccountDatabaseEntry?> LoadAccount(string filePath) =>
+          JsonReader.LoadAsync<AccountDatabaseEntry>(filePath);
 }
