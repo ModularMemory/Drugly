@@ -159,8 +159,8 @@ public class PrescriptionController : DruglyController
         }
         if (prescribedUser.AccountDetails.AccountType is not AccountType.Patient)
         {
-            _logger.LogError("Cannot prescribed to a non-patient account");
-            return BadRequest(ApiResponse.Error("Cannot prescribed to a non-patient account"));
+            _logger.LogError("Cannot prescribe to a non-patient account");
+            return BadRequest(ApiResponse.Error("Cannot prescribe to a non-patient account"));
         }
         try
         {

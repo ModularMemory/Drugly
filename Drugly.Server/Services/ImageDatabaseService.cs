@@ -17,7 +17,7 @@ public class ImageDatabaseService : IImageDatabaseService
         }
 
 
-        contentType = "application/octet-stream";
+        contentType = "image/bmp";
         return Task.FromResult<Stream>(File.OpenRead(path));
     }
 

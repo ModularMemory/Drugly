@@ -56,8 +56,6 @@
                                     <TextBlock Classes="Body"
                                                Text="{Binding Medication.Description}" />
                                     <TextBlock Classes="Body"
-                                               Text="{Binding Prescription.DosagePerDay}" />
-                                    <TextBlock Classes="Body"
                                                Text="{Binding Prescription.AdditionalNotes}" />
                                 </StackPanel>
                             </Grid>

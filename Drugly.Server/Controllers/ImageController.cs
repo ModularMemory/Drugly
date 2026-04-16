@@ -50,6 +50,11 @@ public class ImageController : DruglyController
     [HttpPut]
     public async Task<IActionResult> Upload()
     {
+        if (Request.Headers.ContentLength is null or 0)
+        {
+            return BadRequest(ApiResponse.Error("Bad Content-Length header"));
+        }
+
         var content = Request.Body;
 
         if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))

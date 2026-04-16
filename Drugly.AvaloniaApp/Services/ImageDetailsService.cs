@@ -23,7 +23,7 @@ public sealed class ImageDetailsService : IImageDetailsService
         _logger = logger;
     }
 
-    public async Task<Uri> UploadImage(Stream stream)
+    public async Task<Uri> UploadImage(byte[] bytes)
     {
         var client = _httpClientFactory.CreateClient(nameof(IImageDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
@@ -31,7 +31,11 @@ public sealed class ImageDetailsService : IImageDetailsService
             throw new IOException("Failed to authorize");
         }
 
-        using var res = await client.PutAsync("/Image/Upload", new StreamContent(stream));
+        using var req = new HttpRequestMessage(HttpMethod.Put, "/Image/Upload");
+        req.Content = new ByteArrayContent(bytes);
+        req.Content.Headers.ContentLength = bytes.Length;
+
+        using var res = await client.SendAsync(req);
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<string>>();
         if (!res.IsSuccessStatusCode)
         {

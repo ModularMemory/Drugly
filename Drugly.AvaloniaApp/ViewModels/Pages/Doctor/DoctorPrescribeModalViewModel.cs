@@ -134,14 +134,14 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
         try
         {
             var patient = await _accountDetailsService.GetAccountByEmail(PatientEmail!);
-            var uri = await _imageDetailsService.UploadImage(signatureStream);
+            var uri = await _imageDetailsService.UploadImage(signatureStream.ToArray());
             var prescription = new Prescription(
                 Medication.Id,
                 patient.UserId,
                 DosagePerDay!,
                 (ulong)DaysBetweenDosage!,
                 (ulong)DaysPrescribed!,
-                PrescriptionNotes!,
+                PrescriptionNotes ?? "No notes",
                 uri.AbsoluteUri
             );
             prescription.State = PrescriptionState.DoctorPrescription;

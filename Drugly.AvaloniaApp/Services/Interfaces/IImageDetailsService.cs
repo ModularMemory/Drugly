@@ -4,9 +4,9 @@ namespace Drugly.AvaloniaApp.Services.Interfaces;
 public interface IImageDetailsService
 {
     /// <summary>Uploads a given image to the server.</summary>
-    /// <param name="stream">The image stream.</param>
+    /// <param name="bytes">The image stream.</param>
     /// <returns>A task that can be awaited to complete the upload operation.</returns>
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
-    Task<Uri> UploadImage(Stream stream);
+    Task<Uri> UploadImage(byte[] bytes);
 }

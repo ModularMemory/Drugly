@@ -7,6 +7,8 @@
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
              xmlns:patient="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Patient"
              xmlns:dto="clr-namespace:Drugly.DTO;assembly=Drugly.DTO"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Patient.PatientPrescriptionDetailsView"
              x:DataType="patient:PatientPrescriptionDetailsViewModel"
@@ -20,11 +22,53 @@
               RowDefinitions="Auto,Auto,Auto,Auto"
               RowSpacing="16">
 
-            <suki:Stepper Grid.Row="0"
-                          AlternativeStyle="True"
-                          Index="{Binding StepIndex}"
-                          Steps="{Binding Steps}" />
-            
+            <Grid Grid.Row="0"
+                  RowDefinitions="Auto,Auto">
+                <Grid Grid.Row="0"
+                      Margin="50,0,0,50"
+                      ColumnDefinitions="*,*"
+                      ColumnSpacing="16">
+
+                    <!-- Medication -->
+                    <Grid Grid.Column="0"
+                          RowDefinitions="Auto, Auto"
+                          RowSpacing="6"
+                          HorizontalAlignment="Center">
+                        <!-- Name, desc -->
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Classes="H3"
+                                       Text="{Binding Prescription.Medication.Name}" />
+                            <TextBlock Classes="Body"
+                                       Text="{Binding Prescription.Medication.Description}" />
+                        </StackPanel>
+
+                        <!-- Image -->
+                        <Viewbox Grid.Row="1"
+                                 Height="96"
+                                 Width="{Binding $self.Height}">
+                            <Image asyncImageLoader:ImageLoader.Source="{Binding Prescription.Medication.ImageUri}" />
+                        </Viewbox>
+                    </Grid>
+
+                    <!-- Signature -->
+                    <Grid Grid.Column="1"
+                          RowDefinitions="Auto, Auto"
+                          RowSpacing="6">
+                        <TextBlock Grid.Row="0"
+                                   Classes="H3"
+                                   Text="Doctor Signature" />
+                        <Image Grid.Row="1"
+                               asyncImageLoader:ImageLoader.Source="{Binding Prescription.Prescription.DoctorSignatureUri}" />
+                    </Grid>
+                </Grid>
+
+                <suki:Stepper Grid.Row="1"
+                              AlternativeStyle="True"
+                              Index="{Binding StepIndex}"
+                              Steps="{Binding Steps}" />
+
+            </Grid>
+
             <Grid Grid.Row="1"
                   ColumnDefinitions="Auto,Auto,Auto"
                   ColumnSpacing="8"
@@ -35,14 +79,14 @@
                         Classes="Flat"
                         Command="{Binding ProgressStepperCommand}">
                     <TextBlock Classes="Body"
-                               Text="{Binding DoctorPrescriptionStateText}"/>
+                               Text="{Binding DoctorPrescriptionStateText}" />
                 </Button>
 
                 <Button Grid.Column="1"
                         Classes="Danger"
                         Command="{Binding ProgressStepperCommand}">
                     <TextBlock Classes="Body"
-                               Text="Cancel"/>
+                               Text="Cancel" />
                 </Button>
             </Grid>
 
@@ -51,31 +95,36 @@
 
             <TabControl Grid.Row="3">
                 <TabItem Header="Usage Instructions">
-                    <WrapPanel Orientation="Horizontal"
-                               ItemSpacing="6"
-                               LineSpacing="4">
+                    <StackPanel Spacing="16">
+                        <WrapPanel Orientation="Horizontal"
+                                   ItemSpacing="6"
+                                   LineSpacing="4">
+                            <TextBlock Classes="Body"
+                                       Text="Take"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="{Binding Prescription.Prescription.DosagePerDay}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="every"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="{Binding Prescription.Prescription.DaysBetweenDosage}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="days for"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="{Binding Prescription.Prescription.DaysPrescribed}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Classes="Body"
+                                       Text="days."
+                                       VerticalAlignment="Center" />
+                        </WrapPanel>
                         <TextBlock Classes="Body"
-                                   Text="Take"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.Prescription.DosagePerDay}"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="every"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.Prescription.DaysBetweenDosage}"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="days for"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.Prescription.DaysPrescribed}"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Classes="Body"
-                                   Text="days."
-                                   VerticalAlignment="Center" />
-                    </WrapPanel>
+                                   Text="{Binding Prescription.Prescription.AdditionalNotes}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
                 </TabItem>
 
                 <TabItem Header="Billing Information"
