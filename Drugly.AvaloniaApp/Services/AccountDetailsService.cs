@@ -29,7 +29,7 @@ public sealed class AccountDetailsService : IAccountDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IAccountDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.GetAsync($"/Account/GetById/{id}");
@@ -48,7 +48,7 @@ public sealed class AccountDetailsService : IAccountDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IAccountDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var req = new HttpRequestMessage(HttpMethod.Post, "/Account/GetIdByEmail/");
@@ -63,5 +63,24 @@ public sealed class AccountDetailsService : IAccountDetailsService
         }
 
         return await GetAccountById(resBody!.Data);
+    }
+
+    public async Task<AccountDetails[]> GetPatients()
+    {
+        var client = _httpClientFactory.CreateClient(nameof(IAccountDetailsService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            throw new IOException("Failed to authorize");
+        }
+
+        using var res = await client.GetAsync("/Account/GetPatientAccounts");
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails[]>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while fetching patients: {Code} - {Message}", res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
+        }
+
+        return resBody!.Data!;
     }
 }

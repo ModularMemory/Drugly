@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Drugly.AvaloniaApp.Models;
 
+/// <summary>The configuration of the HTTP services.</summary>
 public sealed class HttpConfig
 {
     public HttpConfig(IConfigurationRoot configuration)
@@ -9,5 +10,6 @@ public sealed class HttpConfig
         configuration.GetSection(nameof(HttpConfig)).Bind(this);
     }
 
+    /// <summary>The hostname of the server.</summary>
     public string? ServerHostname { get; set; }
 }

@@ -28,7 +28,7 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IMedicationDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.GetAsync($"/Medication/GetById/{id}");
@@ -47,7 +47,7 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IMedicationDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.GetAsync("/Medication/GetAll");

@@ -19,4 +19,10 @@ public interface IAccountDetailsService
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
     Task<AccountDetails> GetAccountByEmail([EmailAddress] string email);
+
+    /// <summary>Gets a list of all patients.</summary>
+    /// <returns>The patients</returns>
+    /// <exception cref="IOException">The server could not be reached.</exception>
+    /// <exception cref="HttpRequestException">The request was denied.</exception>
+    Task<AccountDetails[]> GetPatients();
 }
