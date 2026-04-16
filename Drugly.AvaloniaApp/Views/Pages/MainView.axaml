@@ -50,7 +50,7 @@
                         <TextBlock Grid.Row="0"
                                    Grid.Column="1"
                                    Classes="H1"
-                                   Text="Choose a Medication to Prescribe"
+                                   Text="{Binding ((pages:IPageViewModel)ContentViewModel).PageTitle, FallbackValue=Hello!}"
                                    TextWrapping="Wrap" />
 
                         <Separator Grid.Row="1"
