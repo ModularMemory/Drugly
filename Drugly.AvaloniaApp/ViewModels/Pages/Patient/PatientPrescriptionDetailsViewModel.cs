@@ -9,6 +9,7 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 
+/// <summary>VM for any prescrpition details for patients.</summary>
 public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;

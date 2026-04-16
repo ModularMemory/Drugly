@@ -7,7 +7,7 @@
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
              xmlns:patient="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Patient"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
-             x:Class="Drugly.AvaloniaApp.Views.Pages.PatientPrescriptionView"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Patient.PatientPrescriptionDetailsView"
              x:DataType="patient:PatientPrescriptionDetailsViewModel"
              d:DataContext="{x:Static design:DesignData.PatientPrescriptionDetailsViewModel}">
 

@@ -10,7 +10,7 @@
              xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
-             x:Class="Drugly.AvaloniaApp.Views.Pages.PatientMainView"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Patient.PatientMainView"
              x:DataType="patient:PatientMainViewModel"
              d:DataContext="{x:Static design:DesignData.PatientMainViewModel}">
 

@@ -2,13 +2,13 @@
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Models;
-using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 
+/// <summary>Vm for the main page for patients.</summary>
 public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
 {
     private readonly IPageRouter _pageRouter;
