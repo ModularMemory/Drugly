@@ -6,6 +6,7 @@
              xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
              xmlns:patient="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Patient"
+             xmlns:dto="clr-namespace:Drugly.DTO;assembly=Drugly.DTO"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Patient.PatientPrescriptionDetailsView"
              x:DataType="patient:PatientPrescriptionDetailsViewModel"
@@ -16,18 +17,30 @@
           RowDefinitions="Auto,*">
 
         <Grid Grid.Row="1"
-              RowDefinitions="Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto,Auto"
               RowSpacing="16">
 
             <suki:Stepper Grid.Row="0"
                           AlternativeStyle="True"
                           Index="{Binding StepIndex}"
                           Steps="{Binding Steps}" />
+            
+            <Grid Grid.Row="1"
+                  RowDefinitions="Auto"
+                  ColumnDefinitions="Auto,Auto,Auto">
+                
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Command="{Binding ProgressStepperCommand}"
+                        IsVisible="{Binding AccountSessionService.AccountType, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static dto:AccountType.Doctor}}">
+                    <TextBlock Text="Approve"/>
+                </Button>
+            </Grid>
 
-            <Separator Grid.Row="1"
+            <Separator Grid.Row="2"
                        Grid.Column="0" />
 
-            <TabControl Grid.Row="2">
+            <TabControl Grid.Row="3">
                 <TabItem Header="Usage Instructions">
                     <WrapPanel Orientation="Horizontal"
                                ItemSpacing="6"

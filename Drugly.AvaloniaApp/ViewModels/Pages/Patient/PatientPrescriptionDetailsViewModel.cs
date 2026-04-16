@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Models;
+using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Humanizer;
@@ -16,7 +17,7 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
-    
+
     public string? PageTitle => $"Viewing Prescription for {Prescription?.Medication.Name}";
 
     [ObservableProperty]
@@ -29,13 +30,16 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     public partial int StepIndex { get; set; }
 
     public IEnumerable<string> Steps { get; }
+    public IAccountSessionService AccountSessionService { get; }
 
-    public PatientPrescriptionDetailsViewModel(
+public PatientPrescriptionDetailsViewModel(
         ISukiDialogManager dialogManager,
         IPageRouter pageRouter,
-        ILogger logger
+        ILogger logger,
+        IAccountSessionService accountSessionService
     )
     {
+        AccountSessionService = accountSessionService;
         _dialogManager = dialogManager;
         _pageRouter = pageRouter;
         _logger = logger;
@@ -56,6 +60,12 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     {
         // Do something here idk how this is handled :3c
         _pageRouter.PopPage();
+    }
+
+    [RelayCommand]
+    private void ProgressStepper()
+    {
+        Prescription.Prescription.State++;
     }
 
     [ObservableProperty]
