@@ -28,7 +28,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IPrescriptionDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.GetAsync($"/Prescription/GetById/{id}");
@@ -47,7 +47,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IPrescriptionDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.GetAsync($"/Prescription/GetByAccountId/{id}");
@@ -66,7 +66,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IPrescriptionDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.PostAsync("/Prescription/AddPrescription/", JsonContent.Create(prescription));
@@ -85,7 +85,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IPrescriptionDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.PutAsync($"/Prescription/AdvanceState/{(int)newState}", JsonContent.Create(prescription));

@@ -28,7 +28,7 @@ public sealed class ImageDetailsService : IImageDetailsService
         var client = _httpClientFactory.CreateClient(nameof(IImageDetailsService));
         if (!_accountSessionService.TryAuthorizeClient(client))
         {
-            throw new IOException();
+            throw new IOException("Failed to authorize");
         }
 
         using var res = await client.PutAsync("/Image/Upload", new StreamContent(stream));
