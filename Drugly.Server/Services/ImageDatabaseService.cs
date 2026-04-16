@@ -5,9 +5,11 @@ namespace Drugly.Server.Services;
 
 public class ImageDatabaseService : IImageDatabaseService
 {
+    private string _folderPath = "images";
+
     public Task<Stream> GetImageById(string id, out string contentType)
     {
-        var path = Path.Combine("images", $"{id}.bin");
+        var path = Path.Combine(_folderPath, $"{id}.bin");
 
         if (!File.Exists(path))
         {
@@ -21,9 +23,9 @@ public class ImageDatabaseService : IImageDatabaseService
 
     public async Task SetImageById(string id, string contentType, Stream content)
     {
-        var path = Path.Combine("images", $"{id}.bin");
+        var path = Path.Combine(_folderPath, $"{id}.bin");
 
-        Directory.CreateDirectory("images");
+        Directory.CreateDirectory(_folderPath);
 
         await using var fs = File.Create(path);
         await content.CopyToAsync(fs);

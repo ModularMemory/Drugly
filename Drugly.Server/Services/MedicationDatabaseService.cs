@@ -8,8 +8,16 @@ namespace Drugly.Server.Services;
 
 public class MedicationDatabaseService : IHostedService, IMedicationDatabaseService
 {
+    private readonly ILogger<MedicationDatabaseService> _logger;
     private readonly Dictionary<Guid, Medication> _medications = new();
-    private readonly string _folderPath = "Medications";
+    private const string FOLDER_PATH = "Medications";
+
+    public MedicationDatabaseService(
+        ILogger<MedicationDatabaseService> logger
+        )
+    {
+        _logger = logger;
+    }
     public Task<Medication> GetMedicationById(Guid id)
     {
         if (!_medications.TryGetValue(id, out var medication))
@@ -36,17 +44,17 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
     {
         _medications[id] = medication;
 
-        var filePath = Path.Combine(_folderPath, $"{id}.json");
+        var filePath = Path.Combine(FOLDER_PATH, $"{id}.json");
 
         await JsonWriteMedication.SaveMedication(medication, filePath);
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (!Directory.Exists(_folderPath))
-            Directory.CreateDirectory(_folderPath);
+        if (!Directory.Exists(FOLDER_PATH))
+            Directory.CreateDirectory(FOLDER_PATH);
 
-        var files = Directory.GetFiles(_folderPath, "*.json");
+        var files = Directory.GetFiles(FOLDER_PATH, "*.json");
 
         foreach (var file in files)
         {
@@ -58,12 +66,11 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
             _medications[medication.Id] = medication;
         }
 
-        Console.WriteLine($"Loaded {_medications.Count} medications.");
+        _logger.LogInformation("Loaded {MedicationsCount} medications", _medications.Count);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Medication service stopping.");
         return Task.CompletedTask;
     }
 }

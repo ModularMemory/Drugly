@@ -7,11 +7,19 @@ namespace Drugly.Server.Services;
 
 public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 {
+    private readonly ILogger<AccountDatabaseService> _logger;
     private readonly Dictionary<Guid, AccountCredentials> _accounts = new();
     private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
+    private const string FOLDER_PATH = "Accounts";
 
-    private readonly string _folderPath = "Accounts";
-    public  Task<AccountCredentials> GetAccountById(Guid id)
+    public AccountDatabaseService(
+        ILogger<AccountDatabaseService> logger
+    )
+    {
+        _logger = logger;
+    }
+
+    public Task<AccountCredentials> GetAccountById(Guid id)
     {
         if (!_accounts.TryGetValue(id, out var account))
         {
@@ -26,8 +34,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         _accounts[id] = entry;
         _emailToId[email] = id;
 
-        var filePath = Path.Combine(_folderPath, $"{id}.json");
-        JsonWriteAccountDatabaseEntry.SaveAccount(entry, filePath);
+        var filePath = Path.Combine(FOLDER_PATH, $"{id}.json");
 
         await JsonWriteAccountDatabaseEntry.SaveAccount(entry, filePath);
     }
@@ -40,12 +47,10 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         }
 
         return Task.FromResult(id);
-
     }
 
     public Task<AccountDetails[]> GetAllPatientAccounts()
     {
-
         var patients = _accounts.Values
             .Where(a => a.AccountDetails.AccountType == AccountType.Patient)
             .Select(a => a.AccountDetails)
@@ -61,10 +66,10 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (!Directory.Exists(_folderPath))
-            Directory.CreateDirectory(_folderPath);
+        if (!Directory.Exists(FOLDER_PATH))
+            Directory.CreateDirectory(FOLDER_PATH);
 
-        var files = Directory.GetFiles(_folderPath, "*.json");
+        var files = Directory.GetFiles(FOLDER_PATH, "*.json");
 
         foreach (var file in files)
         {
@@ -80,13 +85,12 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
             }
         }
 
-        Console.WriteLine($"Loaded {_accounts.Count} accounts.");
+        _logger.LogInformation("Loaded {AccountsCount} accounts", _accounts.Count);
     }
 
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Account service stopping.");
         return Task.CompletedTask;
     }
 }
