@@ -2,8 +2,18 @@
 
 namespace Drugly.AvaloniaApp.Models;
 
-public class PatientPrescription (Prescription prescription, Medication medication)
+/// <summary>Combines a Prescription and medication.</summary>
+public class PatientPrescription
 {
-    public Medication Medication { get; set; } = medication;
-    public Prescription Prescription { get; set; } = prescription;
+    public PatientPrescription(Prescription prescription, Medication medication)
+    {
+        Medication = medication;
+        Prescription = prescription;
+    }
+
+    /// <summary>The prescription.</summary>
+    public Prescription Prescription { get; set; }
+
+    /// <summary>The medication.</summary>
+    public Medication Medication { get; set; }
 }

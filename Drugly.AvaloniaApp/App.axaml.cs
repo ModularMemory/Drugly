@@ -19,6 +19,7 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp;
 
+/// <summary>The Avalonia application entry point.</summary>
 public partial class App : Application
 {
     private IServiceProvider? _serviceProvider;
