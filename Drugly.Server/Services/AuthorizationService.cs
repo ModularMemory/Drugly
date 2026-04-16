@@ -62,7 +62,7 @@ public class AuthorizationService : IAuthorizationService
         }
         var token = values.FirstOrDefault();
 
-        if (token is null || !Authorizations.TryGetValue(token, out var accountSession))
+        if (token is null)
         {
             return false;
         }
@@ -71,6 +71,11 @@ public class AuthorizationService : IAuthorizationService
         if (token.StartsWith(BEARER))
         {
             token = token[BEARER.Length..];
+        }
+        
+        if (!Authorizations.TryGetValue(token, out var accountSession))
+        {
+            return false;
         }
 
         if (accountSession.Expiration < DateTimeOffset.UtcNow)
