@@ -115,6 +115,7 @@ public static class Startup
                 .AddView<DoctorMedicationListView, DoctorMedicationListViewModel>()
                 .AddView<DoctorPatientListView, DoctorPatientListViewModel>()
                 .AddView<DoctorMedicationDetailsPageView, DoctorMedicationDetailsPageViewModel>()
+                .AddView<DoctorPatientPrescriptionListModalView, DoctorPatientPrescriptionListModalViewModel>()
                 .AddView<SettingsView, SettingsViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();

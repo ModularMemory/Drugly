@@ -140,4 +140,18 @@ public static partial class DesignData
             return field;
         }
     }
+
+    public static DoctorPatientPrescriptionListModalViewModel DoctorPatientPrescriptionListModalViewModel
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new DoctorPatientPrescriptionListModalViewModel(null!, ExamplePatient, ServiceProvider);
+                field.Prescriptions.AddRange(ExamplePrescriptions.Select(x => new PatientPrescription(x, ExampleMedication)));
+            }
+
+            return field;
+        }
+    }
 }

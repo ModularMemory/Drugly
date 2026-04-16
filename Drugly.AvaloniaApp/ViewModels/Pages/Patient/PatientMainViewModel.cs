@@ -40,22 +40,24 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
         _prescriptionDetailsService = prescriptionDetailsService;
         _medicationDetailsService = medicationDetailsService;
 
-        Dispatcher.UIThread.InvokeAsync(async () =>
+        Dispatcher.UIThread.InvokeAsync(GetPrescriptions);
+    }
+
+    private async Task GetPrescriptions()
+    {
+        if (_accountSessionService.AccountType == AccountType.Patient)
         {
-            if (_accountSessionService.AccountType == AccountType.Patient)
+            Account = await _accountDetailsService.GetAccountById(_accountSessionService.AccountId);
+            var prescriptions = await _prescriptionDetailsService.GetPrescriptionsByAccountId(Account.UserId);
+            List<Medication> medications = [];
+
+            foreach (var prescription in prescriptions)
             {
-                Account = await _accountDetailsService.GetAccountById(_accountSessionService.AccountId);
-                var prescriptions = await _prescriptionDetailsService.GetPrescriptionsByAccountId(Account.UserId);
-                List<Medication> medications = [];
-
-                foreach (var prescription in prescriptions)
-                {
-                    medications.Add(await _medicationDetailsService.GetMedication(prescription.MedicationId));
-                }
-
-                Prescriptions.AddRange(medications.Select((m, i) => new PatientPrescription(prescriptions[i], m)));
+                medications.Add(await _medicationDetailsService.GetMedication(prescription.MedicationId));
             }
-        });
+
+            Prescriptions.AddRange(medications.Select((m, i) => new PatientPrescription(prescriptions[i], m)));
+        }
     }
 
     [RelayCommand]

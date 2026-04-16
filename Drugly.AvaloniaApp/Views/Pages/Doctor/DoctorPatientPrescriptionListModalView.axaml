@@ -1,0 +1,96 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:doctor="clr-namespace:Drugly.AvaloniaApp.ViewModels.Pages.Doctor"
+             xmlns:design="clr-namespace:Drugly.AvaloniaApp.Design"
+             xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             MinWidth="600" MaxWidth="1000" MinHeight="600"
+             mc:Ignorable="d"
+             x:Class="Drugly.AvaloniaApp.Views.Pages.Doctor.DoctorPatientPrescriptionListModalView"
+             x:DataType="doctor:DoctorPatientPrescriptionListModalViewModel"
+             d:DataContext="{x:Static design:DesignData.DoctorPatientPrescriptionListModalViewModel}">
+    <Grid RowDefinitions="Auto,Auto,*,Auto"
+          RowSpacing="12">
+        <!-- Heading -->
+        <TextBlock Grid.Row="0"
+                   Classes="H1"
+                   TextWrapping="Wrap">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="Viewing Prescriptions For {0} {1}">
+                    <Binding Path="Patient.FirstName" />
+                    <Binding Path="Patient.LastName" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+
+        <Separator Grid.Row="1" />
+
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      IsScrollInertiaEnabled="True">
+
+            <ItemsControl HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
+                          ItemsSource="{Binding Prescriptions}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="8" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Classes="Discrete Large"
+                                Command="{Binding $parent[ItemsControl].((doctor:DoctorPatientPrescriptionListModalViewModel)DataContext).ViewPrescriptionCommand}"
+                                CommandParameter="{Binding}"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
+                                Width="{Binding $parent[ScrollViewer].Bounds.Width}">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="16">
+
+                                <!-- Image -->
+                                <Viewbox Grid.Column="0"
+                                         Height="{Binding $parent[Grid].Bounds.Height,
+                                                Converter={x:Static converters:NumberConverters.Max},
+                                                ConverterParameter=96}"
+                                         Width="{Binding $self.Height}">
+                                    <Image asyncImageLoader:ImageLoader.Source="{Binding Medication.ImageUri}" />
+                                </Viewbox>
+
+                                <!-- Name, desc, dosage + prescription notes -->
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Classes="H3"
+                                               Text="{Binding Medication.Name}" />
+                                    <TextBlock Classes="Body"
+                                               Text="{Binding Medication.Description}" />
+                                    <TextBlock Classes="Body"
+                                               Text="{Binding Prescription.DosagePerDay}" />
+                                    <TextBlock Classes="Body"
+                                               Text="{Binding Prescription.AdditionalNotes}" />
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Cancel/confirm buttons -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="16">
+            <Button Classes="Danger"
+                    Command="{Binding CancelCommand}">
+                <TextBlock Classes="H4"
+                           Text="Cancel" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
