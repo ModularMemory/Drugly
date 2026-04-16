@@ -59,11 +59,12 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
 }
 
     [RelayCommand]
-    private void ViewPrescription()
+    private void ViewPrescription(object? dataContext)
     {
         var vm = _serviceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
+        var prescription = dataContext as PatientPrescription;
+        vm.Patient = Account;
+        vm.Prescription = prescription?.Prescription;
         _pageRouter.PushPage(vm);
     }
-    
-    
 }
