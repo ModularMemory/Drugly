@@ -45,7 +45,7 @@ public class MedicationController : DruglyController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllMedications()
+    public async Task<IActionResult> GetAll()
     {
         ApiResponse<Medication[]> response = new ApiResponse<Medication[]>();
         try
