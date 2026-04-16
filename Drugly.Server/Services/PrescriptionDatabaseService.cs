@@ -1,4 +1,5 @@
 using Drugly.DTO;
+using Drugly.Server.Data;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 
@@ -10,7 +11,11 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
     private readonly string _folderPath = "Prescriptions";
     public Task<Prescription> GetPrescriptionById(Guid id)
     {
-        _prescriptions.TryGetValue(id, out var prescription);
+        if (!_prescriptions.TryGetValue(id, out var prescription))
+        {
+            throw new PrescriptionNotFoundException();
+        }
+
         return Task.FromResult(prescription);
     }
 
@@ -29,7 +34,10 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         var result = _prescriptions.Values
           .Where(p => p.PatientId == accountId)
           .ToList();
-
+        if (result.Count == 0)
+        {
+            throw new PrescriptionNotFoundException();
+        }
         return Task.FromResult(result);
     }
 

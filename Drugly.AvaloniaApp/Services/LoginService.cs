@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;
@@ -45,35 +46,59 @@ public sealed class LoginService : ILoginService
 
     public async Task TryLoginAsync(string email, string password)
     {
-        var session = await GetAccountSession(email, password);
-        if (session is null)
+        var response = await GetAccountSession(email, password);
+        if (response?.Data is null)
         {
-            OnLoginError("Failed to fetch account data");
+            OnLoginError($"Failed to fetch account data: {response?.ErrorMessage ?? "Unknown error"}");
             return;
         }
 
+        var session = response.Data;
         _accountSessionService.StoreSession(session);
         OnLoginSuccessful(session.AccountType);
     }
 
-    private async Task<AccountSession?> GetAccountSession(string email, string password)
+    private async Task<ApiResponse<AccountSession>?> GetAccountSession(string email, string password)
     {
         var client = _httpClientFactory.CreateClient(nameof(ILoginService));
 
-        // TODO: API request here
-        // var accountType = AccountType.Patient;
-        var accountType = Random.Shared.GetItems([AccountType.Patient, AccountType.Doctor], 1)[0];
-        var sessionToken = password;
-        var expiration = DateTimeOffset.Now.AddDays(1);
+        var request = new LoginRequest
+        {
+            Email = email,
+            Password = password
+        };
 
-        return new AccountSession(sessionToken, accountType, expiration, default);
+        using var res = await client.PostAsync("/Account/Login", JsonContent.Create(request));
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountSession>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while logging in: {Code} - {Message}", res.StatusCode, resBody?.ErrorMessage);
+        }
+
+        return resBody;
     }
 
     public async Task LogoutAsync()
     {
         var client = _httpClientFactory.CreateClient(nameof(ILoginService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            _logger.Warning("Failed to authorize {MethodName} client", nameof(LogoutAsync));
+        }
 
-        // TODO: API request here
+        try
+        {
+            using var res = await client.DeleteAsync("/Account/Logout");
+            if (!res.IsSuccessStatusCode)
+            {
+                var resBody = await res.Content.ReadAsStringAsync();
+                _logger.Error("Error while logging out: {Code} - {Message}", res.StatusCode, resBody);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to log out");
+        }
 
         _accountSessionService.ClearSession();
         OnLogout();

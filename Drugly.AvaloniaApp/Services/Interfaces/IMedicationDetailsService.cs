@@ -1,8 +1,8 @@
-using Drugly.AvaloniaApp.Models;
+using Drugly.DTO;
 
 namespace Drugly.AvaloniaApp.Services.Interfaces;
 
-/// <summary>Provides functionality related to <see cref="MedicationModel"/>s.</summary>
+/// <summary>Provides functionality related to <see cref="Medication"/>s.</summary>
 public interface IMedicationDetailsService
 {
     /// <summary>Gets a medication by a given id.</summary>
@@ -10,5 +10,11 @@ public interface IMedicationDetailsService
     /// <returns>The found medication.</returns>
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
-    MedicationModel GetMedication(Guid id);
+    Task<Medication> GetMedication(Guid id);
+
+    /// <summary>Gets all known medications.</summary>
+    /// <returns>The found medications.</returns>
+    /// <exception cref="IOException">The server could not be reached.</exception>
+    /// <exception cref="HttpRequestException">The request was denied.</exception>
+    Task<Medication[]> GetAllMedications();
 }

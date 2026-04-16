@@ -24,11 +24,11 @@ public class MedicationController : DruglyController
     public async Task<IActionResult> GetById(Guid id)
     {
         ApiResponse<Medication> response = new ApiResponse<Medication>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetMedicationById(id);
-            Response.Headers.ContentType = "application/json";
         }
         catch (MedicationNotFoundException ex)
         {
@@ -41,6 +41,31 @@ public class MedicationController : DruglyController
             return InternalServerError(ApiResponse.Error("Internal server error"));
         }
         _logger.LogInformation("Medication {id} successfully retrieved", id);
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        ApiResponse<Medication[]> response = new ApiResponse<Medication[]>();
+        Response.Headers.ContentType = "application/json";
+
+        try
+        {
+            response.Data = await _databaseService.GetAllMedications();
+        }
+        catch (MedicationNotFoundException ex)
+        {
+            _logger.LogError(ex, "No medications found");
+            return NotFound(ApiResponse.Error("No medications found"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching medications");
+            return InternalServerError(ApiResponse.Error("Internal server error"));
+        }
+
+        _logger.LogInformation("{count} Medications successfully retrieved", response.Data.Length);
         return Ok(response);
     }
 

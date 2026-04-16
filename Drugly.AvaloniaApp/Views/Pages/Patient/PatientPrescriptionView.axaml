@@ -16,33 +16,6 @@
           RowSpacing="16"
           RowDefinitions="Auto,*">
 
-        <!-- Upper content -->
-        <Grid Grid.Row="0"
-              RowDefinitions="Auto,Auto"
-              RowSpacing="{Binding $parent[Grid].RowSpacing}"
-              ColumnDefinitions="Auto,*"
-              ColumnSpacing="8">
-
-            <Button Grid.Row="0"
-                    Grid.Column="0"
-                    Classes="Flat"
-                    Command="{Binding NavigateBackCommand}">
-                <TextBlock Classes="H4"
-                           Text="&lt;" />
-            </Button>
-
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Classes="H1"
-                       Text="Medication 1"
-                       TextWrapping="Wrap" />
-
-            <Separator Grid.Row="1"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2" />
-        </Grid>
-
-        <!-- Lower content -->
         <Grid Grid.Row="1"
               RowDefinitions="Auto,Auto,Auto"
               RowSpacing="16">

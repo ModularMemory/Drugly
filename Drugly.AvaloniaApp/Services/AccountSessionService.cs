@@ -26,6 +26,8 @@ public sealed class AccountSessionService : IAccountSessionService
 
     public AccountType AccountType => Session?.AccountType ?? AccountType.Unknown;
 
+    public Guid AccountId => Session?.AccountId ?? Guid.Empty;
+
     public AccountSessionService(
         ILogger logger
     )
@@ -48,6 +50,7 @@ public sealed class AccountSessionService : IAccountSessionService
     public bool TryAuthorizeClient(HttpClient httpClient)
     {
         ArgumentNullException.ThrowIfNull(httpClient);
+
         if (_authHeader is null)
         {
             _logger.Error("Failed to authorize HttpClient: {AuthHeaderName} was null", _authHeader);

@@ -27,6 +27,7 @@
         <PackageReference Include="Humanizer"/>
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Material.Icons.Avalonia"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
         <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
@@ -52,5 +53,12 @@
         <DependentUpon>PatientMainView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

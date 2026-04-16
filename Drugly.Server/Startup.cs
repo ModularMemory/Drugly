@@ -1,5 +1,6 @@
 using Drugly.Server.Services;
 using Drugly.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Drugly.Server;
 
@@ -13,7 +14,9 @@ public static class Startup
                 .AddSingleton<IAccountDatabaseService, AccountDatabaseService>()
                 .AddSingleton<IPrescriptionDatabaseService, PrescriptionDatabaseService>()
                 .AddSingleton<IMedicationDatabaseService, MedicationDatabaseService>()
-                .AddSingleton<IImageDatabaseService, ImageDatabaseService>();
+                .AddSingleton<IImageDatabaseService, ImageDatabaseService>()
+                .AddSingleton<IAuthorizationService, AuthorizationService >()
+                .AddSingleton<IStateMachineFactoryService, StateMachineFactoryService>();
             return serviceCollection;
         }
     }

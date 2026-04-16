@@ -9,8 +9,9 @@ namespace Drugly.Server.Controllers;
 public class ImageController : DruglyController
 {
     private readonly IImageDatabaseService _databaseService;
-    private readonly ILogger<ImageController>  _logger;
+    private readonly ILogger<ImageController> _logger;
     private readonly IAuthorizationService _authorizationService;
+
     public ImageController(
         IImageDatabaseService databaseService,
         ILogger<ImageController> logger,
@@ -25,17 +26,11 @@ public class ImageController : DruglyController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
-        if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
-        {
-            _logger.LogInformation("User is not authorized");
-            return Forbid(ApiResponse.Error("User is not authorized"));
-        }
-
         Stream response;
         try
         {
             response = await _databaseService.GetImageById(id, out var contentType);
-            Response.ContentType= contentType;
+            Response.ContentType = contentType;
         }
         catch (ImageNotFoundException ex)
         {
@@ -47,19 +42,23 @@ public class ImageController : DruglyController
             _logger.LogError(ex, "Failed to fetch image {id}", id);
             return InternalServerError(ApiResponse.Error("Internal server error"));
         }
+
         _logger.LogInformation("Image {id} retrieved successfully", id);
         return Ok(response);
     }
 
-    [HttpPost("{id}")]
-    public async Task<IActionResult> SetById(string id, [FromBody] Stream content)
+    [HttpPut]
+    public async Task<IActionResult> Upload()
     {
+        var content = Request.Body;
+
         if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))
         {
             _logger.LogInformation("User is not authorized");
             return Forbid(ApiResponse.Error("User is not authorized"));
         }
 
+        var id = Guid.NewGuid().ToString();
         string contentType = Request.ContentType ?? "image/bmp";
         try
         {
@@ -70,7 +69,8 @@ public class ImageController : DruglyController
             _logger.LogError(ex, "Failed to set image {id}", id);
             return InternalServerError(ApiResponse.Error("Internal server error"));
         }
+
         _logger.LogInformation("Image {id} set successfully", id);
-        return Ok();
+        return Ok(new ApiResponse<string> { Data = id });
     }
 }

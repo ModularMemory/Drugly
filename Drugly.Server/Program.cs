@@ -1,6 +1,5 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Drugly.Server.Data;
+using Drugly.DTO;
+using Drugly.Server.Services.Interfaces;
 
 namespace Drugly.Server;
 
@@ -11,43 +10,36 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(connectionString));
-        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
         builder.Services.ConfigureServices();
-
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers();
 
         var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseMigrationsEndPoint();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
 
         app.UseHttpsRedirection();
         app.UseRouting();
 
         app.UseAuthorization();
 
-        app.MapStaticAssets();
-        app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
-            .WithStaticAssets();
-        app.MapRazorPages()
-            .WithStaticAssets();
+        app.MapControllers();
+
+        var patientId = Guid.NewGuid();
+        var accountDb = app.Services.GetRequiredService<IAccountDatabaseService>();
+        var detailsPatient = new AccountDetails(patientId, AccountType.Patient, "John", "Patient", "John@patient.com");
+        var credentialsPatient = new AccountCredentials("123", detailsPatient);
+        accountDb.SetAccountById(detailsPatient.UserId, detailsPatient.Email, credentialsPatient);
+
+        var detailsDoctor = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Doctor", "John@doctor.com");
+        var credentialsDoctor = new AccountCredentials("123", detailsDoctor);
+        accountDb.SetAccountById(detailsDoctor.UserId, detailsDoctor.Email, credentialsDoctor);
+
+        var medicationDb = app.Services.GetRequiredService<IMedicationDatabaseService>();
+        var medicationId = Guid.NewGuid();
+        var medication = new Medication(medicationId, "Estrogen", "Feminizing hormone", "https://i.redd.it/2yp7s912k6m81.jpg");
+        medicationDb.SetMedicationById(medicationId, medication);
+
+        var prescriptionDb = app.Services.GetRequiredService<IPrescriptionDatabaseService>();
+        var prescription = new Prescription(medicationId, patientId, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
+        prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription);
 
         app.Run();
     }

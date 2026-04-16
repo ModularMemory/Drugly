@@ -1,3 +1,5 @@
+// ReSharper disable RedundantTypeArgumentsOfMethod
+
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Net.Mime;
@@ -16,6 +18,7 @@ using Drugly.AvaloniaApp.Views;
 using Drugly.AvaloniaApp.Views.Pages;
 using Drugly.AvaloniaApp.Views.Pages.Doctor;
 using Drugly.AvaloniaApp.Views.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
@@ -25,7 +28,6 @@ using Serilog.Events;
 using SukiUI.Controls;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
-using PatientPrescriptionDetailsViewModel = Drugly.AvaloniaApp.ViewModels.Pages.Patient.PatientPrescriptionDetailsViewModel;
 
 namespace Drugly.AvaloniaApp;
 
@@ -39,11 +41,9 @@ public static class Startup
         /// <returns>The <see cref="IServiceCollection"/>.</returns>
         public IServiceCollection ConfigureServices(Application application)
         {
-            // ReSharper disable once RedundantTypeArgumentsOfMethod
             serviceCollection.AddSingleton<Application>(application);
             if (application.ApplicationLifetime is { } lifetime)
             {
-                // ReSharper disable once RedundantTypeArgumentsOfMethod
                 serviceCollection.AddSingleton<IApplicationLifetime>(lifetime);
             }
 
@@ -56,24 +56,19 @@ public static class Startup
                         .ConfigurePrimaryHttpMessageHandler(ConfigureHttpMessageHandler)
                         .AddResilienceHandler("Retry", ConfigureHttpRetryPolicy);
                 })
-                .AddHttpClient(nameof(ILoginService), client =>
-                {
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                }).Services
-                .AddHttpClient(nameof(IAccountDetailsService), client =>
-                {
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                }).Services
-                .AddHttpClient(nameof(IMedicationDetailsService), client =>
-                {
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                }).Services
-                .AddHttpClient(nameof(IPrescriptionDetailsService), client =>
-                {
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                });
+                .AddHttpClient(nameof(ILoginService), ConfigureJsonHttpClient).Services
+                .AddHttpClient(nameof(IAccountDetailsService), ConfigureJsonHttpClient).Services
+                .AddHttpClient(nameof(IMedicationDetailsService), ConfigureJsonHttpClient).Services
+                .AddHttpClient(nameof(IPrescriptionDetailsService), ConfigureJsonHttpClient).Services
+                .AddHttpClient(nameof(IImageDetailsService));
 
             serviceCollection
+                // Config
+                .AddSingleton<IConfigurationRoot>(new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .Build())
+                .AddSingleton<HttpConfig>()
                 // Logging
                 .AddKeyedTransient<LoggerTextWriter>(LogEventLevel.Verbose)
                 .AddSingleton<ILogger, Logger>(_ =>
@@ -91,6 +86,7 @@ public static class Startup
                 .AddSingleton<IAccountDetailsService, AccountDetailsService>()
                 .AddSingleton<IMedicationDetailsService, MedicationDetailsService>()
                 .AddSingleton<IPrescriptionDetailsService, PrescriptionDetailsService>()
+                .AddSingleton<IImageDetailsService, ImageDetailsService>()
                 .AddSingleton<IAccountSessionService, AccountSessionService>()
                 // UI
                 .AddSingleton<IPageRouter, PageRouter>()
@@ -127,12 +123,20 @@ public static class Startup
                 .AddSingleton<IViewFactory, ViewFactory>(provider => builder.Build(provider));
         }
 
-        private static void ConfigureHttpClient(HttpClient client)
+        private static void ConfigureHttpClient(IServiceProvider serviceProvider, HttpClient client)
         {
             var assemblyVersion = typeof(App).Assembly.Version;
 
+            var httpConfig = serviceProvider.GetRequiredService<HttpConfig>();
+            client.BaseAddress = new Uri($"https://{httpConfig.ServerHostname}");
+
             client.DefaultRequestHeaders.UserAgent.Clear();
             client.DefaultRequestHeaders.UserAgent.ParseAdd($"{nameof(Drugly)}/{assemblyVersion} ({Environment.OSVersion.Platform}; {Environment.OSVersion.Version})");
+        }
+
+        private static void ConfigureJsonHttpClient(HttpClient client)
+        {
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         }
 
         [SuppressMessage("Performance", "CA1859")]
@@ -155,9 +159,9 @@ public static class Startup
                 {
                     BackoffType = DelayBackoffType.Exponential,
                     UseJitter = true,
-                    MaxRetryAttempts = 6
+                    MaxRetryAttempts = 3
                 })
-                .AddTimeout(TimeSpan.FromSeconds(15));
+                .AddTimeout(TimeSpan.FromSeconds(10));
         }
     }
 }

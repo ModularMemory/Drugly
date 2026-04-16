@@ -27,15 +27,26 @@ public class AuthorizationService : IAuthorizationService
         return session;
     }
 
-    public bool DeleteSession(AccountSession session)
+    public bool DeleteSession(IHeaderDictionary headers)
     {
-        if (!Authorizations.TryGetValue(session.SessionToken, out var accountSession)
-            || session != accountSession)
+        if (!headers.TryGetValue("Authorization", out var values))
+        {
+            return false;
+        }
+        var token = values.FirstOrDefault();
+
+        if (token is null)
         {
             return false;
         }
 
-        return Authorizations.TryRemove(session.SessionToken, out _);
+        const string BEARER = "Bearer ";
+        if (token.StartsWith(BEARER))
+        {
+            token = token[BEARER.Length..];
+        }
+
+        return Authorizations.TryRemove(token, out _);
     }
 
     public bool IsUserAuthorized(IHeaderDictionary headers, AccountType allowedType)
@@ -49,16 +60,27 @@ public class AuthorizationService : IAuthorizationService
         {
             return false;
         }
-
         var token = values.FirstOrDefault();
-        if (token is null || !Authorizations.TryGetValue(token, out var accountSession))
+
+        if (token is null)
+        {
+            return false;
+        }
+
+        const string BEARER = "Bearer ";
+        if (token.StartsWith(BEARER))
+        {
+            token = token[BEARER.Length..];
+        }
+        
+        if (!Authorizations.TryGetValue(token, out var accountSession))
         {
             return false;
         }
 
         if (accountSession.Expiration < DateTimeOffset.UtcNow)
         {
-            // TODO: delete the session if its expired
+            Authorizations.TryRemove(token, out _);
             return false;
         }
 

@@ -1,4 +1,5 @@
 using Drugly.DTO;
+using Drugly.Server.Data;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 
@@ -6,17 +7,21 @@ namespace Drugly.Server.Services;
 
 public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 {
-    private readonly Dictionary<Guid, AccountDatabaseEntry> _accounts = new();
-    private readonly Dictionary<string, Guid> _emailToId = new();
+    private readonly Dictionary<Guid, AccountCredentials> _accounts = new();
+    private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly string _folderPath = "Accounts";
-    public Task<AccountDatabaseEntry> GetAccountById(Guid id)
+    public Task<AccountCredentials> GetAccountById(Guid id)
     {
-        _accounts.TryGetValue(id, out var account);
+        if (!_accounts.TryGetValue(id, out var account))
+        {
+            throw new AccountNotFoundException();
+        }
+
         return Task.FromResult(account);
     }
 
-    public Task SetAccountById(Guid id, string email, AccountDatabaseEntry entry)
+    public Task SetAccountById(Guid id, string email, AccountCredentials entry)
     {
         _accounts[id] = entry;
         _emailToId[email] = id;
@@ -29,19 +34,27 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
     public Task<Guid> GetIdByEmail(string email)
     {
-        if (_emailToId.TryGetValue(email, out var id))
-            return Task.FromResult(id);
+        if (!_emailToId.TryGetValue(email, out var id))
+        {
+            throw new AccountNotFoundException("Email not found");
+        }
 
-        throw new KeyNotFoundException("Email not found");
+        return Task.FromResult(id);
+
     }
 
-    public Task<List<AccountDetails>> GetAllPatientAccounts()
+    public Task<AccountDetails[]> GetAllPatientAccounts()
     {
 
         var patients = _accounts.Values
             .Where(a => a.AccountDetails.AccountType == AccountType.Patient)
             .Select(a => a.AccountDetails)
-            .ToList();
+            .ToArray();
+
+        if (patients.Length == 0)
+        {
+            throw new AccountNotFoundException("Patient accounts not found");
+        }
 
         return Task.FromResult(patients);
     }

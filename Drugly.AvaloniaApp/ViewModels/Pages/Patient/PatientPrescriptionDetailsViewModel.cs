@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Humanizer;
@@ -10,14 +9,16 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 
-public partial class PatientPrescriptionDetailsViewModel : ViewModelBase
+public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
+    
+    public string? PageTitle => "Hello, John!";
 
     [ObservableProperty]
-    public partial PatientModel? Patient { get; set; }
+    public partial AccountDetails? Patient { get; set; }
 
     [ObservableProperty]
     public partial int StepIndex { get; set; }

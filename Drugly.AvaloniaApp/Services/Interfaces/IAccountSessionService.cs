@@ -8,6 +8,8 @@ public interface IAccountSessionService
     /// <summary>The account type of the current session.</summary>
     AccountType AccountType { get; }
 
+    Guid AccountId { get; }
+
     /// <summary>Stores the current account login session.</summary>
     /// <param name="session">The session to store.</param>
     void StoreSession(AccountSession session);

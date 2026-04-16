@@ -38,8 +38,7 @@ public partial class MainViewModel : ViewModelBase
         PageRouter.ResetPageHistory();
         PageRouter.PageNavigate += PageRouter_OnPageNavigate;
 
-        // var accountType = accountSessionService.AccountType;
-        var accountType = AccountType.Patient;
+        var accountType = accountSessionService.AccountType;
         ViewModelBase? vm = accountType switch
         {
             AccountType.Patient => serviceProvider.GetRequiredService<PatientMainViewModel>(),

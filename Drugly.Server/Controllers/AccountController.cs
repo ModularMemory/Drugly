@@ -2,6 +2,7 @@ using Drugly.DTO;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Drugly.Server.Controllers;
 
@@ -45,12 +46,12 @@ public class AccountController : DruglyController
         }
 
         ApiResponse<AccountDetails> response = new ApiResponse<AccountDetails>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
-            AccountDatabaseEntry entry = await _databaseService.GetAccountById(id);
+            AccountCredentials entry = await _databaseService.GetAccountById(id);
             response.Data = entry.AccountDetails;
-            Response.Headers.ContentType = "application/json";
         }
         catch (AccountNotFoundException ex)
         {
@@ -67,22 +68,24 @@ public class AccountController : DruglyController
     }
 
     /// <summary>A route to get the ID of an account by the account's associated email</summary>
-    /// <param name="email">The email being searched for</param>
     /// <returns>A response object that contains the ID in the body</returns>
-    [HttpGet]
-    public async Task<IActionResult> GetIdByEmail([FromBody] string email)
+    [HttpPost]
+    public async Task<IActionResult> GetIdByEmail()
     {
+        using var reader = new StreamReader(Request.Body, new MediaType(Request.ContentType!).Encoding);
+        var email = await reader.ReadToEndAsync();
+
         if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
         {
             _logger.LogInformation("User is not authorized");
             return Forbid(ApiResponse.Error("User is not authorized"));
         }
         ApiResponse<Guid> response = new ApiResponse<Guid>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetIdByEmail(email);
-            Response.Headers.ContentType = "application/json";
         }
         catch (AccountNotFoundException ex)
         {
@@ -104,12 +107,11 @@ public class AccountController : DruglyController
     /// <param name="login">The login information for the account</param>
     /// <returns>An Ok response if successful</returns>
     [HttpPost("{id:guid}")]
-    public async Task<IActionResult> SetById(Guid id, [FromBody] AccountDetails details, LoginRequest login)
+    public async Task<IActionResult> SetById(Guid id, [FromBody] AccountCredentials accountCredentials)
     {
-        AccountDatabaseEntry entry = new AccountDatabaseEntry(login.Password, details);
         try
         {
-            await _databaseService.SetAccountById(id, login.Email, entry);
+            await _databaseService.SetAccountById(id, accountCredentials.AccountDetails.Email, accountCredentials);
         }
         catch (Exception ex)
         {
@@ -127,8 +129,9 @@ public class AccountController : DruglyController
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         ApiResponse<AccountSession> response = new ApiResponse<AccountSession>();
+        Response.Headers.ContentType = "application/json";
         Guid id;
-        AccountDatabaseEntry entry;
+        AccountCredentials entry;
         // get the ID from the email
         try
         {
@@ -183,9 +186,10 @@ public class AccountController : DruglyController
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Logout([FromBody] AccountSession accountSession)
+    public async Task<IActionResult> Logout()
     {
-        if (!_authorizationService.DeleteSession(accountSession))
+
+        if (!_authorizationService.DeleteSession(Request.Headers))
         {
             _logger.LogError("Logout failed");
             return BadRequest(ApiResponse.Error("Internal Server Error"));
@@ -197,7 +201,7 @@ public class AccountController : DruglyController
 
     /// <summary>A route that fetches all patient accounts in the database</summary>
     /// <returns>A list of patient's account details</returns>
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IActionResult> GetPatientAccounts()
     {
         if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))
@@ -206,10 +210,12 @@ public class AccountController : DruglyController
             return Forbid(ApiResponse.Error("User is not authorized"));
         }
 
-        ApiResponse<List<AccountDetails>> response = new ApiResponse<List<AccountDetails>>();
+        ApiResponse<AccountDetails[]> response = new ApiResponse<AccountDetails[]>();
+        Response.Headers.ContentType = "application/json";
+
         try
         {
-            await _databaseService.GetAllPatientAccounts();
+            response.Data = await _databaseService.GetAllPatientAccounts();
         }
         catch (AccountNotFoundException ex)
         {
@@ -221,6 +227,7 @@ public class AccountController : DruglyController
             _logger.LogError(ex, "Failed to fetch patient accounts");
             return InternalServerError(ApiResponse.Error("Internal Server Error"));
         }
+
         _logger.LogInformation("Patient account found successfully");
         return Ok(response);
     }

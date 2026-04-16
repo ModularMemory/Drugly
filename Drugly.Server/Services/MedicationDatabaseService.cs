@@ -1,4 +1,5 @@
 using Drugly.DTO;
+using Drugly.Server.Data;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 
@@ -11,8 +12,24 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
     private readonly string _folderPath = "Medications";
     public Task<Medication> GetMedicationById(Guid id)
     {
-        _medications.TryGetValue(id, out var medication);
+        if (!_medications.TryGetValue(id, out var medication))
+        {
+            throw new MedicationNotFoundException();
+        }
+
         return Task.FromResult(medication);
+    }
+
+    public Task<Medication[]> GetAllMedications()
+    {
+        var medications = _medications.Values.ToArray();
+
+        if (medications.Length == 0)
+        {
+            throw new MedicationNotFoundException("Medications not found");
+        }
+
+        return Task.FromResult(medications);
     }
 
     public Task SetMedicationById(Guid id, Medication medication)

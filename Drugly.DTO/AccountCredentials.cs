@@ -1,11 +1,9 @@
-using Drugly.DTO;
-
-namespace Drugly.Server.Models;
+namespace Drugly.DTO;
 
 /// <summary>A container class that contains the details of an account as well as the account's credentials to be stored in the database</summary>
-public class AccountDatabaseEntry
+public class AccountCredentials
 {
-    public AccountDatabaseEntry(string password, AccountDetails accountDetails)
+    public AccountCredentials(string password, AccountDetails accountDetails)
     {
         Password = password;
         AccountDetails = accountDetails;

@@ -18,7 +18,9 @@ public record AccountSession
     {
         ArgumentNullException.ThrowIfNull(sessionToken);
         if (accountType == AccountType.Unknown)
+        {
             throw new ArgumentException($"Account type cannot be {AccountType.Unknown}.", nameof(accountType));
+        }
 
         SessionToken = sessionToken;
         AccountType = accountType;
