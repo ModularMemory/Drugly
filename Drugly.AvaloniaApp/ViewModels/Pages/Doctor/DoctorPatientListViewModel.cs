@@ -2,6 +2,8 @@ using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Extensions;
+using Drugly.AvaloniaApp.Services;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 using Drugly.DTO;
@@ -64,10 +66,30 @@ public partial class DoctorPatientListViewModel : ViewModelBase, IPageViewModel
 
     /// <summary>Requests a page navigation to the patient details page.</summary>
     [RelayCommand]
-    private void ViewPatient(object? dataContext)
+    private async Task ViewPatient(object? dataContext)
     {
-        var vm = _serviceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
-        vm.Patient = dataContext as AccountDetails;
-        _pageRouter.PushPage(vm);
+        var patient = dataContext as AccountDetails;
+        if (patient is null)
+        {
+            _logger.Warning("Tried to view prescriptions for a null patient");
+
+            await _dialogManager.CreateDialog()
+                .OfType(NotificationType.Error)
+                .WithTitle("Internal Error")
+                .WithContent("Tried to viewing prescriptions for an unknown patient")
+                .WithOkResult("Ok")
+                .Dismiss().ByClickingBackground()
+                .TryShowAsync();
+
+            return;
+        }
+
+        _logger.Debug("Opening prescriptions list modal for {PatientFirstName} {PatientLastName}", patient.FirstName, patient.LastName);
+
+        await _dialogManager.CreateDialog()
+            .WithViewModel(dialog => new DoctorPatientPrescriptionListModalViewModel(dialog, patient, _serviceProvider))
+            .WithoutResult()
+            .Dismiss().ByClickingBackground()
+            .TryShowAsync();
     }
 }

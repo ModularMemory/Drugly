@@ -17,6 +17,7 @@ using Drugly.AvaloniaApp.ViewModels.Windows;
 using Drugly.AvaloniaApp.Views;
 using Drugly.AvaloniaApp.Views.Pages;
 using Drugly.AvaloniaApp.Views.Pages.Doctor;
+using Drugly.AvaloniaApp.Views.Pages.Patient;
 using Drugly.AvaloniaApp.Views.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -108,12 +109,13 @@ public static class Startup
             var builder = new ViewFactoryBuilder(serviceCollection)
                 .AddView<StartupWindow, StartupWindowViewModel>()
                 .AddView<PatientMainView, PatientMainViewModel>()
-                .AddView<PatientPrescriptionView, PatientPrescriptionDetailsViewModel>()
+                .AddView<PatientPrescriptionDetailsView, PatientPrescriptionDetailsViewModel>()
                 .AddView<DoctorMainView, DoctorMainViewModel>()
                 .AddView<DoctorPrescribeModalView, DoctorPrescribeModalViewModel>()
                 .AddView<DoctorMedicationListView, DoctorMedicationListViewModel>()
                 .AddView<DoctorPatientListView, DoctorPatientListViewModel>()
                 .AddView<DoctorMedicationDetailsPageView, DoctorMedicationDetailsPageViewModel>()
+                .AddView<DoctorPatientPrescriptionListModalView, DoctorPatientPrescriptionListModalViewModel>()
                 .AddView<SettingsView, SettingsViewModel>()
                 .AddView<MainView, MainViewModel>()
                 .AddView<MainWindow, MainWindowViewModel>();
