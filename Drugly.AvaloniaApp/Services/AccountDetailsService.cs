@@ -34,7 +34,7 @@ public sealed class AccountDetailsService : IAccountDetailsService
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching info for account {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            _logger.Error("Error while fetching info for account {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
             throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
         }
 
@@ -56,7 +56,7 @@ public sealed class AccountDetailsService : IAccountDetailsService
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching info for account {Email} in: {Code} - {Message}", email, res.StatusCode, resBody?.ErrorMessage);
+            _logger.Error("Error while fetching info for account {Email}: {Code} - {Message}", email, res.StatusCode, resBody?.ErrorMessage);
             throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
         }
 

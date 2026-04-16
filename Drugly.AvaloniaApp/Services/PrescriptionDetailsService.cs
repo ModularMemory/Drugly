@@ -34,7 +34,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<Prescription>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching info for prescription {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            _logger.Error("Error while fetching info for prescription {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
             throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
         }
 
@@ -53,7 +53,7 @@ public sealed class PrescriptionDetailsService : IPrescriptionDetailsService
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<List<Prescription>>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching prescriptions for account {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            _logger.Error("Error while fetching prescriptions for account {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
             throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
         }
 

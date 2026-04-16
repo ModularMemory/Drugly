@@ -11,4 +11,10 @@ public interface IMedicationDetailsService
     /// <exception cref="IOException">The server could not be reached.</exception>
     /// <exception cref="HttpRequestException">The request was denied.</exception>
     Task<Medication> GetMedication(Guid id);
+
+    /// <summary>Gets all known medications.</summary>
+    /// <returns>The found medications.</returns>
+    /// <exception cref="IOException">The server could not be reached.</exception>
+    /// <exception cref="HttpRequestException">The request was denied.</exception>
+    Task<Medication[]> GetAllMedications();
 }

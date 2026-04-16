@@ -34,7 +34,26 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<Medication>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching info for medication {Id} in: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            _logger.Error("Error while fetching info for medication {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+        }
+
+        return resBody!.Data!;
+    }
+
+    public async Task<Medication[]> GetAllMedications()
+    {
+        var client = _httpClientFactory.CreateClient(nameof(IMedicationDetailsService));
+        if (!_accountSessionService.TryAuthorizeClient(client))
+        {
+            throw new IOException();
+        }
+
+        using var res = await client.GetAsync("/Medication/GetAll");
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<Medication[]>>();
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.Error("Error while fetching all medications: {Code} - {Message}", res.StatusCode, resBody?.ErrorMessage);
             throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
         }
 
