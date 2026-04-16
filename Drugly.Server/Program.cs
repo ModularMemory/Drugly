@@ -62,12 +62,12 @@ public class Program
         var prescriptionDb = app.Services.GetRequiredService<IPrescriptionDatabaseService>();
         var prescription = new Prescription(medicationId1, patientId, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
         prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription);
-
-        var prescription2 = new Prescription(medicationId2, patientId2, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
-        prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription2);
-
-        var prescription3 = new Prescription(medicationId3, patientId, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
-        prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription3);
+        //
+        // var prescription2 = new Prescription(medicationId2, patientId2, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
+        // prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription2);
+        //
+        // var prescription3 = new Prescription(medicationId3, patientId, "1", 1, 10, "no notes","https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg");
+        // prescriptionDb.SetPrescriptionById(Guid.NewGuid(), prescription3);
 
         app.Run();
     }
