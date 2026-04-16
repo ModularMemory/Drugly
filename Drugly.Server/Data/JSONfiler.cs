@@ -52,7 +52,6 @@ public static class JsonWritePrescription
         JsonWriter.SaveAsync(prescription, filePath);
 }
 
-
 /// <summary>
 /// Json Reader for Prescription
 /// </summary>
@@ -61,7 +60,6 @@ public static class JsonReadPrescription
     public static Task<Prescription?> LoadPrescription(string filePath) =>
         JsonReader.LoadAsync<Prescription>(filePath);
 }
-
 
 /// <summary>
 /// Json Writer for Medication
@@ -72,7 +70,6 @@ public static class JsonWriteMedication
         JsonWriter.SaveAsync(medication, filePath);
 }
 
-
 /// <summary>
 /// Json Reader for Medication
 /// </summary>
@@ -82,6 +79,9 @@ public static class JsonReadMedication
         JsonReader.LoadAsync<Medication>(filePath);
 }
 
+/// <summary>
+/// Json writer for Account Database
+/// </summary>
 public static class JsonWriteAccountDatabaseEntry
 {
     public static Task SaveAccount(AccountCredentials entry, string filePath) =>
