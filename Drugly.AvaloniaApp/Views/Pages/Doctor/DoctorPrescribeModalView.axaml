@@ -152,7 +152,8 @@
             <TextBlock Grid.Row="7"
                        Classes="Body Danger"
                        TextAlignment="Center"
-                       Text="{Binding ErrorText}" />
+                       Text="{Binding ErrorText}"
+                       TextWrapping="Wrap" />
 
             <!-- Cancel/confirm buttons -->
             <StackPanel Grid.Row="8"

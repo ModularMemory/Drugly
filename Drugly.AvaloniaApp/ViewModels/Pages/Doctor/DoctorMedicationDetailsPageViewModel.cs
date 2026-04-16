@@ -2,6 +2,7 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Extensions;
+using Drugly.AvaloniaApp.Services;
 using Drugly.DTO;
 using Serilog;
 using SukiUI.Dialogs;
@@ -62,7 +63,10 @@ public partial class DoctorMedicationDetailsPageViewModel : ViewModelBase, IPage
         if (vm is not { CreatedPrescription: { } prescription })
         {
             _logger.Debug("Canceled new prescription");
+            return;
         }
+
+        await DelayService.FakeDelay();
 
         await _dialogManager.CreateDialog()
             .OfType(NotificationType.Success)

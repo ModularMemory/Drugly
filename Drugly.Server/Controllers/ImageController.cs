@@ -48,8 +48,10 @@ public class ImageController : DruglyController
     }
 
     [HttpPut]
-    public async Task<IActionResult> Upload([FromBody] Stream content)
+    public async Task<IActionResult> Upload()
     {
+        var content = Request.Body;
+
         if (!_authorizationService.IsUserAuthorized(Request.Headers, AccountType.Doctor))
         {
             _logger.LogInformation("User is not authorized");

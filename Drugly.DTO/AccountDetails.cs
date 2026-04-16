@@ -1,10 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information relating to an account</summary>
 public class AccountDetails
 {
+    [UsedImplicitly]
+    public AccountDetails() { }
+
     [SetsRequiredMembers]
     public AccountDetails(Guid id, AccountType type, string firstName, string lastName, string email)
     {

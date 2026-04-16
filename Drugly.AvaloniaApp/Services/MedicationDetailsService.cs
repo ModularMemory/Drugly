@@ -5,6 +5,7 @@ using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
 
+/// <inheritdoc />
 public sealed class MedicationDetailsService : IMedicationDetailsService
 {
     private readonly IAccountSessionService _accountSessionService;
@@ -35,7 +36,7 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         if (!res.IsSuccessStatusCode)
         {
             _logger.Error("Error while fetching info for medication {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
-            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
         }
 
         return resBody!.Data!;
@@ -54,7 +55,7 @@ public sealed class MedicationDetailsService : IMedicationDetailsService
         if (!res.IsSuccessStatusCode)
         {
             _logger.Error("Error while fetching all medications: {Code} - {Message}", res.StatusCode, resBody?.ErrorMessage);
-            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
         }
 
         return resBody!.Data!;

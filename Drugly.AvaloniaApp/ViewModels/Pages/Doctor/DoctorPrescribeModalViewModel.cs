@@ -144,6 +144,7 @@ public partial class DoctorPrescribeModalViewModel : ViewModelBase
                 PrescriptionNotes!,
                 uri.AbsoluteUri
             );
+            prescription.State = PrescriptionState.DoctorPrescription;
 
             CreatedPrescription = await _prescriptionDetailsService.CreatePrescription(prescription);
         }

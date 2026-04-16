@@ -2,6 +2,7 @@ using Drugly.DTO;
 using Drugly.Server.Models;
 using Drugly.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Drugly.Server.Controllers;
 
@@ -67,11 +68,13 @@ public class AccountController : DruglyController
     }
 
     /// <summary>A route to get the ID of an account by the account's associated email</summary>
-    /// <param name="email">The email being searched for</param>
     /// <returns>A response object that contains the ID in the body</returns>
-    [HttpGet]
-    public async Task<IActionResult> GetIdByEmail([FromBody] string email)
+    [HttpPost]
+    public async Task<IActionResult> GetIdByEmail()
     {
+        using var reader = new StreamReader(Request.Body, new MediaType(Request.ContentType!).Encoding);
+        var email = await reader.ReadToEndAsync();
+
         if (!_authorizationService.IsUserAuthorized(Request.Headers, [AccountType.Doctor, AccountType.Patient]))
         {
             _logger.LogInformation("User is not authorized");

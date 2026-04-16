@@ -31,15 +31,15 @@ public sealed class ImageDetailsService : IImageDetailsService
             throw new IOException();
         }
 
-        using var res = await client.PostAsync("/Image/Upload", new StreamContent(stream));
+        using var res = await client.PutAsync("/Image/Upload", new StreamContent(stream));
         var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<string>>();
         if (!res.IsSuccessStatusCode)
         {
             _logger.Error("Error while creating prescription: {Code} - {Message}", res.StatusCode, resBody?.ErrorMessage);
-            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
         }
 
-        if (!Uri.TryCreate(client.BaseAddress, new Uri(Path.Combine("Image/GetById", resBody!.Data!)), out var uri))
+        if (!Uri.TryCreate(client.BaseAddress, new Uri(Path.Combine("Image/GetById", resBody!.Data!), UriKind.Relative), out var uri))
         {
             _logger.Warning("Failed to create image uri");
             throw new IOException("Failed to create image uri");

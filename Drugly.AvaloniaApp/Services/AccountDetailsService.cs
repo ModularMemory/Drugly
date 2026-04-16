@@ -1,10 +1,12 @@
 using System.Net.Http.Json;
+using System.Text;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Serilog;
 
 namespace Drugly.AvaloniaApp.Services;
 
+/// <inheritdoc />
 public sealed class AccountDetailsService : IAccountDetailsService
 {
     private readonly IAccountSessionService _accountSessionService;
@@ -35,7 +37,7 @@ public sealed class AccountDetailsService : IAccountDetailsService
         if (!res.IsSuccessStatusCode)
         {
             _logger.Error("Error while fetching info for account {Id}: {Code} - {Message}", id, res.StatusCode, resBody?.ErrorMessage);
-            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
         }
 
         return resBody!.Data!;
@@ -49,17 +51,17 @@ public sealed class AccountDetailsService : IAccountDetailsService
             throw new IOException();
         }
 
-        using var req = new HttpRequestMessage(HttpMethod.Get, "/Account/GetByEmail/");
-        req.Content = new StringContent(email);
+        using var req = new HttpRequestMessage(HttpMethod.Post, "/Account/GetIdByEmail/");
+        req.Content = new StringContent(email, Encoding.UTF8, "text/plain");
 
         using var res = await client.SendAsync(req);
-        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<AccountDetails>>();
+        var resBody = await res.Content.ReadFromJsonAsync<ApiResponse<Guid>>();
         if (!res.IsSuccessStatusCode)
         {
-            _logger.Error("Error while fetching info for account {Email}: {Code} - {Message}", email, res.StatusCode, resBody?.ErrorMessage);
-            throw new HttpRequestException(resBody?.ErrorMessage, null, res.StatusCode);
+            _logger.Error("Error while fetching email for account {Email}: {Code} - {Message}", email, res.StatusCode, resBody?.ErrorMessage);
+            throw new HttpRequestException(resBody?.ErrorMessage ?? res.StatusCode.ToString(), null, res.StatusCode);
         }
 
-        return resBody!.Data!;
+        return await GetAccountById(resBody!.Data);
     }
 }

@@ -60,7 +60,7 @@ public static class Startup
                 .AddHttpClient(nameof(IAccountDetailsService), ConfigureJsonHttpClient).Services
                 .AddHttpClient(nameof(IMedicationDetailsService), ConfigureJsonHttpClient).Services
                 .AddHttpClient(nameof(IPrescriptionDetailsService), ConfigureJsonHttpClient).Services
-                .AddHttpClient(nameof(IImageDetailsService), ConfigureJsonHttpClient);
+                .AddHttpClient(nameof(IImageDetailsService));
 
             serviceCollection
                 // Config

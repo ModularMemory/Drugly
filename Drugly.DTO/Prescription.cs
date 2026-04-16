@@ -1,10 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Drugly.DTO;
 
 /// <summary>A container class for all the information needed for a prescription</summary>
 public sealed record Prescription
 {
+    [UsedImplicitly]
+    public Prescription() { }
+
     [SetsRequiredMembers]
     public Prescription(
         Guid medicationId,
