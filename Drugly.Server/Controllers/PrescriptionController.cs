@@ -8,19 +8,22 @@ namespace Drugly.Server.Controllers;
 /// <summary>A controller that handles route requests for prescriptions</summary>
 public class PrescriptionController : DruglyController
 {
-    private readonly IPrescriptionDatabaseService _databaseService;
+    private readonly IPrescriptionDatabaseService _prescriptionDatabaseService;
+    private readonly IAccountDatabaseService _accountDatabaseService;
     private readonly IStateMachineFactoryService _stateMachineFactoryService;
     private readonly ILogger<PrescriptionController> _logger;
     private readonly IAuthorizationService _authorizationService;
 
     public PrescriptionController(
-        IPrescriptionDatabaseService databaseService,
+        IPrescriptionDatabaseService prescriptionDatabaseService,
+        IAccountDatabaseService accountDatabaseService,
         IStateMachineFactoryService stateMachineFactoryService,
         ILogger<PrescriptionController> logger,
         IAuthorizationService authorizationService
     )
     {
-        _databaseService = databaseService;
+        _prescriptionDatabaseService = prescriptionDatabaseService;
+        _accountDatabaseService = accountDatabaseService;
         _stateMachineFactoryService = stateMachineFactoryService;
         _logger = logger;
         _authorizationService = authorizationService;
@@ -40,7 +43,7 @@ public class PrescriptionController : DruglyController
 
         try
         {
-            response.Data = await _databaseService.GetPrescriptionById(id);
+            response.Data = await _prescriptionDatabaseService.GetPrescriptionById(id);
         }
         catch (PrescriptionNotFoundException ex)
         {
@@ -71,7 +74,7 @@ public class PrescriptionController : DruglyController
 
         try
         {
-            response.Data = await _databaseService.GetAllPrescriptionsByAccountId(id);
+            response.Data = await _prescriptionDatabaseService.GetAllPrescriptionsByAccountId(id);
         }
         catch (PrescriptionNotFoundException ex)
         {
@@ -118,7 +121,7 @@ public class PrescriptionController : DruglyController
 
         try
         {
-            await _databaseService.SetPrescriptionById(prescription.PrescriptionId, prescription);
+            await _prescriptionDatabaseService.SetPrescriptionById(prescription.PrescriptionId, prescription);
         }
         catch (Exception ex)
         {
@@ -139,10 +142,29 @@ public class PrescriptionController : DruglyController
 
         Guid prescriptionId = Guid.NewGuid();
         prescription.PrescriptionId = prescriptionId;
-
+        AccountCredentials prescribedUser;
         try
         {
-            await _databaseService.SetPrescriptionById(prescriptionId, prescription);
+             prescribedUser = await _accountDatabaseService.GetAccountById(prescription.PatientId);
+        }
+        catch (AccountNotFoundException ex)
+        {
+            _logger.LogError(ex, "Failed to find account {id} associated with prescription {id}", prescription.PatientId, prescriptionId);
+            return NotFound(ApiResponse.Error("Not found"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "failed to fetch account {id}", prescription.PatientId);
+            return InternalServerError(ApiResponse.Error("Internal server error"));
+        }
+        if (prescribedUser.AccountDetails.AccountType is not AccountType.Patient)
+        {
+            _logger.LogError("Cannot prescribed to a non-patient account");
+            return BadRequest(ApiResponse.Error("Cannot prescribed to a non-patient account"));
+        }
+        try
+        {
+            await _prescriptionDatabaseService.SetPrescriptionById(prescriptionId, prescription);
         }
         catch (Exception ex)
         {
