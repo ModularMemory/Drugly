@@ -11,6 +11,13 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly string _folderPath = "Accounts";
+
+    /// <summary>
+    /// grabs account from file by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="AccountNotFoundException"></exception>
     public  Task<AccountCredentials> GetAccountById(Guid id)
     {
         if (!_accounts.TryGetValue(id, out var account))
@@ -21,6 +28,13 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         return Task.FromResult(account);
     }
 
+    /// <summary>
+    /// sets account by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="email"></param>
+    /// <param name="entry"></param>
+    /// <returns></returns>
     public async Task SetAccountById(Guid id, string email, AccountCredentials entry)
     {
         _accounts[id] = entry;
@@ -32,6 +46,12 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         await JsonWriteAccountDatabaseEntry.SaveAccount(entry, filePath);
     }
 
+    /// <summary>
+    /// get email id by searching email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    /// <exception cref="AccountNotFoundException"></exception>
     public Task<Guid> GetIdByEmail(string email)
     {
         if (!_emailToId.TryGetValue(email, out var id))
@@ -43,6 +63,11 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
     }
 
+    /// <summary>
+    /// gets all patient accounts
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="AccountNotFoundException"></exception>
     public Task<AccountDetails[]> GetAllPatientAccounts()
     {
 
@@ -59,6 +84,11 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         return Task.FromResult(patients);
     }
 
+    /// <summary>
+    /// begins async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
@@ -81,10 +111,13 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         }
 
         Console.WriteLine($"Loaded {_accounts.Count} accounts.");
-        return await JsonReadAccountDatabaseEntry.LoadAccount(file)
     }
 
-
+    /// <summary>
+    /// stops async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("Account service stopping.");

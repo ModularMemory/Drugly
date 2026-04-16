@@ -4,7 +4,9 @@ using Drugly.DTO;
 
 namespace Drugly.Server.Data;
 
-
+/// <summary>
+/// General JSON Writer to prevent repeating code
+/// </summary>
 public static class JsonWriter
 {
     private static readonly JsonSerializerOptions Options = new()
@@ -20,6 +22,9 @@ public static class JsonWriter
     }
 }
 
+/// <summary>
+/// General JSON Reader to prevent repeating code
+/// </summary>
 public static class JsonReader
 {
     private static readonly JsonSerializerOptions Options = new()
@@ -38,42 +43,66 @@ public static class JsonReader
     }
 }
 
+/// <summary>
+/// Json Writer for Prescription
+/// </summary>
 public static class JsonWritePrescription
 {
     public static Task SavePrescription(Prescription prescription, string filePath) =>
         JsonWriter.SaveAsync(prescription, filePath);
 }
 
+
+/// <summary>
+/// Json Reader for Prescription
+/// </summary>
 public static class JsonReadPrescription
 {
     public static Task<Prescription?> LoadPrescription(string filePath) =>
       JsonReader.LoadAsync<Prescription>(filePath);
 }
 
+
+/// <summary>
+/// Json Writer for Medication
+/// </summary>
 public static class JsonWriteMedication
 {
     public static Task SaveMedication(Medication medication, string filePath) =>
           JsonWriter.SaveAsync(medication, filePath);
 }
 
+
+/// <summary>
+/// Json Reader for Medication
+/// </summary>
 public static class JsonReadMedication
 {
     public static Task<Medication?> LoadMedication(string filePath) =>
        JsonReader.LoadAsync<Medication>(filePath);
 }
 
+/// <summary>
+/// Json Writer for Accound Details
+/// </summary>
 public static class JsonWriteAccountDetails
 {
     public static Task SaveAccountDetails(AccountDetails details, string filePath) =>
          JsonWriter.SaveAsync(details, filePath);
 }
 
+/// <summary>
+/// Json Reader for Account Details
+/// </summary>
 public static class JsonReadAccountDetails
 {
     public static Task<AccountDetails?> LoadAccountDetails(string filePath) =>
         JsonReader.LoadAsync<AccountDetails>(filePath);
 }
 
+/// <summary>
+/// Json Writer for Account Database
+/// </summary>
 public static class JsonWriteAccountDatabaseEntry
 {
     private static readonly JsonSerializerOptions _options = new()
@@ -95,6 +124,9 @@ public static class JsonWriteAccountDatabaseEntry
     }
 }
 
+/// <summary>
+/// Json Reader for Account Database
+/// </summary>
 public static class JsonReadAccountDatabaseEntry
 {
     private static readonly JsonSerializerOptions _options = new()

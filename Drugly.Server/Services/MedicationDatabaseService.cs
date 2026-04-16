@@ -10,6 +10,13 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
 {
     private readonly Dictionary<Guid, Medication> _medications = new();
     private readonly string _folderPath = "Medications";
+
+    /// <summary>
+    /// searches for medication by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="MedicationNotFoundException"></exception>
     public Task<Medication> GetMedicationById(Guid id)
     {
         if (!_medications.TryGetValue(id, out var medication))
@@ -20,6 +27,11 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         return Task.FromResult(medication);
     }
 
+    /// <summary>
+    /// finds all medication
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="MedicationNotFoundException"></exception>
     public Task<Medication[]> GetAllMedications()
     {
         var medications = _medications.Values.ToArray();
@@ -32,6 +44,12 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         return Task.FromResult(medications);
     }
 
+    /// <summary>
+    /// sets medication id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="medication"></param>
+    /// <returns></returns>
     public async Task SetMedicationById(Guid id, Medication medication)
     {
         _medications[id] = medication;
@@ -41,6 +59,11 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         await JsonWriteMedication.SaveMedication(medication, filePath);
     }
 
+    /// <summary>
+    /// begins async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
@@ -61,6 +84,11 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
         Console.WriteLine($"Loaded {_medications.Count} medications.");
     }
 
+    /// <summary>
+    /// stops async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("Medication service stopping.");

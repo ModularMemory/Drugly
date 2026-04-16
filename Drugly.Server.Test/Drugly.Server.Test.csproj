@@ -11,18 +11,25 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
 
         <PackageReference Include="xunit.runner.visualstudio">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="xunit.v3"/>
+        <PackageReference Include="xunit.v3" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
+      <ProjectReference Include="..\Drugly.AvaloniaApp\Drugly.AvaloniaApp.csproj" />
+      <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
+      <ProjectReference Include="..\Drugly.Server\Drugly.Server.csproj" />
+      <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
     </ItemGroup>
 
 </Project>

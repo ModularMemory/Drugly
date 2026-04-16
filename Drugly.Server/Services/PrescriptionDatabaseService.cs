@@ -9,6 +9,13 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
 {
     private readonly Dictionary<Guid, Prescription> _prescriptions = new();
     private readonly string _folderPath = "Prescriptions";
+
+    /// <summary>
+    /// searches for prescription by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="PrescriptionNotFoundException"></exception>
     public Task<Prescription> GetPrescriptionById(Guid id)
     {
         if (!_prescriptions.TryGetValue(id, out var prescription))
@@ -19,6 +26,12 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         return Task.FromResult(prescription);
     }
 
+    /// <summary>
+    /// sets prescription by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="prescription"></param>
+    /// <returns></returns>
     public async Task SetPrescriptionById(Guid id, Prescription prescription)
     {
         _prescriptions[id] = prescription;
@@ -28,6 +41,12 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         await JsonWritePrescription.SavePrescription(prescription, filePath);
     }
 
+    /// <summary>
+    /// gets all prescriptions assigned to account id
+    /// </summary>
+    /// <param name="accountId"></param>
+    /// <returns></returns>
+    /// <exception cref="PrescriptionNotFoundException"></exception>
     public Task<List<Prescription>> GetAllPrescriptionsByAccountId(Guid accountId)
     {
         var result = _prescriptions.Values
@@ -40,6 +59,11 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
         return Task.FromResult(result);
     }
 
+    /// <summary>
+    /// begins async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (!Directory.Exists(_folderPath))
@@ -59,6 +83,12 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
 
         Console.WriteLine($"Loaded {_prescriptions.Count} prescriptions.");
     }
+
+    /// <summary>
+    /// stops async
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
