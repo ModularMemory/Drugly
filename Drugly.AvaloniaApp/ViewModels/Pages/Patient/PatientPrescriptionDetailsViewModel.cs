@@ -9,11 +9,13 @@ using SukiUI.Dialogs;
 
 namespace Drugly.AvaloniaApp.ViewModels.Pages.Patient;
 
-public partial class PatientPrescriptionDetailsViewModel : ViewModelBase
+public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageViewModel
 {
     private readonly ISukiDialogManager _dialogManager;
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
+    
+    public string? PageTitle => "Hello, John!";
 
     [ObservableProperty]
     public partial AccountDetails? Patient { get; set; }

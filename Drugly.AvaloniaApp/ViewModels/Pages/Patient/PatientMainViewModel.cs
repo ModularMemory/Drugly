@@ -18,7 +18,7 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
     private readonly IPrescriptionDetailsService _prescriptionDetailsService;
     private readonly IMedicationDetailsService _medicationDetailsService;
 
-    public string? PageTitle => "Hello John!";
+    public string? PageTitle => "Hello, John!";
 
     public AccountDetails? Account { get; set; }
 
