@@ -7,8 +7,16 @@ namespace Drugly.Server.Services;
 
 public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabaseService
 {
+    private readonly ILogger<PrescriptionDatabaseService> _logger;
     private readonly Dictionary<Guid, Prescription> _prescriptions = new();
-    private readonly string _folderPath = "Prescriptions";
+    private const string FOLDER_PATH = "Prescriptions";
+
+    public PrescriptionDatabaseService(
+        ILogger<PrescriptionDatabaseService> logger
+    )
+    {
+        _logger = logger;
+    }
 
     /// <summary>
     /// searches for prescription by id
@@ -36,7 +44,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
     {
         _prescriptions[id] = prescription;
 
-        var filePath = Path.Combine(_folderPath, $"{id}.json");
+        var filePath = Path.Combine(FOLDER_PATH, $"{id}.json");
 
         await JsonWritePrescription.SavePrescription(prescription, filePath);
     }
@@ -50,12 +58,13 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
     public Task<List<Prescription>> GetAllPrescriptionsByAccountId(Guid accountId)
     {
         var result = _prescriptions.Values
-          .Where(p => p.PatientId == accountId)
-          .ToList();
+            .Where(p => p.PatientId == accountId)
+            .ToList();
         if (result.Count == 0)
         {
             throw new PrescriptionNotFoundException();
         }
+
         return Task.FromResult(result);
     }
 
@@ -66,10 +75,10 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
     /// <returns></returns>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (!Directory.Exists(_folderPath))
-            Directory.CreateDirectory(_folderPath);
+        if (!Directory.Exists(FOLDER_PATH))
+            Directory.CreateDirectory(FOLDER_PATH);
 
-        var files = Directory.GetFiles(_folderPath, "*.json");
+        var files = Directory.GetFiles(FOLDER_PATH, "*.json");
 
         foreach (var file in files)
         {
@@ -81,7 +90,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
             }
         }
 
-        Console.WriteLine($"Loaded {_prescriptions.Count} prescriptions.");
+        _logger.LogInformation("Loaded {PrescriptionsCount} prescriptions", _prescriptions.Count);
     }
 
     /// <summary>
@@ -92,7 +101,6 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Prescription service stopping.");
         return Task.CompletedTask;
     }
 }
