@@ -18,6 +18,8 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
 
     public string? PageTitle => "Hello John!";
 
+    public AccountDetails? Account { get; set; }
+
     public AvaloniaList<PatientPrescription> Prescriptions { get; } = [];
 
     public PatientMainViewModel(
@@ -32,11 +34,11 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
         _accountDetailsService = accountDetailsService;
         _accountSessionService = accountSessionService;
 
-        Dispatcher.UIThread.InvokeAsync(() =>
+        Dispatcher.UIThread.InvokeAsync(async () =>
         {
             if (_accountSessionService.AccountType == AccountType.Patient)
             {
-                _accountDetailsService.GetAccountById(_accountSessionService.AccountId);
+                Account = await _accountDetailsService.GetAccountById(_accountSessionService.AccountId);
             }
         });
 }
