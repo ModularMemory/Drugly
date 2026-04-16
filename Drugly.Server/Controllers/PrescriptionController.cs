@@ -36,11 +36,11 @@ public class PrescriptionController : DruglyController
         }
 
         ApiResponse<Prescription> response = new ApiResponse<Prescription>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetPrescriptionById(id);
-            Response.Headers.ContentType = "application/json";
         }
         catch (PrescriptionNotFoundException ex)
         {
@@ -67,11 +67,11 @@ public class PrescriptionController : DruglyController
         }
 
         ApiResponse<List<Prescription>> response = new ApiResponse<List<Prescription>>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetAllPrescriptionsByAccountId(id);
-            Response.Headers.ContentType = "application/json";
         }
         catch (PrescriptionNotFoundException ex)
         {
@@ -92,6 +92,7 @@ public class PrescriptionController : DruglyController
     public async Task<IActionResult> AdvanceState(int stateInt, [FromBody] Prescription prescription)
     {
         ApiResponse<Prescription> response = new ApiResponse<Prescription>();
+        Response.Headers.ContentType = "application/json";
 
         var state = (PrescriptionState)stateInt;
         if (!Enum.IsDefined(state) || state is PrescriptionState.Unknown)
@@ -134,8 +135,11 @@ public class PrescriptionController : DruglyController
     public async Task<IActionResult> AddPrescription([FromBody] Prescription prescription)
     {
         ApiResponse<Prescription> response = new ApiResponse<Prescription>();
+        Response.Headers.ContentType = "application/json";
+
         Guid prescriptionId = Guid.NewGuid();
         prescription.PrescriptionId = prescriptionId;
+
         try
         {
             await _databaseService.SetPrescriptionById(prescriptionId, prescription);

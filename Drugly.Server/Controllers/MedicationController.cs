@@ -24,11 +24,11 @@ public class MedicationController : DruglyController
     public async Task<IActionResult> GetById(Guid id)
     {
         ApiResponse<Medication> response = new ApiResponse<Medication>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetMedicationById(id);
-            Response.Headers.ContentType = "application/json";
         }
         catch (MedicationNotFoundException ex)
         {
@@ -48,6 +48,8 @@ public class MedicationController : DruglyController
     public async Task<IActionResult> GetAll()
     {
         ApiResponse<Medication[]> response = new ApiResponse<Medication[]>();
+        Response.Headers.ContentType = "application/json";
+
         try
         {
             response.Data = await _databaseService.GetAllMedications();

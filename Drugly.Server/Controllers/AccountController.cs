@@ -45,12 +45,12 @@ public class AccountController : DruglyController
         }
 
         ApiResponse<AccountDetails> response = new ApiResponse<AccountDetails>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             AccountCredentials entry = await _databaseService.GetAccountById(id);
             response.Data = entry.AccountDetails;
-            Response.Headers.ContentType = "application/json";
         }
         catch (AccountNotFoundException ex)
         {
@@ -78,11 +78,11 @@ public class AccountController : DruglyController
             return Forbid(ApiResponse.Error("User is not authorized"));
         }
         ApiResponse<Guid> response = new ApiResponse<Guid>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
             response.Data = await _databaseService.GetIdByEmail(email);
-            Response.Headers.ContentType = "application/json";
         }
         catch (AccountNotFoundException ex)
         {
@@ -126,6 +126,7 @@ public class AccountController : DruglyController
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         ApiResponse<AccountSession> response = new ApiResponse<AccountSession>();
+        Response.Headers.ContentType = "application/json";
         Guid id;
         AccountCredentials entry;
         // get the ID from the email
@@ -207,6 +208,7 @@ public class AccountController : DruglyController
         }
 
         ApiResponse<AccountDetails[]> response = new ApiResponse<AccountDetails[]>();
+        Response.Headers.ContentType = "application/json";
 
         try
         {
