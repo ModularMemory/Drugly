@@ -11,7 +11,6 @@
              x:DataType="patient:PatientPrescriptionDetailsViewModel"
              d:DataContext="{x:Static design:DesignData.PatientPrescriptionDetailsViewModel}">
 
-
     <Grid Margin="8"
           RowSpacing="16"
           RowDefinitions="Auto,*">
@@ -37,19 +36,19 @@
                                    Text="Take"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.DosagePerDay}"
+                                   Text="{Binding Prescription.Prescription.DosagePerDay}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
                                    Text="every"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.DaysBetweenDosage}"
+                                   Text="{Binding Prescription.Prescription.DaysBetweenDosage}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
                                    Text="days for"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
-                                   Text="{Binding Prescription.DaysPrescribed}"
+                                   Text="{Binding Prescription.Prescription.DaysPrescribed}"
                                    VerticalAlignment="Center" />
                         <TextBlock Classes="Body"
                                    Text="days."

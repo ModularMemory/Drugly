@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.Services.Interfaces;
 using Drugly.DTO;
 using Humanizer;
@@ -16,13 +17,13 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     private readonly IPageRouter _pageRouter;
     private readonly ILogger _logger;
     
-    public string? PageTitle => "Hello, John!";
+    public string? PageTitle => $"Viewing Prescription for {Prescription?.Medication.Name}";
 
     [ObservableProperty]
     public partial AccountDetails? Patient { get; set; }
 
     [ObservableProperty]
-    public partial Prescription? Prescription { get; set; }
+    public partial PatientPrescription? Prescription { get; set; }
 
     [ObservableProperty]
     public partial int StepIndex { get; set; }

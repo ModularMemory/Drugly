@@ -1,3 +1,4 @@
+using Drugly.AvaloniaApp.Models;
 using Drugly.AvaloniaApp.ViewModels;
 using Drugly.AvaloniaApp.ViewModels.Pages;
 using Drugly.AvaloniaApp.ViewModels.Pages.Doctor;
@@ -41,6 +42,7 @@ public static partial class DesignData
             if (field == null)
             {
                 field = ServiceProvider.GetRequiredService<PatientMainViewModel>();
+                field.Prescriptions.AddRange(ExamplePrescriptions.Select(x => new PatientPrescription(x, ExampleMedication)));
             }
 
             return field;
@@ -55,6 +57,7 @@ public static partial class DesignData
             {
                 field = ServiceProvider.GetRequiredService<PatientPrescriptionDetailsViewModel>();
                 field.Patient = ExamplePatient;
+                field.Prescription = new PatientPrescription(ExamplePrescription, ExampleMedication);
             }
 
             return field;
