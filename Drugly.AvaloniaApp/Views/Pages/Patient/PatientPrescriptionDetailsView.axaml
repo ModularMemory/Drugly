@@ -128,7 +128,7 @@
                 </TabItem>
 
                 <TabItem Header="Billing Information"
-                         IsEnabled="False">
+                         IsEnabled="{Binding Prescription.Prescription.State, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static dto:PrescriptionState.Billing}}">
 
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           RowSpacing="16">

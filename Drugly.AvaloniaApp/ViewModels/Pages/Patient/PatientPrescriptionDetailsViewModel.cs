@@ -33,10 +33,11 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     [ObservableProperty]
     public partial int StepIndex { get; set; }
 
+    private IReadOnlyList<PrescriptionState> _stepsInternal;
     public IEnumerable<string> Steps { get; }
     public IAccountSessionService AccountSessionService { get; }
 
-public PatientPrescriptionDetailsViewModel(
+    public PatientPrescriptionDetailsViewModel(
         ISukiDialogManager dialogManager,
         IPageRouter pageRouter,
         ILogger logger,
@@ -50,10 +51,13 @@ public PatientPrescriptionDetailsViewModel(
         _logger = logger;
         _prescriptionDetailsService = prescriptionDetailsService;
 
-        Steps = Enum.GetValues<PrescriptionState>()
+        _stepsInternal = Enum.GetValues<PrescriptionState>()
             .Where(x => x is not PrescriptionState.Unknown and not PrescriptionState.Cancelled)
+            .ToArray();
+        Steps = _stepsInternal
             .Select(x => x.Humanize(LetterCasing.Title));
 
+        SetStepIndex();
         SetDoctorPrescriptionStateText();
         ValidateAllProperties();
     }
@@ -95,7 +99,14 @@ public PatientPrescriptionDetailsViewModel(
         prescription = await _prescriptionDetailsService.AdvanceState(prescription, prescription.State);
 
         Prescription = new PatientPrescription(prescription, Prescription.Medication);
+        SetStepIndex();
         SetDoctorPrescriptionStateText();
+    }
+
+    private void SetStepIndex()
+    {
+        var step = _stepsInternal.Index().FirstOrDefault(x => x.Item == Prescription?.Prescription.State);
+        StepIndex = step.Index;
     }
 
     private void SetDoctorPrescriptionStateText()
@@ -103,12 +114,12 @@ public PatientPrescriptionDetailsViewModel(
         DoctorPrescriptionStateText = Prescription?.Prescription.State switch
         {
             PrescriptionState.DoctorPrescription => "Approve",
-            PrescriptionState.PharmacyProcessing => "Ready at Pharmacy",
-            PrescriptionState.Filled => "Confirmed payment",
-            PrescriptionState.Billing => "Patient picked up",
-            PrescriptionState.PickedUp => "Approve",
+            PrescriptionState.PharmacyProcessing => "Approve",
+            PrescriptionState.Filled => "Ready at Pharmacy",
+            PrescriptionState.Billing => "Confirmed payment",
+            PrescriptionState.PickedUp => "Patient picked up",
             PrescriptionState.Cancelled => "Approve",
-            _ => "Unknown",
+            _ => "Approve",
         };
     }
 
