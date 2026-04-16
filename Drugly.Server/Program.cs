@@ -22,14 +22,26 @@ public class Program
 
         app.MapControllers();
 
+        var patientId = Guid.NewGuid();
         var accountDb = app.Services.GetRequiredService<IAccountDatabaseService>();
-        var detailsPatient = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Patient", "John@patient.com");
+        var detailsPatient = new AccountDetails(patientId, AccountType.Patient, "John", "Patient", "John@patient.com");
         var credentialsPatient = new AccountCredentials("123", detailsPatient);
         accountDb.SetAccountById(detailsPatient.UserId, detailsPatient.Email, credentialsPatient);
 
         var detailsDoctor = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Doctor", "John@doctor.com");
         var credentialsDoctor = new AccountCredentials("123", detailsDoctor);
         accountDb.SetAccountById(detailsDoctor.UserId, detailsDoctor.Email, credentialsDoctor);
+
+        var medicationDb = app.Services.GetRequiredService<IMedicationDatabaseService>();
+        var medicationId = Guid.NewGuid();
+        var medication = new Medication(medicationId, "Estrogen", "Feminizing hormone", "https://i.redd.it/2yp7s912k6m81.jpg");
+        medicationDb.SetMedicationById(medicationId, medication);
+
+        var prescriptionDb = app.Services.GetRequiredService<IPrescriptionDatabaseService>();
+        var prescriptionId = Guid.NewGuid();
+        var prescription = new Prescription(PrescriptionState.DoctorPrescription, prescriptionId, medicationId, patientId, "1", 1, 10, "no notes");
+        prescriptionDb.SetPrescriptionById(prescriptionId, prescription);
+
         app.Run();
     }
 }
