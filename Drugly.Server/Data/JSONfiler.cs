@@ -4,7 +4,6 @@ using Drugly.DTO;
 
 namespace Drugly.Server.Data;
 
-
 public static class JsonWriter
 {
     private static readonly JsonSerializerOptions Options = new()
@@ -47,68 +46,29 @@ public static class JsonWritePrescription
 public static class JsonReadPrescription
 {
     public static Task<Prescription?> LoadPrescription(string filePath) =>
-      JsonReader.LoadAsync<Prescription>(filePath);
+        JsonReader.LoadAsync<Prescription>(filePath);
 }
 
 public static class JsonWriteMedication
 {
     public static Task SaveMedication(Medication medication, string filePath) =>
-          JsonWriter.SaveAsync(medication, filePath);
+        JsonWriter.SaveAsync(medication, filePath);
 }
 
 public static class JsonReadMedication
 {
     public static Task<Medication?> LoadMedication(string filePath) =>
-       JsonReader.LoadAsync<Medication>(filePath);
-}
-
-public static class JsonWriteAccountDetails
-{
-    public static Task SaveAccountDetails(AccountDetails details, string filePath) =>
-         JsonWriter.SaveAsync(details, filePath);
-}
-
-public static class JsonReadAccountDetails
-{
-    public static Task<AccountDetails?> LoadAccountDetails(string filePath) =>
-        JsonReader.LoadAsync<AccountDetails>(filePath);
+        JsonReader.LoadAsync<Medication>(filePath);
 }
 
 public static class JsonWriteAccountDatabaseEntry
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        WriteIndented = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static async Task SaveAccount(AccountCredentials entry, string filePath)
-    {
-        var directoryName = Path.GetDirectoryName(filePath)!;
-        if (!Directory.Exists(directoryName))
-        {
-            Directory.CreateDirectory(directoryName);
-        }
-
-        var json = JsonSerializer.Serialize(entry, _options);
-        File.WriteAllTextAsync(filePath, json);
-    }
+    public static Task SaveAccount(AccountCredentials entry, string filePath) =>
+        JsonWriter.SaveAsync(entry, filePath);
 }
 
 public static class JsonReadAccountDatabaseEntry
 {
-    private static readonly JsonSerializerOptions _options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    public static AccountCredentials? LoadAccount(string filePath)
-    {
-        if (!File.Exists(filePath))
-            return null;
-
-        var json = File.ReadAllTextAsync(filePath);
-        return JsonSerializer.Deserialize<AccountCredentials>(json, _options);
-    }
+    public static Task<AccountCredentials?> LoadAccount(string filePath) =>
+        JsonReader.LoadAsync<AccountCredentials>(filePath);
 }

@@ -68,7 +68,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
 
         foreach (var file in files)
         {
-            var entry = JsonReadAccountDatabaseEntry.LoadAccount(file);
+            var entry = await JsonReadAccountDatabaseEntry.LoadAccount(file);
 
             if (entry != null)
             {
@@ -81,7 +81,6 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
         }
 
         Console.WriteLine($"Loaded {_accounts.Count} accounts.");
-        return await JsonReadAccountDatabaseEntry.LoadAccount(file)
     }
 
 
