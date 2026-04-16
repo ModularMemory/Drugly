@@ -10,7 +10,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     private readonly ILogger<AccountDatabaseService> _logger;
     private readonly Dictionary<Guid, AccountCredentials> _accounts = new();
     private readonly Dictionary<string, Guid> _emailToId = new(StringComparer.OrdinalIgnoreCase);
-    private readonly string _folderPath = "Accounts";
+    private const string FOLDER_PATH = "Accounts";
 
     public AccountDatabaseService(
         ILogger<AccountDatabaseService> logger
@@ -25,9 +25,6 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="AccountNotFoundException"></exception>
-    public  Task<AccountCredentials> GetAccountById(Guid id)
-   
-
     public Task<AccountCredentials> GetAccountById(Guid id)
     {
         if (!_accounts.TryGetValue(id, out var account))

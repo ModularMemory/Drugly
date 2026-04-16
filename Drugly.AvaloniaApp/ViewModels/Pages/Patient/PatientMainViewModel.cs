@@ -46,8 +46,8 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
             {
                 Account = await _accountDetailsService.GetAccountById(_accountSessionService.AccountId);
                 var prescriptions = await _prescriptionDetailsService.GetPrescriptionsByAccountId(Account.UserId);
-                List <Medication> medications = [];
-                
+                List<Medication> medications = [];
+
                 foreach (var prescription in prescriptions)
                 {
                     medications.Add(await _medicationDetailsService.GetMedication(prescription.MedicationId));
@@ -56,7 +56,7 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
                 Prescriptions.AddRange(medications.Select((m, i) => new PatientPrescription(prescriptions[i], m)));
             }
         });
-}
+    }
 
     [RelayCommand]
     private void ViewPrescription(object? dataContext)
