@@ -13,13 +13,19 @@ public class AuthorizationService : IAuthorizationService
 {
     private readonly RandomNumberGenerator _randomNumberGenerator = RandomNumberGenerator.Create();
     private ConcurrentDictionary<string, AccountSession> Authorizations { get; } = [];
+    private TimeProvider _timeProvider;
+
+    public AuthorizationService(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
 
     public AccountSession CreateSession(AccountDetails accountDetails)
     {
         Span<byte> tokenBytes = stackalloc byte[16];
         _randomNumberGenerator.GetBytes(tokenBytes);
         string token = Convert.ToBase64String(tokenBytes);
-        var expiration = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(1));
+        var expiration = _timeProvider.GetUtcNow().AddHours(1);
 
         AccountSession session = new AccountSession(token, accountDetails.AccountType, expiration, accountDetails.UserId);
         Authorizations.AddOrUpdate(token, _ => session, (_, __) => session);

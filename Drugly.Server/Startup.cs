@@ -1,3 +1,5 @@
+// ReSharper disable RedundantTypeArgumentsOfMethod
+
 using Drugly.Server.Services;
 using Drugly.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -16,7 +18,8 @@ public static class Startup
                 .AddSingleton<IMedicationDatabaseService, MedicationDatabaseService>()
                 .AddSingleton<IImageDatabaseService, ImageDatabaseService>()
                 .AddSingleton<IAuthorizationService, AuthorizationService >()
-                .AddSingleton<IStateMachineFactoryService, StateMachineFactoryService>();
+                .AddSingleton<IStateMachineFactoryService, StateMachineFactoryService>()
+                .AddSingleton<TimeProvider>(TimeProvider.System);
             return serviceCollection;
         }
     }
