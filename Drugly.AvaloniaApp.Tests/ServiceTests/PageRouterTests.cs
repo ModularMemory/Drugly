@@ -199,4 +199,41 @@ public class PageRouterTests
         Assert.NotNull(actualCur);
         Assert.Same(expected, actualCur);
     }
+
+    [Fact]
+    public void ResetPageHistory_SetsHistoryEmpty()
+    {
+        // Arrange
+        var pageRouter = PageRouterFactory;
+        pageRouter.ResetPageHistory();
+
+        pageRouter.PushPage(new DummyViewModel());
+
+        // Act
+        var before = pageRouter.HistoryEmpty;
+        pageRouter.ResetPageHistory();
+        var after = pageRouter.HistoryEmpty;
+
+        // Assert
+        Assert.False(before);
+        Assert.True(after);
+    }
+
+    [Fact]
+    public void ResetPageHistory_DoesNotInvokeNavigation()
+    {
+        // Arrange
+        var pageRouter = PageRouterFactory;
+        pageRouter.ResetPageHistory();
+
+        pageRouter.PushPage(new DummyViewModel());
+
+        // Act
+        var navigated = false;
+        pageRouter.PageNavigate += (s, e) => navigated = true;
+        pageRouter.ResetPageHistory();
+
+        // Assert
+        Assert.False(navigated);
+    }
 }
