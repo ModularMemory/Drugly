@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.Validation", "Drugly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.Server.Test", "Drugly.Server.Test\Drugly.Server.Test.csproj", "{A4B5FEB5-40AB-4E8A-8A6D-BEF1F9F8D525}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drugly.AvaloniaApp.Tests", "Drugly.AvaloniaApp.Tests\Drugly.AvaloniaApp.Tests.csproj", "{DD19D3DB-E863-4F30-A93C-55A5EFBD899F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,9 @@ Global
 		{A4B5FEB5-40AB-4E8A-8A6D-BEF1F9F8D525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4B5FEB5-40AB-4E8A-8A6D-BEF1F9F8D525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4B5FEB5-40AB-4E8A-8A6D-BEF1F9F8D525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD19D3DB-E863-4F30-A93C-55A5EFBD899F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD19D3DB-E863-4F30-A93C-55A5EFBD899F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD19D3DB-E863-4F30-A93C-55A5EFBD899F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD19D3DB-E863-4F30-A93C-55A5EFBD899F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

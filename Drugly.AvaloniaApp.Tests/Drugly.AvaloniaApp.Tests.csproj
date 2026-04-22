@@ -24,13 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
-      <ProjectReference Include="..\Drugly.Server\Drugly.Server.csproj" />
-      <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
+        <ProjectReference Include="..\Drugly.DTO\Drugly.DTO.csproj" />
+        <ProjectReference Include="..\Drugly.AvaloniaApp\Drugly.AvaloniaApp.csproj" />
+        <ProjectReference Include="..\Drugly.Validation\Drugly.Validation.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit" />
+        <Using Include="Xunit"/>
     </ItemGroup>
 
 </Project>

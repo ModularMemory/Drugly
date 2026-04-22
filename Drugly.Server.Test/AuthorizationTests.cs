@@ -1,9 +1,7 @@
-﻿using Drugly.AvaloniaApp.Views.Pages.Patient;
-using Drugly.DTO;
+﻿using Drugly.DTO;
 using Drugly.Server.Services;
 using Drugly.Server.Services.Interfaces;
 using Drugly.Server.Test.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
