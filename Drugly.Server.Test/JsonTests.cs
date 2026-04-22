@@ -51,4 +51,17 @@ public class JsonTests : IDisposable
         Assert.Equal(data.Value, result.Value);
     }
 
+    [Fact]
+    public async Task JsonReader_FileDoesNotExist_ReturnsDefault()
+    {
+        // Arrange
+        var filePath = GetFilePath("missing.json");
+
+        // Act
+        var result = await JsonReader.LoadAsync<TestObject>(filePath);
+
+        // Assert
+        Assert.Null(result);
+    }
+
 }
