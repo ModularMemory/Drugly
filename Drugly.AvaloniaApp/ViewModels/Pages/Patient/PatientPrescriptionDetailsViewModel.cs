@@ -170,15 +170,18 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
+    [Length(16, 19)]
     public partial string? CardNumber { get; set; }
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
+    [Length(5, 5)]
     public partial string? CardExpiry { get; set; }
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
+    [Length(3, 3)]
     public partial string? CardCCV { get; set; }
 }
