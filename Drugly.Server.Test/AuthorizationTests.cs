@@ -130,11 +130,22 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Patient);
 
         //Assert
-
+        Assert.True(result);
     }
 
     [Fact]
@@ -142,11 +153,22 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Doctor);
 
         //Assert
-
+        Assert.True(result);
     }
 
     [Fact]
@@ -154,11 +176,34 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        AccountDetails detailsDoctor = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Doctor", "John@doctor.com");
+        AccountSession sessionDoctor = authorizationService.CreateSession(detailsDoctor);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
+        var mockHeaderDoctor = Substitute.For<IHeaderDictionary>();
+        var argDoctor = new StringValues("Bearer " + sessionDoctor.SessionToken);
+        mockHeaderDoctor.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = argDoctor;
+                return true;
+            });
 
         //Act
+        bool result = authorizationService.IsUserAuthorized(mockHeader, [AccountType.Patient,  AccountType.Doctor]);
+        bool result2 = authorizationService.IsUserAuthorized(mockHeaderDoctor, [AccountType.Patient,  AccountType.Doctor]);
 
         //Assert
-
+        Assert.True(result);
+        Assert.True(result2);
     }
 
     [Fact]
@@ -166,11 +211,22 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("bad header", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Doctor);
 
         //Assert
-
+        Assert.False(result);
     }
 
     [Fact]
@@ -178,11 +234,21 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Patient", "John@patient.com");
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer ");
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Doctor);
 
         //Assert
-
+        Assert.False(result);
     }
 
     [Fact]
@@ -191,11 +257,23 @@ public class AuthorizationTests
         //Arrange
         TestTimeProvider tp = new TestTimeProvider();
         IAuthorizationService authorizationService = CreateAuthService(tp);
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Doctor, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        tp.AddHours(5);
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Doctor);
 
         //Assert
-
+        Assert.False(result);
     }
 
     [Fact]
@@ -203,16 +281,22 @@ public class AuthorizationTests
     {
         //Arrange
         IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
 
         //Act
+        authorizationService.DeleteSession(mockHeader);
+        bool result = authorizationService.IsUserAuthorized(mockHeader, AccountType.Patient);
 
         //Assert
-
+        Assert.False(result);
     }
-
-    // [Theory]
-    // [InlineData(0)]
-    // [InlineData(2)]
-    // [InlineData(69)]
-    // public void Test2(int param) { }
 }

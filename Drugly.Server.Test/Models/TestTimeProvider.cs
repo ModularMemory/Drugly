@@ -4,9 +4,9 @@ public class TestTimeProvider : TimeProvider
 {
     private DateTimeOffset _time = DateTimeOffset.Now;
 
-    public void IncreaseUtc(int hours)
+    public void AddHours(int hours)
     {
-        _time += TimeSpan.FromHours(hours);
+        _time = _time.AddHours(hours);
     }
 
     public override DateTimeOffset GetUtcNow()

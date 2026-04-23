@@ -13,7 +13,7 @@ public class AuthorizationService : IAuthorizationService
 {
     private readonly RandomNumberGenerator _randomNumberGenerator = RandomNumberGenerator.Create();
     private ConcurrentDictionary<string, AccountSession> Authorizations { get; } = [];
-    private TimeProvider _timeProvider;
+    private readonly TimeProvider _timeProvider;
 
     public AuthorizationService(TimeProvider timeProvider)
     {
@@ -84,7 +84,7 @@ public class AuthorizationService : IAuthorizationService
             return false;
         }
 
-        if (accountSession.Expiration < DateTimeOffset.UtcNow)
+        if (accountSession.Expiration < _timeProvider.GetUtcNow())
         {
             Authorizations.TryRemove(token, out _);
             return false;
