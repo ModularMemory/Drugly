@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Drugly.AvaloniaApp.Models;
@@ -57,9 +58,32 @@ public partial class PatientPrescriptionDetailsViewModel : ViewModelBase, IPageV
         Steps = _stepsInternal
             .Select(x => x.Humanize(LetterCasing.Title));
 
-        SetStepIndex();
-        SetDoctorPrescriptionStateText();
-        ValidateAllProperties();
+        // Delay validation until after object is created and Prescription property is set
+        Dispatcher.UIThread.Post(() =>
+        {
+            SetStepIndex();
+            SetDoctorPrescriptionStateText();
+            ValidateAllProperties();
+        });
+    }
+
+    [RelayCommand]
+    private async Task RefreshPrescription()
+    {
+        await Dispatcher.UIThread.InvokeAsync(GetPrescriptions);
+
+        async Task GetPrescriptions()
+        {
+            if (Prescription is null)
+            {
+                return;
+            }
+
+            var prescription = await _prescriptionDetailsService.GetPrescription(Prescription.Prescription.PrescriptionId);
+            Prescription = new PatientPrescription(prescription, Prescription.Medication);
+            SetStepIndex();
+            SetDoctorPrescriptionStateText();
+        }
     }
 
     [RelayCommand]

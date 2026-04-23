@@ -9,6 +9,7 @@
              xmlns:dto="clr-namespace:Drugly.DTO;assembly=Drugly.DTO"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:converters="clr-namespace:Drugly.AvaloniaApp.Converters"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Drugly.AvaloniaApp.Views.Pages.Patient.PatientPrescriptionDetailsView"
              x:DataType="patient:PatientPrescriptionDetailsViewModel"
@@ -17,6 +18,16 @@
     <Grid Margin="8"
           RowSpacing="16"
           RowDefinitions="Auto,*">
+
+        <!-- Refresh button -->
+        <Button Grid.Row="0"
+                Classes="Flat"
+                Command="{Binding RefreshPrescriptionCommand}"
+                HorizontalAlignment="Right"
+                suki:ButtonExtensions.Icon="{icons:MaterialIconExt Refresh}">
+            <TextBlock Classes="H4"
+                       Text="Refresh" />
+        </Button>
 
         <Grid Grid.Row="1"
               RowDefinitions="Auto,Auto,Auto,Auto"
@@ -84,7 +95,7 @@
 
                 <Button Grid.Column="1"
                         Classes="Danger"
-                        Command="{Binding ProgressStepperCommand}">
+                        Command="{Binding CancelPrescriptionCommand}">
                     <TextBlock Classes="Body"
                                Text="Cancel" />
                 </Button>

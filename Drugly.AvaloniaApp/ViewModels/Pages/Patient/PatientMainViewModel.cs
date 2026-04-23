@@ -56,8 +56,15 @@ public partial class PatientMainViewModel : ViewModelBase, IPageViewModel
                 medications.Add(await _medicationDetailsService.GetMedication(prescription.MedicationId));
             }
 
+            Prescriptions.Clear();
             Prescriptions.AddRange(medications.Select((m, i) => new PatientPrescription(prescriptions[i], m)));
         }
+    }
+
+    [RelayCommand]
+    private async Task RefreshPrescription()
+    {
+        await Dispatcher.UIThread.InvokeAsync(GetPrescriptions);
     }
 
     [RelayCommand]

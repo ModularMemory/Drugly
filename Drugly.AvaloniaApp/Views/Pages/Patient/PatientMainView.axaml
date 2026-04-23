@@ -14,8 +14,20 @@
              x:DataType="patient:PatientMainViewModel"
              d:DataContext="{x:Static design:DesignData.PatientMainViewModel}">
 
-    <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
+    <Grid RowSpacing="16"
+          RowDefinitions="Auto,*">
+        <!-- Refresh button -->
+        <Button Grid.Row="0"
+                Classes="Flat"
+                Command="{Binding RefreshPrescriptionCommand}"
+                HorizontalAlignment="Right"
+                suki:ButtonExtensions.Icon="{icons:MaterialIconExt Refresh}">
+            <TextBlock Classes="H4"
+                       Text="Refresh" />
+        </Button>
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
