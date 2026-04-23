@@ -56,6 +56,30 @@ public class AuthorizationTests
     }
 
     [Fact]
+    public void TestSessionNotFoundDeleteSession()
+    {
+        //arrange
+        IAuthorizationService authorizationService = AuthorizationServiceFactory;
+        AccountDetails details = new AccountDetails(Guid.NewGuid(), AccountType.Patient, "John", "Patient", "John@patient.com");
+        AccountSession session = authorizationService.CreateSession(details);
+        var mockHeader = Substitute.For<IHeaderDictionary>();
+        var arg = new StringValues("Bearer " + session.SessionToken);
+        mockHeader.TryGetValue("Authorization", out Arg.Any<StringValues>())
+            .Returns(x=>
+            {
+                x[1] = arg;
+                return true;
+            });
+
+        //act
+        authorizationService.DeleteSession(mockHeader);
+        var result = authorizationService.DeleteSession(mockHeader);
+
+        //assert
+        Assert.False(result);
+    }
+
+    [Fact]
     public void TestBadHeaderDeleteSession()
     {
         //Arrange
