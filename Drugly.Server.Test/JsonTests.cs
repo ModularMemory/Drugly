@@ -2,6 +2,7 @@ using System.Text.Json;
 using Drugly.DTO;
 using Drugly.Server.Data;
 
+
 namespace Drugly.Server.Test;
 
 public class JsonTests : IDisposable
@@ -63,5 +64,69 @@ public class JsonTests : IDisposable
         // Assert
         Assert.Null(result);
     }
+    [Fact]
+    public async Task SaveAccount_CreatesFile()
+    {
+        // Arrange
+        var filePath = "test_prescription.json";
 
+        var prescription = new Prescription(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Take once daily",
+            1,
+            7,
+            "No notes",
+            "signature.png"
+        )
+        {
+            PrescriptionId = Guid.NewGuid(),
+            State = PrescriptionState.Unknown
+        };
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
+        // Act
+        await JsonWritePrescription.SavePrescription(prescription, filePath);
+
+        // Assert
+        Assert.True(File.Exists(filePath));
+
+        // Cleanup
+        File.Delete(filePath);
+    }
+    [Fact]
+    public async Task SavePrescription_FormatsJsonWithIndentation()
+    {
+        // Arrange
+        var filePath = "test_prescription.json";
+
+        var prescription = new Prescription(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Take once daily",
+            1,
+            7,
+            "No notes",
+            "signature.png"
+        )
+        {
+            PrescriptionId = Guid.NewGuid(),
+            State = PrescriptionState.Unknown
+        };
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
+        // Act
+        await JsonWritePrescription.SavePrescription(prescription, filePath);
+        var content = await File.ReadAllTextAsync(filePath);
+
+        // Assert
+        Assert.True(content.Contains("\n"), "JSON is not indented (no new lines found).");
+
+        // Cleanup
+        File.Delete(filePath);
+    }
 }
