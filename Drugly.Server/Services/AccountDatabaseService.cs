@@ -109,12 +109,14 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
                 var id = entry.AccountDetails.UserId;
                 var email = entry.AccountDetails.Email;
 
-                _accounts[id] = entry;
-                _emailToId[email] = id;
+                if (_emailToId.TryAdd(email, id))
+                {
+                    _accounts[id] = entry;
+                }
             }
-        }
 
-        _logger.LogInformation("Loaded {AccountsCount} accounts", _accounts.Count);
+            _logger.LogInformation("Loaded {AccountsCount} accounts", _accounts.Count);
+        }
     }
 
     /// <summary>
