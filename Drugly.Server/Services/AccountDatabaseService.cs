@@ -89,7 +89,7 @@ public class AccountDatabaseService : IHostedService, IAccountDatabaseService
     }
 
     /// <summary>
-    /// begins async
+    /// loads initial account details from the disc
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>

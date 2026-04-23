@@ -68,7 +68,7 @@ public class MedicationDatabaseService : IHostedService, IMedicationDatabaseServ
     }
 
     /// <summary>
-    /// begins async
+    /// loads medication data from the disk
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>

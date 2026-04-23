@@ -69,7 +69,7 @@ public class PrescriptionDatabaseService : IHostedService, IPrescriptionDatabase
     }
 
     /// <summary>
-    /// begins async
+    /// loads prescription data from the disk
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
